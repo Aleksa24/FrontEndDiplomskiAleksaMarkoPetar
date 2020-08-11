@@ -119,6 +119,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "frontend-aplikacija"
+    }
+  },
+  "defaultProject": "frontend-aplikacija",
+  "cli": {
+    "analytics": false
+  }
 }
