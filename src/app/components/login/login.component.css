@@ -1,0 +1,32 @@
+.login-component {
+  outline: thick solid darkblue;
+  position: absolute;
+  top: 25%;
+  left: 30%;
+  width: 600px;
+  height: 300px;
+  padding: 20px;
+  background-color: whitesmoke;
+}
+p {
+  font-size:
+    42px;
+  margin:
+    9px 0px 14px;
+  gap:
+    normal;
+  text-align:
+    center;
+}
+mat-form-field {
+  left: 200px;
+  font-size: 20px;
+}
+button {
+  left: 100px;
+  font-size: 40px;
+  margin: 10px;
+  padding: 5px;
+  width: 200px;
+}
+

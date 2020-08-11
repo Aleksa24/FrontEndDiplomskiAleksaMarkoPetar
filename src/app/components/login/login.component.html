@@ -1,3 +1,18 @@
-<p>login works!</p>
+<div class="login-component">
+  <ng-form [formGroup]="form">
+    <p>Please login</p>
+    <mat-form-field>
+      <input matInput type="text" placeholder="username" formControlName="username">
+      <mat-error *ngIf="form.get('username').invalid">required</mat-error>
+    </mat-form-field>
+    <br>
+    <mat-form-field>
+      <input matInput type="password" placeholder="password" formControlName="password">
+      <mat-error *ngIf="form.get('password').hasError('required')">required</mat-error>
+    </mat-form-field>
+    <br>
+    <button mat-raised-button color="primary" (click)="login()" [disabled]="form.invalid">Login</button>
+    <button mat-stroked-button color="primary" routerLink="/register">Register</button>
+  </ng-form>
+</div>
 
-<mat-checkbox>checkbox</mat-checkbox>
