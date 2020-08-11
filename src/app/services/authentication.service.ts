@@ -20,7 +20,7 @@ export class AuthenticationService {
 
   login(user: User): Observable<HttpResponse<User>> {
     return this.http.post<User>
-    (`${this.host}/user/login`, user, {observe: 'response'}); // full response
+    (`${this.host}/auth/login`, user, {observe: 'response'}); // full response
   }
 
   register(user: User): Observable<User | HttpErrorResponse> {
