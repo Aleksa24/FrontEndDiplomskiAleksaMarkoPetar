@@ -19,13 +19,17 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
+import { ChannelsComponent } from './components/channels/channels.component';
+import { FavouritesComponent } from './components/favourites/favourites.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     HomeComponent,
-    MainNavComponent
+    MainNavComponent,
+    ChannelsComponent,
+    FavouritesComponent
   ],
   imports: [
     BrowserModule,
