@@ -1,7 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
-
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");/* bez ovoga ne ucitava mat-icon */
 
 body {
   background: linear-gradient(-45deg, #4ca1af, #c4e0e5);
+  margin: 0;
+}
+html,body{
+  height: 100%;
 }

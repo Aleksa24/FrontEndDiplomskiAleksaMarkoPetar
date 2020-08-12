@@ -8,21 +8,24 @@ import { HomeComponent } from './components/home/home.component';
 import { BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { HttpClientModule } from '@angular/common/http';
-
-//angular materials
 import {MatGridListModule} from '@angular/material/grid-list';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
-
-
+import { MainNavComponent } from './components/main-nav/main-nav.component';
+import { LayoutModule } from '@angular/cdk/layout';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    HomeComponent
+    HomeComponent,
+    MainNavComponent
   ],
   imports: [
     BrowserModule,
@@ -35,7 +38,12 @@ import {MatButtonModule} from '@angular/material/button';
     MatButtonModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    LayoutModule,
+    MatToolbarModule,
+    MatSidenavModule,
+    MatIconModule,
+    MatListModule
 
   ],
   providers: [],
