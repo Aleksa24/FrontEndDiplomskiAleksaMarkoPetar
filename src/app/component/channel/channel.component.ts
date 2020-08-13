@@ -3,6 +3,7 @@ import {ChannelService} from "../../services/channel.service";
 import {ActivatedRoute} from "@angular/router";
 import {Channel} from "../../model/Channel";
 import {switchMap} from "rxjs/operators";
+import {Observable, Subscription} from "rxjs";
 
 @Component({
   selector: 'app-channel',
@@ -10,22 +11,24 @@ import {switchMap} from "rxjs/operators";
   styleUrls: ['./channel.component.css']
 })
 export class ChannelComponent implements OnInit {
-  idChannel: number;//ovo je privremeno
-  channel$;
-
+  channel$: Observable<Channel>;
+  channel: Channel;
+  subs: Subscription[] = [];
 
   constructor(private channelService: ChannelService,
               private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.channel$ = this.route.paramMap.pipe(
+    this.subs.push(this.route.paramMap.pipe(
       switchMap(params => {
         const id = params.get("id");
-        this.idChannel = parseInt(id);
-        console.log("upisan je id: " + id)
         return this.channelService.getById(parseInt(id));
       })
-    );
+    ).subscribe(value => this.channel = value));
+
   }
 
+  printChannel(): string{
+    return JSON.stringify(this.channel);
+  }
 }

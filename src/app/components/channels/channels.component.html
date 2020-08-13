@@ -1,7 +1,7 @@
 <app-main-nav>
 
   <mat-grid-list cols="5" rowHeight="300px" [gutterSize]="'10px'">
-    <mat-grid-tile *ngFor="let channel of channels" >
+    <mat-grid-tile *ngFor="let channel of channels$ | async" >
       <mat-card  class="example-card">
         <mat-card-header>
           <mat-card-title >

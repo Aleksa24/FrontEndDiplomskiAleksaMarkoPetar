@@ -2,27 +2,21 @@ import { Injectable } from '@angular/core';
 import {Channel} from "../model/Channel";
 import {Observable, of} from "rxjs";
 import {HttpClient} from "@angular/common/http";
+import {environment} from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChannelService {
 
-  channels: Channel[] = [
-    {id:1,name:"Name1"},
-    {id:2,name:"Name2"},
+  constructor(private httpClient: HttpClient) {}
 
-  ];
-
-  constructor(private httpClient: HttpClient) {
-
-  }
-
-  getChannels(){
-    return this.channels;
+  getChannels(): Observable<Channel[]>{
+    return this.httpClient.get<Channel[]>(environment.apiUrl+"/channel/all");
+    // return of(this.channels);
   }
 
   getById(id: number): Observable<Channel> {
-    return of(this.channels.find(value => value.id == id));
+    return this.httpClient.get<Channel>(environment.apiUrl+`/channel/${id}`);
   }
 }
