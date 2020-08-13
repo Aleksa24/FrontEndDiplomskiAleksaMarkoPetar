@@ -21,6 +21,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { ChannelsComponent } from './components/channels/channels.component';
 import { FavouritesComponent } from './components/favourites/favourites.component';
+import { AddUserComponent } from './components/add-user/add-user.component';
+import {MatCardModule} from '@angular/material/card';
 
 @NgModule({
   declarations: [
@@ -29,7 +31,8 @@ import { FavouritesComponent } from './components/favourites/favourites.componen
     HomeComponent,
     MainNavComponent,
     ChannelsComponent,
-    FavouritesComponent
+    FavouritesComponent,
+    AddUserComponent
   ],
   imports: [
     BrowserModule,
@@ -47,7 +50,8 @@ import { FavouritesComponent } from './components/favourites/favourites.componen
     MatToolbarModule,
     MatSidenavModule,
     MatIconModule,
-    MatListModule
+    MatListModule,
+    MatCardModule
 
   ],
   providers: [],
