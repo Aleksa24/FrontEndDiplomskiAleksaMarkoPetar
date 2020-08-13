@@ -6,7 +6,7 @@ import {HomeComponent} from "./components/home/home.component";
 import {ChannelsComponent} from "./components/channels/channels.component";
 import {FavouritesComponent} from "./components/favourites/favourites.component";
 import {AddUserComponent} from "./components/add-user/add-user.component";
-import {ChannelComponent} from "./component/channel/channel.component";
+import {ChannelComponent} from "./components/channel/channel.component";
 
 
 

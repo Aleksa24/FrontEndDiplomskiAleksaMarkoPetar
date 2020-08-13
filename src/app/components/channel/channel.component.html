@@ -1,0 +1,28 @@
+<app-main-nav>
+  <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav class="sidenav" fixedInViewport
+                 mode='side'
+                 opened=true>
+
+      <mat-nav-list>
+        <a mat-list-item
+           *ngFor="let subchannel of channel.channels"
+           [routerLink]="['/channel',subchannel.id]">{{subchannel.name}}</a>
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+      <mat-toolbar color="primary">
+        <span>{{channel.name}}</span>
+      </mat-toolbar>
+
+      <div class="content">
+        <p>content</p>
+        <app-post *ngFor="let post of channel.posts" [post]="post"></app-post>
+      </div>
+
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+
+
+</app-main-nav>

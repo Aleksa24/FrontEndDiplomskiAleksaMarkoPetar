@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ChannelService} from "../../services/channel.service";
 import {ActivatedRoute} from "@angular/router";
 import {Channel} from "../../model/Channel";
@@ -10,7 +10,7 @@ import {Observable, Subscription} from "rxjs";
   templateUrl: './channel.component.html',
   styleUrls: ['./channel.component.css']
 })
-export class ChannelComponent implements OnInit {
+export class ChannelComponent implements OnInit,OnDestroy {
   channel$: Observable<Channel>;
   channel: Channel;
   subs: Subscription[] = [];
@@ -30,5 +30,9 @@ export class ChannelComponent implements OnInit {
 
   printChannel(): string{
     return JSON.stringify(this.channel);
+  }
+
+  ngOnDestroy(): void {
+    this.subs.forEach(value => value.unsubscribe());
   }
 }

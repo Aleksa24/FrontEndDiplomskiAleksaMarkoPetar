@@ -23,7 +23,8 @@ import { ChannelsComponent } from './components/channels/channels.component';
 import { FavouritesComponent } from './components/favourites/favourites.component';
 import { AddUserComponent } from './components/add-user/add-user.component';
 import {MatCardModule} from '@angular/material/card';
-import { ChannelComponent } from './component/channel/channel.component';
+import { ChannelComponent } from './components/channel/channel.component';
+import { PostComponent } from './components/post/post.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { ChannelComponent } from './component/channel/channel.component';
     ChannelsComponent,
     FavouritesComponent,
     AddUserComponent,
-    ChannelComponent
+    ChannelComponent,
+    PostComponent
   ],
   imports: [
     BrowserModule,
