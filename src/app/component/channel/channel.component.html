@@ -1,0 +1,6 @@
+<app-main-nav>
+  <div>channel works {{idChannel}}, this is id!</div>
+  <div *ngIf="channel$ | async as channel">
+    <p>{{channel.id}}</p>
+  </div>
+</app-main-nav>
