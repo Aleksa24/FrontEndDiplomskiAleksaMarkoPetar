@@ -1,15 +1,49 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Subscription} from 'rxjs';
+import {User} from '../../model/User';
+import {Role} from '../../model/Role';
+import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
+import {UserService} from '../../services/user.service';
 
 @Component({
   selector: 'app-add-user',
   templateUrl: './add-user.component.html',
   styleUrls: ['./add-user.component.css']
 })
-export class AddUserComponent implements OnInit {
+export class AddUserComponent implements OnInit, OnDestroy {
 
-  constructor() { }
+  public form: FormGroup;
+  private subs: Subscription[] = [];
 
-  ngOnInit(): void {
+  constructor(private formBuilder: FormBuilder,
+              private userService: UserService) {
   }
 
+  ngOnInit(): void {
+    this.form = this.formBuilder.group({
+      email: ['example@mail.com', [Validators.required, Validators.email]],
+      role: ['Student']
+    });
+  }
+
+  addUser() {
+    let user: User = new User();
+    let role: Role = new Role();
+    role.name = this.form.get('role').value
+    user.email = this.form.get('email').value
+    user.role = role;
+    this.subs.push(this.userService.addUser(user).subscribe(
+      (response: User) => {
+        console.log(response);
+      },
+      (errorResponse:HttpErrorResponse) => {
+        console.dir(errorResponse); // TODO odradi obradjivanje greska
+      }
+    ));
+  }
+
+  ngOnDestroy(): void {
+    this.subs.forEach(value => value.unsubscribe());
+  }
 }

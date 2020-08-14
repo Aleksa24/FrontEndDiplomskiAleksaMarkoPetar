@@ -1,9 +1,27 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
+import {User} from '../model/User';
+import {Observable} from 'rxjs';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {environment} from '../../environments/environment';
+import {Role} from '../model/Role';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  constructor() { }
+  public host = environment.apiUrl;
+
+  constructor(private http: HttpClient) {
+  }
+
+  addUser(user: User): Observable<User | HttpErrorResponse> {
+    return this.http.post<User | HttpErrorResponse>
+    (`${this.host}/user/add`, user);
+  }
+
+  updateProfile(user: User): Observable<User | HttpErrorResponse> {
+    return this.http.post<User | HttpErrorResponse>
+    (`${this.host}/user/save`, user);
+  }
 }

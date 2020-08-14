@@ -24,6 +24,8 @@ import { FavouritesComponent } from './components/favourites/favourites.componen
 import { AddUserComponent } from './components/add-user/add-user.component';
 import {MatCardModule} from '@angular/material/card';
 import { ChannelComponent } from './component/channel/channel.component';
+import {MatRadioModule} from '@angular/material/radio';
+import { UpdateProfileComponent } from './components/update-profile/update-profile.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,8 @@ import { ChannelComponent } from './component/channel/channel.component';
     ChannelsComponent,
     FavouritesComponent,
     AddUserComponent,
-    ChannelComponent
+    ChannelComponent,
+    UpdateProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -53,7 +56,8 @@ import { ChannelComponent } from './component/channel/channel.component';
     MatSidenavModule,
     MatIconModule,
     MatListModule,
-    MatCardModule
+    MatCardModule,
+    MatRadioModule
 
   ],
   providers: [],
