@@ -23,10 +23,11 @@ import { ChannelsComponent } from './components/channels/channels.component';
 import { FavouritesComponent } from './components/favourites/favourites.component';
 import { AddUserComponent } from './components/add-user/add-user.component';
 import {MatCardModule} from '@angular/material/card';
-import { ChannelComponent } from './component/channel/channel.component';
 import {UpdateProfileComponent} from './components/update-profile/update-profile.component';
 import { PostComponent } from './components/post/post.component';
 import { CommentComponent } from './components/comment/comment.component';
+import {ChannelComponent} from './components/channel/channel.component';
+import {MatRadioModule} from '@angular/material/radio';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import { CommentComponent } from './components/comment/comment.component';
     MatSidenavModule,
     MatIconModule,
     MatListModule,
-    MatCardModule
+    MatCardModule,
+    MatRadioModule
 
   ],
   providers: [],

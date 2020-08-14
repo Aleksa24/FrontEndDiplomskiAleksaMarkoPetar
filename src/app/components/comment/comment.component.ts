@@ -1,20 +1,24 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {Subscription} from "rxjs";
-import {Comment} from "../../model/Comment";
+import {Subscription} from 'rxjs';
+import {Comment} from '../../model/Comment';
 
 @Component({
   selector: 'app-comment',
   templateUrl: './comment.component.html',
   styleUrls: ['./comment.component.css']
 })
-export class CommentComponent implements OnInit,OnDestroy {
+export class CommentComponent implements OnInit, OnDestroy {
 
   subs: Subscription[] = [];
-  @Input()comment: Comment;
+  @Input() comment: Comment;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
+  }
+
+  ngOnDestroy(): void {
   }
 
 }

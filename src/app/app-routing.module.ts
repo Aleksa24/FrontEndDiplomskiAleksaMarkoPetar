@@ -6,8 +6,8 @@ import {HomeComponent} from "./components/home/home.component";
 import {ChannelsComponent} from "./components/channels/channels.component";
 import {FavouritesComponent} from "./components/favourites/favourites.component";
 import {AddUserComponent} from "./components/add-user/add-user.component";
-import {ChannelComponent} from "./component/channel/channel.component";
 import {UpdateProfileComponent} from './components/update-profile/update-profile.component';
+import {ChannelComponent} from './components/channel/channel.component';
 
 
 
@@ -18,7 +18,7 @@ const routes: Routes = [
   { path: 'favourites', component: FavouritesComponent },
   { path: 'add-user', component: AddUserComponent },
   { path: 'update-profile', component: UpdateProfileComponent },
-  { path: 'channel/:id', component: ChannelComponent },
+  { path: 'channel/:id', component:  ChannelComponent},
   { path: '', redirectTo: "/login", pathMatch: "full"},
 
 ];
