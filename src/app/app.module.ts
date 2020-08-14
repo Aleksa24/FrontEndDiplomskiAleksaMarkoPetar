@@ -28,6 +28,7 @@ import { PostComponent } from './components/post/post.component';
 import { CommentComponent } from './components/comment/comment.component';
 import {ChannelComponent} from './components/channel/channel.component';
 import {MatRadioModule} from '@angular/material/radio';
+import {MatMenuModule} from '@angular/material/menu';
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import {MatRadioModule} from '@angular/material/radio';
     MatIconModule,
     MatListModule,
     MatCardModule,
-    MatRadioModule
+    MatRadioModule,
+    MatMenuModule
 
   ],
   providers: [],

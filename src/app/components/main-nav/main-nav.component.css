@@ -15,3 +15,12 @@
   top: 0;
   z-index: 1;
 }
+
+.navbar {
+  justify-content: space-between;
+}
+
+span {
+  padding-right: 1rem;
+}
+
