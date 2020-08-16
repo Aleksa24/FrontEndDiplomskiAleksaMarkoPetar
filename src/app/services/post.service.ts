@@ -36,4 +36,6 @@ export class PostService {
 
     return this.httpClient.post<Post>(environment.apiUrl+"/post/addComment",post).toPromise();
   }
+
+
 }

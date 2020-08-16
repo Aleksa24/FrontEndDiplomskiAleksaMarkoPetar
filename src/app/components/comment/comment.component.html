@@ -1,24 +1,30 @@
 <div>
-  ima komentar
-  {{comment.id}}
-  {{comment.text}}
-<!--  <mat-card class="example-card">-->
-<!--    <mat-card-header>-->
-<!--      <div mat-card-avatar class="example-header-image"></div>-->
-<!--      <mat-card-title>Shiba Inu</mat-card-title>-->
-<!--      <mat-card-subtitle>Dog Breed</mat-card-subtitle>-->
-<!--    </mat-card-header>-->
-<!--    <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">-->
-<!--    <mat-card-content>-->
-<!--      <p>-->
-<!--        The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.-->
-<!--        A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally-->
-<!--        bred for hunting.-->
-<!--      </p>-->
-<!--    </mat-card-content>-->
-<!--    <mat-card-actions>-->
-<!--      <button mat-button>LIKE</button>-->
-<!--      <button mat-button>SHARE</button>-->
-<!--    </mat-card-actions>-->
-<!--  </mat-card>-->
+  <mat-card>
+    <mat-card-header>
+      <img mat-card-avatar src="assets/img/default-user-image.png">
+      <mat-card-title>{{comment.user.username}}<span class="title-date"> ,{{comment.dateCreated | date}}</span></mat-card-title>
+    </mat-card-header>
+    <mat-card-content >
+        {{comment.text}}
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button>Like</button>
+      <button mat-button>Dislike</button>
+      <button mat-button (click)="replyButtonClicked()">Replys</button>
+    </mat-card-actions>
+
+    <mat-card-content *ngIf="isReplyOpen" class="replays">
+      <app-comment *ngFor="let comment of comment.comments" [comment]="comment"></app-comment>
+      <p *ngIf="comment.comments.length==0">No replays</p>
+    </mat-card-content>
+
+    <mat-form-field class="comment">
+      <!--    <mat-label >Favorite food</mat-label>-->
+      <input #replay matInput placeholder="Replay" (keyup.enter)="postReply(replay.value)">
+
+    </mat-form-field>
+    <button mat-button (click)="postReply(replay.value)">Post a reply</button>
+
+  </mat-card>
+
 </div>

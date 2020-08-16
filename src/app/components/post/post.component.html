@@ -17,6 +17,7 @@
 
   <mat-card-content *ngIf="isCommentOpen" class="comments">
     <app-comment *ngFor="let comment of post.comments" [comment]="comment"></app-comment>
+    <p *ngIf="post.comments.length==0">No comments</p>
   </mat-card-content>
 
   <mat-form-field class="comment">
