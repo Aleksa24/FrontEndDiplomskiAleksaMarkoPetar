@@ -30,9 +30,7 @@ export class PostService {
     await this.commentService.getCommentStatusByName(this.commentService.ORIGINAL)
       .then((recevedStatus) =>{
         comment.commentStatus = recevedStatus;
-        console.log("odradio se getCOmmentStatusByName1")
     });
-    console.log("odradio se getCOmmentStatusByName2")
     post.comments.push(comment);
 
     return this.httpClient.post<Post>(environment.apiUrl+"/post/addComment",post).toPromise();

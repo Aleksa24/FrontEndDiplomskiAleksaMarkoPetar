@@ -21,7 +21,6 @@ export class PostComponent implements OnInit,OnDestroy {
   ngOnInit(): void {
     this.subs.push(this.postService.getById(this.post.id).subscribe((post) => {
       this.post=post;
-      console.log({post})
     }));
   }
 
@@ -31,15 +30,12 @@ export class PostComponent implements OnInit,OnDestroy {
 
   commentButtonClicked() {
     this.isCommentOpen = !this.isCommentOpen;
-    console.log(this.post.comments.length)
   }
 
   postComment(comment:string) {
       this.postService.postComment(this.post, comment)
         .then((post)=> {
           this.post = post;
-          console.log("post: " + this.post.id)
-          console.log("post: " + this.post.title)
         });
   }
 }
