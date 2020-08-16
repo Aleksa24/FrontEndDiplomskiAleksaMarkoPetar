@@ -8,6 +8,7 @@ import {AuthenticationService} from "./authentication.service";
 import {CommentStatus} from "../model/CommentStatus";
 import {CommentService} from "./comment.service";
 import {timeout} from "rxjs/operators";
+import {Channel} from "../model/Channel";
 
 @Injectable({
   providedIn: 'root'
@@ -37,5 +38,9 @@ export class PostService {
     return this.httpClient.post<Post>(environment.apiUrl+"/post/addComment",post).toPromise();
   }
 
-
+  savePost(channel: Channel, post: Post): Observable<Post> {
+    post.channel = channel;
+    post.user = this.authService.getUserFromLocalCache();
+    return this.httpClient.post<Post>(environment.apiUrl+"/post/save",post);
+  }
 }

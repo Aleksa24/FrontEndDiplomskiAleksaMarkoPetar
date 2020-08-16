@@ -29,6 +29,8 @@ import { CommentComponent } from './components/comment/comment.component';
 import {ChannelComponent} from './components/channel/channel.component';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatMenuModule} from '@angular/material/menu';
+import { PostNewComponent } from "./components/post-new/post-new.component";
+import {MatDialogModule} from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -42,7 +44,8 @@ import {MatMenuModule} from '@angular/material/menu';
     ChannelComponent,
     UpdateProfileComponent,
     PostComponent,
-    CommentComponent
+    CommentComponent,
+    PostNewComponent,
   ],
   imports: [
     BrowserModule,
@@ -63,7 +66,8 @@ import {MatMenuModule} from '@angular/material/menu';
     MatListModule,
     MatCardModule,
     MatRadioModule,
-    MatMenuModule
+    MatMenuModule,
+    MatDialogModule,
 
   ],
   providers: [],
