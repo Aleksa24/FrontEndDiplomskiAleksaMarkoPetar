@@ -29,6 +29,8 @@ import { CommentComponent } from './components/comment/comment.component';
 import {ChannelComponent} from './components/channel/channel.component';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatMenuModule} from '@angular/material/menu';
+import { MakeChannelComponent } from './components/make-channel/make-channel.component';
+import {MatSelectModule} from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -42,30 +44,32 @@ import {MatMenuModule} from '@angular/material/menu';
     ChannelComponent,
     UpdateProfileComponent,
     PostComponent,
-    CommentComponent
+    CommentComponent,
+    MakeChannelComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    MatCheckboxModule,
-    MatGridListModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    LayoutModule,
-    MatToolbarModule,
-    MatSidenavModule,
-    MatIconModule,
-    MatListModule,
-    MatCardModule,
-    MatRadioModule,
-    MatMenuModule
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        MatCheckboxModule,
+        MatGridListModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        HttpClientModule,
+        LayoutModule,
+        MatToolbarModule,
+        MatSidenavModule,
+        MatIconModule,
+        MatListModule,
+        MatCardModule,
+        MatRadioModule,
+        MatMenuModule,
+        MatSelectModule
 
-  ],
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })

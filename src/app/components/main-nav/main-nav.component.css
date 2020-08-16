@@ -6,8 +6,13 @@
   width: 200px;
 }
 
-.sidenav .mat-toolbar {
+.sidenav {
   background: inherit;
+}
+
+.mat-toolbar {
+  background: #673ab7;
+  color: white;
 }
 
 .mat-toolbar.mat-primary {
