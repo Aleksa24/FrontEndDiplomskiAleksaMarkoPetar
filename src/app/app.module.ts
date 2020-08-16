@@ -31,6 +31,8 @@ import {MatRadioModule} from '@angular/material/radio';
 import {MatMenuModule} from '@angular/material/menu';
 import { MakeChannelComponent } from './components/make-channel/make-channel.component';
 import {MatSelectModule} from '@angular/material/select';
+import {PostNewComponent} from './components/post-new/post-new.component';
+import {MatDialogModule} from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -45,29 +47,31 @@ import {MatSelectModule} from '@angular/material/select';
     UpdateProfileComponent,
     PostComponent,
     CommentComponent,
-    MakeChannelComponent
+    MakeChannelComponent,
+    PostNewComponent
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        BrowserAnimationsModule,
-        MatCheckboxModule,
-        MatGridListModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatButtonModule,
-        FormsModule,
-        ReactiveFormsModule,
-        HttpClientModule,
-        LayoutModule,
-        MatToolbarModule,
-        MatSidenavModule,
-        MatIconModule,
-        MatListModule,
-        MatCardModule,
-        MatRadioModule,
-        MatMenuModule,
-        MatSelectModule
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    MatCheckboxModule,
+    MatGridListModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    LayoutModule,
+    MatToolbarModule,
+    MatSidenavModule,
+    MatIconModule,
+    MatListModule,
+    MatCardModule,
+    MatRadioModule,
+    MatMenuModule,
+    MatSelectModule,
+    MatDialogModule
 
   ],
   providers: [],
