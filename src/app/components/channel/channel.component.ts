@@ -21,11 +21,11 @@ export class ChannelComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subs.push(this.route.paramMap.pipe(
-      switchMap(params => {
+      switchMap((params) => {
         const id = params.get('id');
         return this.channelService.getById(parseInt(id));
       })
-    ).subscribe(value => this.channel = value));
+    ).subscribe((value) => this.channel = value));
 
   }
 
