@@ -1,0 +1,22 @@
+<h1 mat-dialog-title>Create new post!</h1>
+<ng-form [formGroup]="form">
+
+  <mat-form-field appearance="fill">
+    <mat-label>Title</mat-label>
+    <input matInput formControlName="title">
+    <mat-error *ngIf="form.get('title').invalid">Title is required!</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Body</mat-label>
+    <textarea matInput formControlName="body"></textarea>
+    <mat-error *ngIf="form.get('body').invalid">Body is required!</mat-error>
+  </mat-form-field>
+
+  <!--  TODO:ODRADITI UBACIVANJE ATTACHMENTA/FAJLOVA-->
+  <h2>ODRADITI UBACIVANJE ATTACHMENTA/FAJLOVA</h2>
+
+  <br>
+  <button mat-raised-button color="primary" [mat-dialog-close]="form.value"  [disabled]="form.invalid">Create</button>
+  <button mat-button (click)="closeDialog()">Close</button>
+</ng-form>

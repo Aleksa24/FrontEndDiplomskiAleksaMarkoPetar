@@ -1,6 +1,7 @@
 import {User} from "./User";
 import {Channel} from "./Channel";
 import {Like} from "./Like";
+import {Comment} from "./Comment";
 
 export class Post {
   public id: number;

@@ -1,0 +1,20 @@
+.example-card {
+  max-width: 400px;
+}
+
+.example-header-image {
+  background-size: cover;
+}
+.title-date {
+  font-size: 12px;
+  color: hsl(0, 3%, 48%);
+}
+.mat-card {
+  margin: 2%;
+}
+.replys{
+
+}
+.mat-card-content{
+  padding: 15px 0px 0px 10px;
+}

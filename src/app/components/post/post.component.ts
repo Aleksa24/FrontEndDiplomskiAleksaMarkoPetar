@@ -1,5 +1,5 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {Observable, Subscription} from "rxjs";
+import {Observable, of, Subscription} from "rxjs";
 import {Post} from "../../model/Post";
 import {PostService} from "../../services/post.service";
 import { Comment} from "../../model/Comment";
@@ -32,5 +32,14 @@ export class PostComponent implements OnInit,OnDestroy {
   commentButtonClicked() {
     this.isCommentOpen = !this.isCommentOpen;
     console.log(this.post.comments.length)
+  }
+
+  postComment(comment:string) {
+      this.postService.postComment(this.post, comment)
+        .then((post)=> {
+          this.post = post;
+          console.log("post: " + this.post.id)
+          console.log("post: " + this.post.title)
+        });
   }
 }

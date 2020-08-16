@@ -69,7 +69,7 @@ import {MatSelectModule} from '@angular/material/select';
         MatMenuModule,
         MatSelectModule
 
-    ],
+  ],
   providers: [],
   bootstrap: [AppComponent]
 })

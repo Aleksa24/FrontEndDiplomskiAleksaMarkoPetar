@@ -17,6 +17,14 @@
 
   <mat-card-content *ngIf="isCommentOpen" class="comments">
     <app-comment *ngFor="let comment of post.comments" [comment]="comment"></app-comment>
+    <p *ngIf="post.comments.length==0">No comments</p>
   </mat-card-content>
+
+  <mat-form-field class="comment">
+<!--    <mat-label >Favorite food</mat-label>-->
+    <input #commnent matInput placeholder="Comment" (keyup.enter)="postComment(commnent.value)">
+
+  </mat-form-field>
+  <button mat-button (click)="postComment(commnent.value)">Post a comment</button>
 
 </mat-card>
