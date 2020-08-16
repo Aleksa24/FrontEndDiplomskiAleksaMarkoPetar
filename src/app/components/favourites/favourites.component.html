@@ -1,3 +1,5 @@
 <app-main-nav>
-  <div>favourites work</div>
+  <div class="content">
+    <app-post *ngFor="let post of user.favourites" [post]="post"></app-post>
+  </div>
 </app-main-nav>

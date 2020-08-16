@@ -1,4 +1,5 @@
 import {Role} from "./Role";
+import {Post} from "./Post";
 
 export class User{
 
@@ -11,5 +12,6 @@ export class User{
   public email: string;
   public phone: string;
   public role: Role;
+  public favourites: Post[] = [];
 
 }
