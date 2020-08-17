@@ -18,10 +18,7 @@ export class FavouritesComponent implements OnInit,OnDestroy {
   constructor(private authService: AuthenticationService) { }
 
   ngOnInit(): void {
-    this.user = this.authService.getUserFromLocalCache();
-    this.favourites = this.user.favourites;
-    console.log(this.user);
-    console.log(this.user.favourites);
+    this.favourites = this.authService.getUserFromLocalCache().favorites;
   }
 
   ngOnDestroy(): void {

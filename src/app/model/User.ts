@@ -12,6 +12,6 @@ export class User{
   public email: string;
   public phone: string;
   public role: Role;
-  public favourites: Post[] = [];
+  public favorites: Post[] = [];
 
 }
