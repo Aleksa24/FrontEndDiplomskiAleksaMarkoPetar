@@ -5,12 +5,18 @@ import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {Comment} from "../model/Comment";
 import {AuthenticationService} from "./authentication.service";
+import {Post} from "../model/Post";
+import {Like} from "../model/Like";
+import {User} from "../model/User";
+import {LikeStatus} from "../model/LikeStatus";
 
 @Injectable({
   providedIn: 'root'
 })
 export class CommentService {
   ORIGINAL: string = "Original";
+  LIKE: string = "Like";
+  DISLIKE: string = "Dislike";
 
   constructor(private httpClient: HttpClient,
               private authService: AuthenticationService) { }
@@ -32,6 +38,36 @@ export class CommentService {
     });
     comment.comments.push(replay);
     return this.httpClient.post<Comment>(environment.apiUrl+"/comment/addReplay",comment).toPromise();
+  }
+
+
+  // =============
+
+  async like(comment: Comment,likeStatusString: string): Promise<Comment> {
+    let like: Like = new Like();
+    let user: User =this.authService.getUserFromLocalCache();
+    // user.favorites = null;//namestam da je null da ne bi ulazilo u beskonacnu petlju negde
+    like.user = user;
+    await this.getLikeStatusByName(likeStatusString)
+      .then((likeStatus) => {
+        like.likeStatus = likeStatus;
+      });
+    comment.likes.push(like);
+    return this.httpClient.post<Comment>(environment.apiUrl+"/comment/addLike",comment).toPromise();
+  }
+
+  async updateLike(comment: Comment, likeStatusString: string, like: Like):Promise<Comment> {
+    let user: User =this.authService.getUserFromLocalCache();
+    // user.favorites = null;//namestam da je null da ne bi ulazilo u beskonacnu petlju negde
+    await this.getLikeStatusByName(likeStatusString)
+      .then((likeStatus) => {
+        like.likeStatus = likeStatus;
+      });
+    return this.httpClient.post<Comment>(environment.apiUrl+"/comment/addLike",comment).toPromise();
+  }
+
+  getLikeStatusByName(likeStatus: String): Promise<LikeStatus>{
+    return this.httpClient.get<LikeStatus>(environment.apiUrl+"/comment/like-status/"+likeStatus).toPromise();
   }
 
 }
