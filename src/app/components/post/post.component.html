@@ -10,8 +10,8 @@
     </p>
   </mat-card-content>
   <mat-card-actions>
-    <button mat-button>Like</button>
-    <button mat-button>Dislike</button>
+    <button mat-button [class.selected]="isLiked" (click)="onLike()">Like</button>
+    <button mat-button [class.selected]="isDisliked" (click)="onDislike()">Dislike</button>
     <button mat-button (click)="commentButtonClicked()">Comments</button>
   </mat-card-actions>
 

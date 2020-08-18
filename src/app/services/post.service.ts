@@ -9,11 +9,17 @@ import {CommentStatus} from "../model/CommentStatus";
 import {CommentService} from "./comment.service";
 import {timeout} from "rxjs/operators";
 import {Channel} from "../model/Channel";
+import {Like} from "../model/Like";
+import {LikeStatus} from "../model/LikeStatus";
+import {User} from "../model/User";
 
 @Injectable({
   providedIn: 'root'
 })
 export class PostService {
+
+  LIKE: string = "Like";
+  DISLIKE: string = "Dislike";
 
   constructor(private httpClient: HttpClient,
               private authService: AuthenticationService,
@@ -40,5 +46,32 @@ export class PostService {
     post.channel = channel;
     post.user = this.authService.getUserFromLocalCache();
     return this.httpClient.post<Post>(environment.apiUrl+"/post/save",post);
+  }
+
+  async like(post: Post,likeStatusString: string): Promise<Post> {
+    let like: Like = new Like();
+    let user: User =this.authService.getUserFromLocalCache();
+    // user.favorites = null;//namestam da je null da ne bi ulazilo u beskonacnu petlju negde
+    like.user = user;
+    await this.getLikeStatusByName(likeStatusString)
+      .then((likeStatus) => {
+        like.likeStatus = likeStatus;
+      });
+    post.likes.push(like);
+    return this.httpClient.post<Post>(environment.apiUrl+"/post/addLike",post).toPromise();
+  }
+
+  async updateLike(post: Post, likeStatusString: string, like: Like):Promise<Post> {
+    let user: User =this.authService.getUserFromLocalCache();
+    // user.favorites = null;//namestam da je null da ne bi ulazilo u beskonacnu petlju negde
+    await this.getLikeStatusByName(likeStatusString)
+      .then((likeStatus) => {
+        like.likeStatus = likeStatus;
+      });
+    return this.httpClient.post<Post>(environment.apiUrl+"/post/addLike",post).toPromise();
+  }
+
+  getLikeStatusByName(likeStatus: String): Promise<LikeStatus>{
+    return this.httpClient.get<LikeStatus>(environment.apiUrl+"/comment/like-status/"+likeStatus).toPromise();
   }
 }
