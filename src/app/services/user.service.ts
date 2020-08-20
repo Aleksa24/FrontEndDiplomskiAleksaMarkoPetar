@@ -24,4 +24,8 @@ export class UserService {
     return this.http.post<User | HttpErrorResponse>
     (`${this.host}/user/save`, user);
   }
+
+  totalCount(): Observable<number> {
+    return this.http.get<number>(`${this.host}/user/total_count`);
+  }
 }
