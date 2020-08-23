@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {Attachment} from "../../model/Attachment";
 import {faCoffee, faDownload, faFilePdf, faImage, faStarOfDavid} from '@fortawesome/free-solid-svg-icons';
 import {Post} from '../../model/Post';
+import {PostService} from '../../services/post.service';
 
 @Component({
   selector: 'app-attachment',
@@ -16,11 +17,11 @@ export class AttachmentComponent implements OnInit {
   faDocument = faFilePdf;
   downloadUrl: string;
 
-  constructor() { }
+  constructor(private postService: PostService) { }
 
   ngOnInit(): void {
     this.resolveFileIconBytype();
-    this.downloadUrl = `http://localhost:8080/post/${this.post.id}/file/${this.attachment.originalName}`;
+    this.downloadUrl = this.postService.makeDownloadUrl(this.post, this.attachment);
   }
 
   resolveFileIconBytype(): any {
