@@ -9,11 +9,7 @@
     <span *ngIf="(post.attachments != undefined) && (post.attachments.length != 0)">
       <br>
         ATTACHMENTS!!!!
-        <div *ngFor="let attachment of post.attachments">
-            {{attachment.id}}
-            {{attachment.originalName}}
-            {{attachment.user.username}}
-        </div>
+        <app-attachment *ngFor="let attachment of post.attachments" [attachment]="attachment"></app-attachment>
     </span>
     <div *ngIf="post.user.id == loggedUser.id">
       <form [formGroup]="fileForm">
