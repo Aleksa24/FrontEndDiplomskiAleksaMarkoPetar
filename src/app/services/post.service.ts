@@ -80,7 +80,10 @@ export class PostService {
   addAttachment(formData:FormData):Observable<Attachment> {
     return this.httpClient.post<Attachment>(`${environment.apiUrl}/post/addAttachment`,formData);
   }
-  makeDownloadUrl(post: Post, attachment: Attachment): string{
-    return `${environment.apiUrl}/post/${post.id}/file/${attachment.originalName}`;
+
+  downloadAttachment(post: Post, attachment: Attachment): Observable<Blob>{
+    return this.httpClient.get(`${environment.apiUrl}/post/${post.id}/file/${attachment.originalName}`, {
+      responseType: 'blob'
+    });
   }
 }

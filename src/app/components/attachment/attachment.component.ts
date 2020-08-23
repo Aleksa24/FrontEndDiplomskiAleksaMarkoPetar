@@ -15,13 +15,11 @@ export class AttachmentComponent implements OnInit {
   @Input() post: Post;
   public faDownload = faDownload;
   faDocument = faFilePdf;
-  downloadUrl: string;
 
   constructor(private postService: PostService) { }
 
   ngOnInit(): void {
     this.resolveFileIconBytype();
-    this.downloadUrl = this.postService.makeDownloadUrl(this.post, this.attachment);
   }
 
   resolveFileIconBytype(): any {
@@ -35,5 +33,18 @@ export class AttachmentComponent implements OnInit {
       default:
         this.faDocument = faStarOfDavid;
     }
+  }
+
+  onDownloadClick(): void {
+    this.postService.downloadAttachment(this.post, this.attachment).subscribe(
+      data => {
+        const a = document.createElement('a');
+        const objectUrl = URL.createObjectURL(data);
+        a.href = objectUrl;
+        a.download = this.attachment.originalName;
+        a.click();
+        URL.revokeObjectURL(objectUrl);
+      }
+    );
   }
 }

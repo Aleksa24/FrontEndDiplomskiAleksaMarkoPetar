@@ -5,10 +5,10 @@
       <fa-icon [icon]="faDocument"></fa-icon>
     </div>
     <div class="att-center">
-      {{attachment.originalName}}
+      <span>{{attachment.originalName}}</span>
     </div>
     <div class="att-suffix">
-      <a [href]="this.downloadUrl" [download]="this.attachment.originalName"><fa-icon [icon]="faDownload"></fa-icon></a>
+      <a (click)="onDownloadClick()"><fa-icon [icon]="faDownload"></fa-icon></a>
     </div>
 
   </mat-card-content>

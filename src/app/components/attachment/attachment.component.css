@@ -1,4 +1,5 @@
 .mat-card{
+  width: 200px;
 }
 
 .container{
@@ -6,11 +7,19 @@
 }
 
 .att-prefix{
-  flex-grow: 0.1;
+  flex-grow: 2;
 }
 
 .att-center{
   flex-grow: 10;
 }
 .att-suffix{
+}
+
+span {
+  display: inline-block;
+  width: 180px;
+  white-space: nowrap;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
 }
