@@ -12,6 +12,8 @@ import {Channel} from "../model/Channel";
 import {Like} from "../model/Like";
 import {LikeStatus} from "../model/LikeStatus";
 import {User} from "../model/User";
+import {brotliCompress} from "zlib";
+import {Attachment} from "../model/Attachment";
 
 @Injectable({
   providedIn: 'root'
@@ -73,5 +75,9 @@ export class PostService {
 
   getLikeStatusByName(likeStatus: String): Promise<LikeStatus>{
     return this.httpClient.get<LikeStatus>(environment.apiUrl+"/comment/like-status/"+likeStatus).toPromise();
+  }
+
+  addAttachment(formData:FormData):Observable<Attachment> {
+    return this.httpClient.post<Attachment>(`${environment.apiUrl}/post/addAttachment`,formData);
   }
 }

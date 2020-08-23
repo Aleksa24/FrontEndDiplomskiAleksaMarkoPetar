@@ -1,5 +1,5 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {Observable, of, Subscription} from "rxjs";
+import {Observable, of, range, Subscription} from "rxjs";
 import {Post} from "../../model/Post";
 import {PostService} from "../../services/post.service";
 import { Comment} from "../../model/Comment";
@@ -7,6 +7,9 @@ import {User} from "../../model/User";
 import {AuthenticationService} from "../../services/authentication.service";
 import {userError} from "@angular/compiler-cli/src/transformers/util";
 import {Like} from "../../model/Like";
+import {MatDialog} from "@angular/material/dialog";
+import {PostNewComponent} from "../post-new/post-new.component";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-post',
@@ -22,12 +25,22 @@ export class PostComponent implements OnInit,OnDestroy {
   isLiked: boolean = false;
   isDisliked: boolean = false;
   loggedUser: User;
+  fileList: FileList;
+  fileForm: FormGroup;
 
   constructor(private postService: PostService,
-              private authService: AuthenticationService) { }
+              private authService: AuthenticationService,
+              private fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.loggedUser = this.authService.getUserFromLocalCache();
+
+    //kreiranje forme za slanje fajla
+    this.fileForm = this.fb.group({
+      file:[''],
+      userId:[this.loggedUser.id,Validators.required],
+      postId:[this.post.id,Validators.required]
+    })
 
     this.subs.push(this.postService.getById(this.post.id).subscribe((post) => {
       this.post=post;
@@ -48,6 +61,7 @@ export class PostComponent implements OnInit,OnDestroy {
         }
       }
     }));
+
   }
 
   ngOnDestroy(): void {
@@ -117,5 +131,25 @@ export class PostComponent implements OnInit,OnDestroy {
       }
     }
     return null;
+  }
+
+  uploadFile() {
+    const formData = new FormData();
+    formData.append('file', this.fileForm.get("file").value);
+    formData.append('userId', this.fileForm.get("userId").value);
+    formData.append('postId', this.fileForm.get("postId").value);
+
+    this.subs.push(this.postService.addAttachment(formData).subscribe(
+      (attachment) => {
+        this.post.attachments.push(attachment);
+      }
+    ));
+  }
+
+  detectFiles(event) {
+    if (event.target.files.length > 0) {
+      const file = event.target.files[0];
+      this.fileForm.get('file').setValue(file);
+    }
   }
 }

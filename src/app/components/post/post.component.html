@@ -5,9 +5,23 @@
     <mat-card-subtitle>{{post.user.firstName+" "+post.user.lastName+", "+post.user.username}}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <p>
       {{post.body}}
-    </p>
+    <span *ngIf="(post.attachments != undefined) && (post.attachments.length != 0)">
+      <br>
+        ATTACHMENTS!!!!
+        <div *ngFor="let attachment of post.attachments">
+            {{attachment.id}}
+            {{attachment.url}}
+            {{attachment.user.username}}
+        </div>
+    </span>
+    <div *ngIf="post.user.id == loggedUser.id">
+      <form [formGroup]="fileForm">
+        <input type="file" name="file" id="file" (change)="detectFiles($event)">
+        <button mat-raised-button (click)="uploadFile()">Upload file</button>
+      </form>
+
+    </div>
   </mat-card-content>
   <mat-card-actions>
     <button mat-button [class.selected]="isLiked" (click)="onLike()">Like</button>

@@ -1,0 +1,1 @@
+todo: kada se klikne na neko like ili dislike koji je vec obelezen da se izbrise taj lajk ili dislike

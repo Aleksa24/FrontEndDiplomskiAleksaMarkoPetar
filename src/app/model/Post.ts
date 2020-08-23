@@ -2,6 +2,7 @@ import {User} from "./User";
 import {Channel} from "./Channel";
 import {Like} from "./Like";
 import {Comment} from "./Comment";
+import {Attachment} from "./Attachment";
 
 export class Post {
   public id: number;
@@ -12,5 +13,5 @@ export class Post {
   public channel: Channel;
   public likes: Like[] = [];
   public comments: Comment[] = [];
-  public attachments: string;
+  public attachments: Attachment[] = [];
 }
