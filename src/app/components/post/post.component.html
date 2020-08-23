@@ -6,10 +6,10 @@
   </mat-card-header>
   <mat-card-content>
       {{post.body}}
-    <span *ngIf="(post.attachments != undefined) && (post.attachments.length != 0)">
+      <span *ngIf="(post.attachments != undefined) && (post.attachments.length != 0)">
       <br>
         ATTACHMENTS!!!!
-        <app-attachment *ngFor="let attachment of post.attachments" [attachment]="attachment"></app-attachment>
+        <app-attachment *ngFor="let attachment of post.attachments" [attachment]="attachment" [post]="this.post"></app-attachment>
     </span>
     <div *ngIf="post.user.id == loggedUser.id">
       <form [formGroup]="fileForm">

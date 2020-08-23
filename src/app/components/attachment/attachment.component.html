@@ -1,9 +1,16 @@
 <div>
 <mat-card>
-  <mat-card-content>
-    <mat-label>{{attachment.originalName}}</mat-label>
-    <mat-icon matPrefix></mat-icon>
-    <mat-icon matsuffix><fa-icon [icon]="faDownload"></fa-icon></mat-icon>
+  <mat-card-content class="container">
+    <div class="att-prefix">
+      <fa-icon [icon]="faDocument"></fa-icon>
+    </div>
+    <div class="att-center">
+      {{attachment.originalName}}
+    </div>
+    <div class="att-suffix">
+      <a [href]="this.downloadUrl" [download]="this.attachment.originalName"><fa-icon [icon]="faDownload"></fa-icon></a>
+    </div>
+
   </mat-card-content>
 </mat-card>
 </div>

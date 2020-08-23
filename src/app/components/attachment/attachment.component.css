@@ -1,3 +1,16 @@
 .mat-card{
-  width: 150px;
+}
+
+.container{
+  display: flex;
+}
+
+.att-prefix{
+  flex-grow: 0.1;
+}
+
+.att-center{
+  flex-grow: 10;
+}
+.att-suffix{
 }
