@@ -142,6 +142,9 @@ export class PostComponent implements OnInit,OnDestroy {
     this.subs.push(this.postService.addAttachment(formData).subscribe(
       (attachment) => {
         this.post.attachments.push(attachment);
+      }, error =>{
+        //todo:obraditi kada fajl vec postoji
+        console.dir(error);
       }
     ));
   }
