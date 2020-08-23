@@ -39,6 +39,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatSortModule} from '@angular/material/sort';
 import { AttachmentComponent } from './components/attachment/attachment.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -83,7 +84,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     MatPaginatorModule,
     MatProgressSpinnerModule,
     MatSortModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    MatTooltipModule
 
   ],
   providers: [],

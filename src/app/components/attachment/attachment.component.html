@@ -1,16 +1,19 @@
-<div>
-<mat-card>
-  <mat-card-content class="container">
+
+  <div class="container">
     <div class="att-prefix">
       <fa-icon [icon]="faDocument"></fa-icon>
     </div>
     <div class="att-center">
-      <span>{{attachment.originalName}}</span>
+      <span #tooltip="matTooltip"
+            [matTooltip]="this.attachment.originalName"
+            matTooltipPosition="below">
+        {{attachment.originalName}}</span>
     </div>
-    <div class="att-suffix">
+    <div class="att-download">
       <a (click)="onDownloadClick()"><fa-icon [icon]="faDownload"></fa-icon></a>
     </div>
-
-  </mat-card-content>
-</mat-card>
+    <div *ngIf="this.loggedInUser.id == this.attachment.user.id" class="att-delete">
+      <a (click)="onDeleteClick()"><fa-icon [icon]="faDelete"></fa-icon></a>
+    </div>
 </div>
+

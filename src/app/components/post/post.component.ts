@@ -10,6 +10,7 @@ import {Like} from "../../model/Like";
 import {MatDialog} from "@angular/material/dialog";
 import {PostNewComponent} from "../post-new/post-new.component";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {Attachment} from '../../model/Attachment';
 
 @Component({
   selector: 'app-post',
@@ -154,5 +155,19 @@ export class PostComponent implements OnInit,OnDestroy {
       const file = event.target.files[0];
       this.fileForm.get('file').setValue(file);
     }
+  }
+
+
+  onDeleteUpload(attachment: Attachment): void{
+    this.postService.removeAttachment(this.post, attachment).subscribe(
+      data => {
+        console.log(data);
+      }
+    );
+  }
+
+  onDeleteAttachment(attachment: Attachment): void {
+    this.post.attachments = this.post.attachments.filter(value => value.id !== attachment.id);
+    console.log(this.post.attachments);
   }
 }

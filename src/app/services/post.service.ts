@@ -14,6 +14,7 @@ import {LikeStatus} from "../model/LikeStatus";
 import {User} from "../model/User";
 import {brotliCompress} from "zlib";
 import {Attachment} from "../model/Attachment";
+import {HttpResponse} from '../model/HttpResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -85,5 +86,9 @@ export class PostService {
     return this.httpClient.get(`${environment.apiUrl}/post/${post.id}/file/${attachment.originalName}`, {
       responseType: 'blob'
     });
+  }
+
+  removeAttachment(post: Post, attachment: Attachment): Observable<HttpResponse> {
+    return this.httpClient.delete<HttpResponse>(`${environment.apiUrl}/post/${post.id}/attachment/${attachment.id}/delete`);
   }
 }

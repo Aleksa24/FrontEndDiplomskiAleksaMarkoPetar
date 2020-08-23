@@ -11,7 +11,18 @@
 }
 .mat-card {
   margin: 2%;
+
 }
+.attachment-card{
+  background: linear-gradient(-30deg, white, deepskyblue);
+}
+
+.attachment-container{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
 .comments{
 
 }
