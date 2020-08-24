@@ -1,10 +1,10 @@
 <app-main-nav>
-  <mat-sidenav-container class="sidenav-container">
+  <mat-sidenav-container *ngIf="this.channel !== undefined" class="sidenav-container">
     <mat-sidenav class="sidenav" fixedInViewport
                  mode='side'
                  opened=true>
 
-      <mat-nav-list>
+      <mat-nav-list *ngIf="this.channel.channels !== undefined">
         <a mat-list-item
            *ngFor="let subchannel of channel.channels"
            [routerLink]="['/channel',subchannel.id]">{{subchannel.name}}</a>

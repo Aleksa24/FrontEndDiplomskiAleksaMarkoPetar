@@ -23,7 +23,7 @@ export class ChannelsComponent implements OnInit, OnDestroy{
     this.channels$ = this.channelService.getChannels();
     this.channels$.subscribe((value) => {
       this.channels = value;
-    })
+    });
   }
 
   ngOnDestroy(): void {

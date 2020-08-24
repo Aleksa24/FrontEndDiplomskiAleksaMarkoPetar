@@ -10,6 +10,7 @@
 }
 
 .att-prefix{
+  margin: 0px 10px 0px 2px;
   flex-grow: 0.1;
 }
 
@@ -22,6 +23,7 @@
 }
 .att-delete{
   flex-grow: 0.1;
+  margin: 0px 0px 0px 20px;
   color: red;
 }
 
