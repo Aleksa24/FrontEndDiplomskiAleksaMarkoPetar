@@ -1,14 +1,25 @@
 <mat-card class="example-card">
   <mat-card-header>
     <img mat-card-avatar src="assets/img/default-user-image.png">
-    <mat-card-title>{{post.title}}<span class="title-date"> ,{{post.dateCreated | date}}</span></mat-card-title>
+    <mat-card-title>{{post.title}}
+      <span class="title-date"> ,{{post.dateCreated | date}}</span>
+      <mat-icon matTooltip="Add to favourites"
+                matTooltipPosition="below"
+                class="favourite"
+                *ngIf="!isFavourite"
+                (click)="favourite()">bookmark_border</mat-icon>
+      <mat-icon matTooltip="Remove from favourites"
+                matTooltipPosition="below"
+                class="favourite"
+                *ngIf="isFavourite"
+                (click)="favourite()">bookmark</mat-icon>
+    </mat-card-title>
     <mat-card-subtitle>{{post.user.firstName+" "+post.user.lastName+", "+post.user.username}}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
       {{post.body}}
       <span *ngIf="(post.attachments != undefined) && (post.attachments.length != 0)">
       <br>
-        ATTACHMENTS!!!!
         <div class="attachment-container">
           <mat-card class="attachment-card" *ngFor="let attachment of post.attachments">
             <app-attachment (deleteAttachment)="onDeleteAttachment($event)"  [attachment]="attachment" [post]="this.post"></app-attachment>

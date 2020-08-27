@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {Observable, of, range, Subscription} from "rxjs";
 import {Post} from "../../model/Post";
 import {PostService} from "../../services/post.service";
@@ -7,6 +7,7 @@ import {AuthenticationService} from "../../services/authentication.service";
 import {Like} from "../../model/Like";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Attachment} from '../../model/Attachment';
+import {UserService} from "../../services/user.service";
 
 @Component({
   selector: 'app-post',
@@ -17,6 +18,7 @@ export class PostComponent implements OnInit,OnDestroy {
 
   post$: Observable<Post>;
   @Input()post: Post;
+  @Output()favouriteClick = new EventEmitter<Post>();
   subs: Subscription[] = [];
   isCommentOpen: boolean = false;
   isLiked: boolean = false;
@@ -24,9 +26,11 @@ export class PostComponent implements OnInit,OnDestroy {
   loggedUser: User;
   fileList: FileList;
   fileForm: FormGroup;
+  isFavourite: boolean = false;
 
   constructor(private postService: PostService,
               private authService: AuthenticationService,
+              private userService: UserService,
               private fb: FormBuilder) { }
 
   ngOnInit(): void {
@@ -57,6 +61,10 @@ export class PostComponent implements OnInit,OnDestroy {
           }
         }
       }
+      //prolazi kroz favourite postove i gleda dal je ovaj jedan od njih
+      if (this.loggedUser.favorites.find((post) => post.id == this.post.id) === undefined) {
+        this.isFavourite = false;
+      }else this.isFavourite = true;
     }));
 
   }
@@ -181,5 +189,24 @@ export class PostComponent implements OnInit,OnDestroy {
   onDeleteAttachment(attachment: Attachment): void {
     this.post.attachments = this.post.attachments.filter(value => value.id !== attachment.id);
     console.log(this.post.attachments);
+  }
+
+  favourite() {
+    if (this.isFavourite){//ako jeste favourite onda mora da se izbaci
+      this.subs.push(this.userService.addFavourite(this.post,this.userService.REMOVE)
+        .subscribe((user) => {
+          this.loggedUser = user;
+          this.authService.saveUserToLocalCache(user);
+          this.isFavourite = !this.isFavourite;
+          this.favouriteClick.emit(this.post);
+        }));
+    }else
+    this.subs.push(this.userService.addFavourite(this.post,this.userService.ADD)
+      .subscribe((user)=> {
+        this.authService.saveUserToLocalCache(user);
+        this.loggedUser = user;
+        this.isFavourite = !this.isFavourite;
+        this.favouriteClick.emit(this.post);
+      }));
   }
 }
