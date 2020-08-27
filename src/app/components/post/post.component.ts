@@ -8,6 +8,7 @@ import {Like} from "../../model/Like";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Attachment} from '../../model/Attachment';
 import {UserService} from "../../services/user.service";
+import {LikeService} from "../../services/like.service";
 
 @Component({
   selector: 'app-post',
@@ -31,6 +32,7 @@ export class PostComponent implements OnInit,OnDestroy {
   constructor(private postService: PostService,
               private authService: AuthenticationService,
               private userService: UserService,
+              private likeService: LikeService,
               private fb: FormBuilder) { }
 
   ngOnInit(): void {
@@ -91,15 +93,15 @@ export class PostComponent implements OnInit,OnDestroy {
       .then((post) => {
         this.post = post;
         this.isLiked = false;
-        this.isLiked = true;
+        this.isDisliked = true;
       });
     } else {
       //ovaj if je slucaj kada kliknes na like koji je vec kliknut
       if (like.likeStatus.name == this.postService.DISLIKE) {
-        this.postService.deleteLike(this.post,like)
-          .then((post) => {
+        this.likeService.deleteLike(like)
+          .then((httpResponse) => {
             this.isDisliked = false;
-            this.post = post;
+            this.post.likes = this.post.likes.filter(value => value.id != like.id);
           });
       }else
       //update like
@@ -124,10 +126,10 @@ export class PostComponent implements OnInit,OnDestroy {
     } else {
       //ovaj if je slucaj kada kliknes na like koji je vec kliknut
       if (like.likeStatus.name == this.postService.LIKE) {
-        this.postService.deleteLike(this.post,like)
-          .then((post) => {
+        this.likeService.deleteLike(like)
+          .then((httpResponse) => {
             this.isLiked = false;
-            this.post = post;
+            this.post.likes = this.post.likes.filter(value => value.id != like.id);
           });
       }else
       //update like

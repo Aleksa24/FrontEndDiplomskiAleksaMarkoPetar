@@ -74,11 +74,6 @@ export class PostService {
     return this.httpClient.post<Post>(environment.apiUrl+"/post/addLike",post).toPromise();
   }
 
-  deleteLike(post: Post, like: Like):Promise<Post> {
-    post.likes = post.likes.filter(value => value.id != like.id)
-    return this.httpClient.post<Post>(`${environment.apiUrl}/post/save`,post).toPromise();
-  }
-
   getLikeStatusByName(likeStatus: String): Promise<LikeStatus>{
     return this.httpClient.get<LikeStatus>(environment.apiUrl+"/comment/like-status/"+likeStatus).toPromise();
   }
