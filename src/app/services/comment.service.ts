@@ -66,6 +66,11 @@ export class CommentService {
     return this.httpClient.post<Comment>(environment.apiUrl+"/comment/addLike",comment).toPromise();
   }
 
+  deleteLike(comment: Comment, like: Like):Promise<Comment> {
+    comment.likes = comment.likes.filter(value => value.id != like.id)
+    return this.httpClient.post<Comment>(`${environment.apiUrl}/comment/save`,comment).toPromise();
+  }
+
   getLikeStatusByName(likeStatus: String): Promise<LikeStatus>{
     return this.httpClient.get<LikeStatus>(environment.apiUrl+"/comment/like-status/"+likeStatus).toPromise();
   }

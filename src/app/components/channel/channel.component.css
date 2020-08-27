@@ -22,7 +22,7 @@
 .content{
   padding: 5px;
   margin: 30px;
-  outline: 1px solid darkblue;
+  /*outline: 1px solid darkblue;*/
   position: absolute;
   bottom:0;
   top:70px;

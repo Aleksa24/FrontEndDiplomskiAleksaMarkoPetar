@@ -2,15 +2,18 @@
   <mat-card>
     <mat-card-header>
       <img mat-card-avatar src="assets/img/default-user-image.png">
-      <mat-card-title>{{comment.user.username}}<span class="title-date"> ,{{comment.dateCreated | date}}</span></mat-card-title>
+      <mat-card-title>{{comment.user.username}}
+        <span class="title-date"> ,{{comment.dateCreated | date}}</span>
+      </mat-card-title>
+      <mat-card-subtitle class="edit" (click)="edit()">Edit</mat-card-subtitle>
     </mat-card-header>
-    <mat-card-content >
-        {{comment.text}}
+    <mat-card-content>
+      <span>{{comment.text}}</span>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-button [class.selected]="isLiked" (click)="onLike()">Like</button>
-      <button mat-button [class.selected]="isDisliked" (click)="onDislike()">Dislike</button>
-      <button mat-button (click)="replyButtonClicked()">Replys</button>
+      <button class="mat-card-action-button" mat-button [class.selected]="isLiked" (click)="onLike()">Like</button>
+      <button class="mat-card-action-button" mat-button [class.selected]="isDisliked" (click)="onDislike()">Dislike</button>
+      <button class="mat-card-action-button" mat-button (click)="replyButtonClicked()">Replys</button>
     </mat-card-actions>
 
     <mat-card-content *ngIf="isReplyOpen" class="replays">

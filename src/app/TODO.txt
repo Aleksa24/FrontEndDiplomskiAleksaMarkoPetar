@@ -1,3 +1,2 @@
-todo: kada se klikne na neko like ili dislike koji je vec obelezen da se izbrise taj lajk ili dislike
 todo: postaviti konstante umesto stringova svuda gde je potrebno (i na serveru)
 todo: uraditi animacije

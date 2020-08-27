@@ -2,13 +2,9 @@ import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Observable, of, range, Subscription} from "rxjs";
 import {Post} from "../../model/Post";
 import {PostService} from "../../services/post.service";
-import { Comment} from "../../model/Comment";
 import {User} from "../../model/User";
 import {AuthenticationService} from "../../services/authentication.service";
-import {userError} from "@angular/compiler-cli/src/transformers/util";
 import {Like} from "../../model/Like";
-import {MatDialog} from "@angular/material/dialog";
-import {PostNewComponent} from "../post-new/post-new.component";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Attachment} from '../../model/Attachment';
 
@@ -82,7 +78,7 @@ export class PostComponent implements OnInit,OnDestroy {
 
   onDislike(): void {
     let like: Like = this.didUserAlreadyLikedOrDisliked();
-    if (this.didUserAlreadyLikedOrDisliked() == null){
+    if (like == null){
     this.postService.like(this.post,this.postService.DISLIKE)
       .then((post) => {
         this.post = post;
@@ -90,6 +86,14 @@ export class PostComponent implements OnInit,OnDestroy {
         this.isLiked = true;
       });
     } else {
+      //ovaj if je slucaj kada kliknes na like koji je vec kliknut
+      if (like.likeStatus.name == this.postService.DISLIKE) {
+        this.postService.deleteLike(this.post,like)
+          .then((post) => {
+            this.isDisliked = false;
+            this.post = post;
+          });
+      }else
       //update like
       this.postService.updateLike(this.post,this.postService.DISLIKE,like)
         .then((post) => {
@@ -102,7 +106,7 @@ export class PostComponent implements OnInit,OnDestroy {
 
   onLike(): void {
     let like: Like = this.didUserAlreadyLikedOrDisliked();
-    if (this.didUserAlreadyLikedOrDisliked() == null){
+    if (like == null){
       this.postService.like(this.post,this.postService.LIKE)
         .then((post) => {
           this.post = post;
@@ -110,6 +114,14 @@ export class PostComponent implements OnInit,OnDestroy {
           this.isDisliked = false;
         });
     } else {
+      //ovaj if je slucaj kada kliknes na like koji je vec kliknut
+      if (like.likeStatus.name == this.postService.LIKE) {
+        this.postService.deleteLike(this.post,like)
+          .then((post) => {
+            this.isLiked = false;
+            this.post = post;
+          });
+      }else
       //update like
       this.postService.updateLike(this.post,this.postService.LIKE,like)
         .then((post) => {

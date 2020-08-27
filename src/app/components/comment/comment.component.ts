@@ -1,11 +1,11 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {Comment} from '../../model/Comment';
-import {PostService} from "../../services/post.service";
 import {CommentService} from "../../services/comment.service";
 import {User} from "../../model/User";
 import {AuthenticationService} from "../../services/authentication.service";
 import {Like} from "../../model/Like";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-comment',
@@ -22,7 +22,8 @@ export class CommentComponent implements OnInit, OnDestroy {
   loggedUser: User;
 
   constructor(private commentService:CommentService,
-              private authService: AuthenticationService) {
+              private authService: AuthenticationService,
+              private matDialog: MatDialog) {
   }
 
   ngOnInit(): void {
@@ -75,6 +76,14 @@ export class CommentComponent implements OnInit, OnDestroy {
           this.isLiked = true;
         });
     } else {
+      //ovaj if je slucaj kada kliknes na like koji je vec kliknut
+      if (like.likeStatus.name == this.commentService.DISLIKE) {
+        this.commentService.deleteLike(this.comment,like)
+          .then((comment) => {
+            this.isDisliked = false;
+            this.comment = comment;
+          });
+      }else
       //update like
       this.commentService.updateLike(this.comment,this.commentService.DISLIKE,like)
         .then((comment) => {
@@ -95,6 +104,14 @@ export class CommentComponent implements OnInit, OnDestroy {
           this.isDisliked = false;
         });
     } else {
+      //ovaj if je slucaj kada kliknes na like koji je vec kliknut
+      if (like.likeStatus.name == this.commentService.LIKE) {
+        this.commentService.deleteLike(this.comment,like)
+          .then((comment) => {
+            this.isLiked = false;
+            this.comment = comment;
+          });
+      }else
       //update like
       this.commentService.updateLike(this.comment,this.commentService.LIKE,like)
         .then((comment) => {
@@ -117,5 +134,9 @@ export class CommentComponent implements OnInit, OnDestroy {
       }
     }
     return null;
+  }
+
+  edit() {
+    //todo:odraditi edit comment-a
   }
 }

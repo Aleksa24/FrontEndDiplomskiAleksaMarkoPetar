@@ -56,7 +56,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     CommentComponent,
     MakeChannelComponent,
     PostNewComponent,
-    AttachmentComponent
+    AttachmentComponent,
   ],
   imports: [
     BrowserModule,

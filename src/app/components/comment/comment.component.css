@@ -21,3 +21,9 @@
 .selected{
   color: #4ca1af;
 }
+.mat-card-action-button{
+  padding: 0;
+}
+.edit{
+  color: hsl(228, 64%, 44%);
+}

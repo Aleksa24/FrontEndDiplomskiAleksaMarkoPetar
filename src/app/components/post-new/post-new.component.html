@@ -12,10 +12,6 @@
     <textarea matInput formControlName="body"></textarea>
     <mat-error *ngIf="form.get('body').invalid">Body is required!</mat-error>
   </mat-form-field>
-
-  <!--  TODO:ODRADITI UBACIVANJE ATTACHMENTA/FAJLOVA-->
-  <h2>ODRADITI UBACIVANJE ATTACHMENTA/FAJLOVA</h2>
-
   <br>
   <button mat-raised-button color="primary" [mat-dialog-close]="form.value"  [disabled]="form.invalid">Create</button>
   <button mat-button (click)="closeDialog()">Close</button>
