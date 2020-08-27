@@ -12,6 +12,9 @@ import {Like} from "../model/Like";
 })
 export class LikeService {
 
+  LIKE: string = "Like";
+  DISLIKE: string = "Dislike";
+
   constructor(private httpClient: HttpClient) { }
 
   deleteLike(like: Like):Promise<HttpResponse> {

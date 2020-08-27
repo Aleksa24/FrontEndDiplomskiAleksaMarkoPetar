@@ -62,6 +62,9 @@ export class CommentComponent implements OnInit, OnDestroy {
   }
 
   postReply(replayText: string) {
+    if (replayText == null || replayText.length==0){
+      return
+    }
     this.commentService.postReplay(this.comment,replayText)
       .then((commentWithNewReply) =>{
         this.comment = commentWithNewReply;
@@ -140,5 +143,11 @@ export class CommentComponent implements OnInit, OnDestroy {
 
   edit() {
     //todo:odraditi edit comment-a
+  }
+  getLikesNumber() {
+    return this.comment.likes.filter(value => value.likeStatus.name == this.likeService.LIKE).length;
+  }
+  getDislikeNumber() {
+    return this.comment.likes.filter(value => value.likeStatus.name == this.likeService.DISLIKE).length;
   }
 }

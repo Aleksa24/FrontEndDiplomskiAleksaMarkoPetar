@@ -35,10 +35,12 @@
 
     </div>
   </mat-card-content>
-  <mat-card-actions>
-    <button mat-button [class.selected]="isLiked" (click)="onLike()">Like</button>
-    <button mat-button [class.selected]="isDisliked" (click)="onDislike()">Dislike</button>
-    <button mat-button (click)="commentButtonClicked()">Comments</button>
+  <mat-card-actions *ngIf="post.likes !== undefined">
+    <button mat-icon-button [class.selected]="isLiked" (click)="onLike()" matTooltip="Like" matTooltipPosition="below"><mat-icon>thumb_up</mat-icon></button>
+    {{getLikesNumber()}}
+    <button mat-icon-button [class.selected]="isDisliked" (click)="onDislike()" matTooltip="Dislike" matTooltipPosition="below"><mat-icon>thumb_down</mat-icon></button>
+    {{getDislikeNumber()}}
+    <button mat-icon-button (click)="commentButtonClicked()" matTooltip="Comments" matTooltipPosition="below"><mat-icon>message</mat-icon></button>
   </mat-card-actions>
 
   <mat-card-content *ngIf="isCommentOpen" class="comments">
@@ -51,6 +53,6 @@
     <input #commnent matInput placeholder="Comment" (keyup.enter)="postComment(commnent.value)">
 
   </mat-form-field>
-  <button mat-button (click)="postComment(commnent.value)">Post a comment</button>
+  <button mat-button (click)="postComment(commnent.value)" (keyup.enter)="postComment(commnent.value)">Post a comment</button>
 
 </mat-card>

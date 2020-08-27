@@ -80,6 +80,9 @@ export class PostComponent implements OnInit,OnDestroy {
   }
 
   postComment(comment:string) {
+    if (comment == null || comment.length==0){
+      return
+    }
       this.postService.postComment(this.post, comment)
         .then((post)=> {
           this.post = post;
@@ -210,5 +213,12 @@ export class PostComponent implements OnInit,OnDestroy {
         this.isFavourite = !this.isFavourite;
         this.favouriteClick.emit(this.post);
       }));
+  }
+
+  getLikesNumber() {
+    return this.post.likes.filter(value => value.likeStatus.name == this.likeService.LIKE).length;
+  }
+  getDislikeNumber() {
+    return this.post.likes.filter(value => value.likeStatus.name == this.likeService.DISLIKE).length;
   }
 }

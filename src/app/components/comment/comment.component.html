@@ -10,10 +10,12 @@
     <mat-card-content>
       <span>{{comment.text}}</span>
     </mat-card-content>
-    <mat-card-actions>
-      <button class="mat-card-action-button" mat-button [class.selected]="isLiked" (click)="onLike()">Like</button>
-      <button class="mat-card-action-button" mat-button [class.selected]="isDisliked" (click)="onDislike()">Dislike</button>
-      <button class="mat-card-action-button" mat-button (click)="replyButtonClicked()">Replys</button>
+    <mat-card-actions *ngIf="comment.likes !== undefined">
+      <button class="mat-card-action-button" mat-icon-button [class.selected]="isLiked" (click)="onLike()" matTooltip="Like" matTooltipPosition="below"><mat-icon>thumb_up</mat-icon></button>
+      {{getLikesNumber()}}
+      <button class="mat-card-action-button" mat-icon-button [class.selected]="isDisliked" (click)="onDislike()" matTooltip="Dislike" matTooltipPosition="below"><mat-icon>thumb_down</mat-icon></button>
+      {{getDislikeNumber()}}
+      <button class="mat-card-action-button" mat-icon-button (click)="replyButtonClicked()" matTooltip="Replays" matTooltipPosition="below"><mat-icon>message</mat-icon></button>
     </mat-card-actions>
 
     <mat-card-content *ngIf="isReplyOpen" class="replays">
@@ -24,9 +26,8 @@
     <mat-form-field class="comment">
       <!--    <mat-label >Favorite food</mat-label>-->
       <input #replay matInput placeholder="Replay" (keyup.enter)="postReply(replay.value)">
-
     </mat-form-field>
-    <button mat-button (click)="postReply(replay.value)">Post a reply</button>
+    <button mat-button (click)="postReply(replay.value)" (keyup.enter)="postReply(replay.value)">Post a reply</button>
 
   </mat-card>
 
