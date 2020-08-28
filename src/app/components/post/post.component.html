@@ -32,8 +32,14 @@
     </span>
     <div *ngIf="post.user.id == loggedUser.id">
       <form [formGroup]="fileForm">
-        <input type="file" name="file" multiple  (change)="detectFiles($event)"> <!-- id="file" -->
-        <button mat-raised-button (click)="onUpload()">Upload file</button>
+        <button mat-mini-fab color="primary" type="button" (click)="fileInput.click()" style="margin: 5px">
+          <fa-icon [icon]="faUpload"></fa-icon>
+          <input #fileInput type="file" name="file" multiple  (change)="detectFiles($event)" style="display:none;" />
+        </button>
+        <button mat-raised-button (click)="onUpload()"
+                [matTooltip]="this.getSelectedFileNames()"
+                matTooltipClass="my-tooltip"
+        >Upload files</button>
       </form>
     </div>
   </mat-card-content>

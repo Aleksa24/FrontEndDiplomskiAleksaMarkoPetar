@@ -4,25 +4,30 @@
       <fa-icon [icon]="faDocument"></fa-icon>
     </div>
     <div class="att-center">
-      <span [ngStyle]="{'text-overflow' : this.attachment.uploadComplete == undefined || this.attachment.uploadComplete? 'ellipsis' : 'none'}"
+      <span [ngStyle]="{'text-overflow' : this.attachment.uploadComplete == undefined || this.attachment.uploadComplete? 'ellipsis' : 'none',
+                          'max-with' : this.attachment.uploadComplete == undefined || this.attachment.uploadComplete? '180px' : 'none'}"
             #tooltip="matTooltip"
             [matTooltip]="this.attachment.originalName"
             matTooltipPosition="below">
         {{attachment.originalName}}</span>
-      <div *ngIf="this.attachment.uploadComplete !== undefined && !this.attachment.uploadComplete && this.attachment.uploadProgress != 0">
-        <mat-progress-spinner
-          mode="determinate"
-          color="primary"
-          [value]="this.attachment.uploadProgress"
-        ></mat-progress-spinner>
-      </div>
-
     </div>
     <div *ngIf="this.attachment.uploadComplete === undefined || this.attachment.uploadComplete" class="att-download">
       <a (click)="onDownloadClick()"><fa-icon [icon]="faDownload"></fa-icon></a>
     </div>
     <div *ngIf="this.attachment.user !== undefined && this.loggedInUser.id == this.attachment.user.id" class="att-delete">
       <a (click)="onDeleteClick()"><fa-icon [icon]="faDelete"></fa-icon></a>
+    </div>
+    <div class="att-upload-progress" *ngIf="this.attachment.uploadComplete !== undefined && !this.attachment.uploadComplete && this.attachment.uploadProgress != 0">
+      <mat-progress-spinner
+        mode="determinate"
+        color="primary"
+        diameter="20"
+        [value]="this.attachment.uploadProgress"
+      ></mat-progress-spinner>
+    </div>
+    <div class="att-abort-upload" *ngIf="this.attachment.uploadComplete !== undefined && !this.attachment.uploadComplete && this.attachment.uploadProgress != 0 && this.attachment.uploadProgress < 80">
+      <a (click)="onAbortUpload()"
+          matTooltip="Abort"><fa-icon [icon]="faDelete"></fa-icon></a>
     </div>
 </div>
 

@@ -28,6 +28,17 @@
   color: red;
 }
 
+.att-upload-progress{
+  flex-grow: 1;
+  margin-left: 10px;
+}
+
+.att-abort-upload{
+  flex-grow: 1;
+  margin-left: 5px;
+  color: royalblue;
+}
+
 a:hover{
   color: black;
 }
@@ -35,6 +46,8 @@ a:hover{
 span {
   display: inline-block;
   white-space: nowrap;
-  max-width: 180px;
+  word-wrap: break-word;
   overflow: hidden !important;
 }
+
+

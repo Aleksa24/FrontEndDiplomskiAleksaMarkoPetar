@@ -67,4 +67,7 @@ export class AttachmentComponent implements OnInit {
     );
   }
 
+  onAbortUpload(): void {
+    this.attachment.uploadAborted = true;
+  }
 }

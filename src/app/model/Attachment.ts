@@ -9,5 +9,6 @@ export class Attachment {
   public uploadComplete = true;
   public uploadProgress: number;
   public uploadError = false;
+  public uploadAborted = false;
 
 }
