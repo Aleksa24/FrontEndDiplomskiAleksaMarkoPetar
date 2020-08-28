@@ -39,10 +39,15 @@ export class ChannelComponent implements OnInit, OnDestroy {
       height:"500px",width:"400px"
     });
 
-    refDialog.afterClosed().subscribe((post:Post) =>{
-      if (post == undefined) return;
-      this.subs.push(this.postService.savePost(this.channel,post)
+    refDialog.afterClosed().subscribe((result) => {
+      if (result === undefined) {return; }
+      const post: Post = new Post();
+      post.title = result.title;
+      post.body = result.body;
+      this.subs.push(this.postService.savePost(this.channel, post)
         .subscribe((savedPost) => {
+          savedPost.filesToUpload = result.files; // files that were chosen while new post is created
+          console.log(savedPost);
           console.log("kanal je primljen");
           this.channel.posts.push(savedPost);
       }));

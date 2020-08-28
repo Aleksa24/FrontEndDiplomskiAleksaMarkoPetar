@@ -10,18 +10,20 @@
       <br>
         ATTACHMENTS!!!!
         <div class="attachment-container">
-          <mat-card class="attachment-card" *ngFor="let attachment of post.attachments">
-            <app-attachment (deleteAttachment)="onDeleteAttachment($event)"  [attachment]="attachment" [post]="this.post"></app-attachment>
+          <mat-card
+            [ngClass]="{'attachment-card': attachment.uploadError === undefined || !attachment.uploadError, 'attachment-card-error': attachment.uploadError}"
+            *ngFor="let attachment of post.attachments">
+              <app-attachment (deleteAttachment)="onDeleteAttachment($event)" [uploadProgress]="attachment.id"  [attachment]="attachment" [post]="this.post"></app-attachment>
           </mat-card>
         </div>
+
 
     </span>
     <div *ngIf="post.user.id == loggedUser.id">
       <form [formGroup]="fileForm">
-        <input type="file" name="file" id="file" (change)="detectFiles($event)">
-        <button mat-raised-button (click)="uploadFile()">Upload file</button>
+        <input type="file" name="file" multiple  (change)="detectFiles($event)"> <!-- id="file" -->
+        <button mat-raised-button (click)="onUpload()">Upload file</button>
       </form>
-
     </div>
   </mat-card-content>
   <mat-card-actions>
@@ -43,3 +45,4 @@
   <button mat-button (click)="postComment(commnent.value)">Post a comment</button>
 
 </mat-card>
+

@@ -15,6 +15,7 @@ export class AttachmentComponent implements OnInit {
 
   @Input() attachment: Attachment;
   @Input() post: Post;
+  @Input() uploadProgress: number;
   @Output() deleteAttachment: EventEmitter<Attachment> = new EventEmitter<Attachment>();
   public loggedInUser: User;
   public faDownload = faDownload;
@@ -65,4 +66,5 @@ export class AttachmentComponent implements OnInit {
       }
     );
   }
+
 }

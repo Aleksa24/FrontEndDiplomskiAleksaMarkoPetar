@@ -40,6 +40,7 @@ import {MatSortModule} from '@angular/material/sort';
 import { AttachmentComponent } from './components/attachment/attachment.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 @NgModule({
   declarations: [
@@ -58,36 +59,37 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     PostNewComponent,
     AttachmentComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    MatCheckboxModule,
-    MatGridListModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    LayoutModule,
-    MatToolbarModule,
-    MatSidenavModule,
-    MatIconModule,
-    MatListModule,
-    MatCardModule,
-    MatRadioModule,
-    MatMenuModule,
-    MatSelectModule,
-    MatDialogModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatProgressSpinnerModule,
-    MatSortModule,
-    FontAwesomeModule,
-    MatTooltipModule
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        MatCheckboxModule,
+        MatGridListModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        HttpClientModule,
+        LayoutModule,
+        MatToolbarModule,
+        MatSidenavModule,
+        MatIconModule,
+        MatListModule,
+        MatCardModule,
+        MatRadioModule,
+        MatMenuModule,
+        MatSelectModule,
+        MatDialogModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatProgressSpinnerModule,
+        MatSortModule,
+        FontAwesomeModule,
+        MatTooltipModule,
+        MatProgressBarModule
 
-  ],
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })

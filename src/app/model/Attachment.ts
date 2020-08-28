@@ -5,5 +5,9 @@ export class Attachment {
   public url:string;
   public user:User;
   public originalName:string;
+  // data for upload tracking
+  public uploadComplete = true;
+  public uploadProgress: number;
+  public uploadError = false;
 
 }

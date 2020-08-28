@@ -1,5 +1,5 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {Observable, of, range, Subscription} from "rxjs";
+import {Observable, of, range, Subscription, throwError} from 'rxjs';
 import {Post} from "../../model/Post";
 import {PostService} from "../../services/post.service";
 import {User} from "../../model/User";
@@ -7,6 +7,9 @@ import {AuthenticationService} from "../../services/authentication.service";
 import {Like} from "../../model/Like";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Attachment} from '../../model/Attachment';
+import {HttpEventType} from '@angular/common/http';
+import {catchError, map} from 'rxjs/operators';
+import {randomBytes} from 'crypto';
 
 @Component({
   selector: 'app-post',
@@ -24,6 +27,7 @@ export class PostComponent implements OnInit,OnDestroy {
   loggedUser: User;
   fileList: FileList;
   fileForm: FormGroup;
+  filesToUpload = [];
 
   constructor(private postService: PostService,
               private authService: AuthenticationService,
@@ -32,16 +36,18 @@ export class PostComponent implements OnInit,OnDestroy {
   ngOnInit(): void {
     this.loggedUser = this.authService.getUserFromLocalCache();
 
+    if (this.post.filesToUpload !== undefined && this.post.filesToUpload.length > 0){
+      this.filesToUpload = this.post.filesToUpload;
+      // if, when post was created, files for uploading were selecred, puts that files in filesToUpload queue
+    }
     //kreiranje forme za slanje fajla
     this.fileForm = this.fb.group({
-      file:[''],
-      userId:[this.loggedUser.id,Validators.required],
-      postId:[this.post.id,Validators.required]
+      file:['']
     })
 
     this.subs.push(this.postService.getById(this.post.id).subscribe((post) => {
       this.post=post;
-
+      this.onUpload(); // emits the event onUpload in case there are files to be uploaded
       //prolazi da vidi da li je taj post lajkovan kod ulogovanog usera da bi obelezio slova
       for (let like of this.post.likes){
         if (like.user.id == this.loggedUser.id){
@@ -146,26 +152,60 @@ export class PostComponent implements OnInit,OnDestroy {
     return null;
   }
 
-  uploadFile() {
+  uploadFile(file) {
     const formData = new FormData();
-    formData.append('file', this.fileForm.get("file").value);
-    formData.append('userId', this.fileForm.get("userId").value);
-    formData.append('postId', this.fileForm.get("postId").value);
+    formData.append('file', file);
+    formData.append('userId', String(this.loggedUser.id));
+    formData.append('postId', String(this.post.id));
 
-    this.subs.push(this.postService.addAttachment(formData).subscribe(
-      (attachment) => {
-        this.post.attachments.push(attachment);
-      }, error =>{
-        //todo:obraditi kada fajl vec postoji
-        console.dir(error);
-      }
-    ));
+    // this.subs.push(this.postService.addAttachment(formData).subscribe(
+    //   (attachment) => {
+    //     this.post.attachments.push(attachment);
+    //   }, error =>{
+    //     console.dir(error);
+    //   }
+    // ));
+    const dummyAttachment: Attachment = new Attachment();
+    dummyAttachment.uploadComplete = false;
+    dummyAttachment.originalName = file.name;
+    dummyAttachment.uploadProgress = 0;
+    this.post.attachments.push(dummyAttachment);
+    this.postService.addAttachment(formData).pipe(
+      map((event: any) => {
+        if (event.type === HttpEventType.UploadProgress) {
+          dummyAttachment.uploadProgress = Math.round((100 / event.total) * event.loaded);
+        } else if (event.type === HttpEventType.Response) {
+          this.post.attachments = this.post.attachments.filter(att => att.originalName !== file.name);
+          const uploadedAttachment: Attachment = event.body;
+          uploadedAttachment.uploadComplete = true;
+          this.post.attachments.push(uploadedAttachment);
+        }
+      }),
+      catchError((err: any) => {
+        dummyAttachment.originalName = err.error;
+        dummyAttachment.uploadProgress = 0;
+        dummyAttachment.uploadError = true;
+        setTimeout(() => {
+          this.post.attachments = this.post.attachments.filter(att => att.originalName !== err.error);
+        }, 3000);
+        return throwError(err.message);
+      })
+    ).toPromise().then(
+      (value => {
+        console.log(value);
+      }),
+      (error => {
+        console.log(error);
+      })
+    );
   }
 
   detectFiles(event) {
+    this.filesToUpload = [];
     if (event.target.files.length > 0) {
-      const file = event.target.files[0];
-      this.fileForm.get('file').setValue(file);
+      for (const file of event.target.files){
+        this.filesToUpload.push(file);
+      }
     }
   }
 
@@ -182,4 +222,11 @@ export class PostComponent implements OnInit,OnDestroy {
     this.post.attachments = this.post.attachments.filter(value => value.id !== attachment.id);
     console.log(this.post.attachments);
   }
+
+  onUpload(): void {
+    if (this.filesToUpload.length > 0){
+      this.filesToUpload.forEach(file => this.uploadFile(file));
+    }
+  }
+
 }
