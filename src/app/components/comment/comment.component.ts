@@ -6,6 +6,7 @@ import {User} from "../../model/User";
 import {AuthenticationService} from "../../services/authentication.service";
 import {Like} from "../../model/Like";
 import {MatDialog} from "@angular/material/dialog";
+import {LikeService} from "../../services/like.service";
 
 @Component({
   selector: 'app-comment',
@@ -23,6 +24,7 @@ export class CommentComponent implements OnInit, OnDestroy {
 
   constructor(private commentService:CommentService,
               private authService: AuthenticationService,
+              private likeService: LikeService,
               private matDialog: MatDialog) {
   }
 
@@ -60,6 +62,9 @@ export class CommentComponent implements OnInit, OnDestroy {
   }
 
   postReply(replayText: string) {
+    if (replayText == null || replayText.length==0){
+      return
+    }
     this.commentService.postReplay(this.comment,replayText)
       .then((commentWithNewReply) =>{
         this.comment = commentWithNewReply;
@@ -73,15 +78,15 @@ export class CommentComponent implements OnInit, OnDestroy {
         .then((comment) => {
           this.comment = comment;
           this.isLiked = false;
-          this.isLiked = true;
+          this.isDisliked = true;
         });
     } else {
       //ovaj if je slucaj kada kliknes na like koji je vec kliknut
       if (like.likeStatus.name == this.commentService.DISLIKE) {
-        this.commentService.deleteLike(this.comment,like)
-          .then((comment) => {
+        this.likeService.deleteLike(like)
+          .then((httpResponse) => {
             this.isDisliked = false;
-            this.comment = comment;
+            this.comment.likes = this.comment.likes.filter(value => value.id != like.id);
           });
       }else
       //update like
@@ -106,10 +111,10 @@ export class CommentComponent implements OnInit, OnDestroy {
     } else {
       //ovaj if je slucaj kada kliknes na like koji je vec kliknut
       if (like.likeStatus.name == this.commentService.LIKE) {
-        this.commentService.deleteLike(this.comment,like)
-          .then((comment) => {
+        this.likeService.deleteLike(like)
+          .then((httpResponse) => {
             this.isLiked = false;
-            this.comment = comment;
+            this.comment.likes = this.comment.likes.filter(value => value.id != like.id);
           });
       }else
       //update like
@@ -138,5 +143,11 @@ export class CommentComponent implements OnInit, OnDestroy {
 
   edit() {
     //todo:odraditi edit comment-a
+  }
+  getLikesNumber() {
+    return this.comment.likes.filter(value => value.likeStatus.name == this.likeService.LIKE).length;
+  }
+  getDislikeNumber() {
+    return this.comment.likes.filter(value => value.likeStatus.name == this.likeService.DISLIKE).length;
   }
 }

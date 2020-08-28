@@ -1,5 +1,5 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {Observable, of, range, Subscription, throwError} from 'rxjs';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {Observable, of, range, Subscription} from "rxjs";
 import {Post} from "../../model/Post";
 import {PostService} from "../../services/post.service";
 import {User} from "../../model/User";
@@ -10,6 +10,8 @@ import {Attachment} from '../../model/Attachment';
 import {HttpEventType} from '@angular/common/http';
 import {catchError, map} from 'rxjs/operators';
 import {randomBytes} from 'crypto';
+import {UserService} from "../../services/user.service";
+import {LikeService} from "../../services/like.service";
 
 @Component({
   selector: 'app-post',
@@ -20,6 +22,7 @@ export class PostComponent implements OnInit,OnDestroy {
 
   post$: Observable<Post>;
   @Input()post: Post;
+  @Output()favouriteClick = new EventEmitter<Post>();
   subs: Subscription[] = [];
   isCommentOpen: boolean = false;
   isLiked: boolean = false;
@@ -28,9 +31,12 @@ export class PostComponent implements OnInit,OnDestroy {
   fileList: FileList;
   fileForm: FormGroup;
   filesToUpload = [];
+  isFavourite: boolean = false;
 
   constructor(private postService: PostService,
               private authService: AuthenticationService,
+              private userService: UserService,
+              private likeService: LikeService,
               private fb: FormBuilder) { }
 
   ngOnInit(): void {
@@ -63,6 +69,10 @@ export class PostComponent implements OnInit,OnDestroy {
           }
         }
       }
+      //prolazi kroz favourite postove i gleda dal je ovaj jedan od njih
+      if (this.loggedUser.favorites.find((post) => post.id == this.post.id) === undefined) {
+        this.isFavourite = false;
+      }else this.isFavourite = true;
     }));
 
   }
@@ -76,6 +86,9 @@ export class PostComponent implements OnInit,OnDestroy {
   }
 
   postComment(comment:string) {
+    if (comment == null || comment.length==0){
+      return
+    }
       this.postService.postComment(this.post, comment)
         .then((post)=> {
           this.post = post;
@@ -89,15 +102,15 @@ export class PostComponent implements OnInit,OnDestroy {
       .then((post) => {
         this.post = post;
         this.isLiked = false;
-        this.isLiked = true;
+        this.isDisliked = true;
       });
     } else {
       //ovaj if je slucaj kada kliknes na like koji je vec kliknut
       if (like.likeStatus.name == this.postService.DISLIKE) {
-        this.postService.deleteLike(this.post,like)
-          .then((post) => {
+        this.likeService.deleteLike(like)
+          .then((httpResponse) => {
             this.isDisliked = false;
-            this.post = post;
+            this.post.likes = this.post.likes.filter(value => value.id != like.id);
           });
       }else
       //update like
@@ -122,10 +135,10 @@ export class PostComponent implements OnInit,OnDestroy {
     } else {
       //ovaj if je slucaj kada kliknes na like koji je vec kliknut
       if (like.likeStatus.name == this.postService.LIKE) {
-        this.postService.deleteLike(this.post,like)
-          .then((post) => {
+        this.likeService.deleteLike(like)
+          .then((httpResponse) => {
             this.isLiked = false;
-            this.post = post;
+            this.post.likes = this.post.likes.filter(value => value.id != like.id);
           });
       }else
       //update like
@@ -229,4 +242,30 @@ export class PostComponent implements OnInit,OnDestroy {
     }
   }
 
+
+  favourite() {
+    if (this.isFavourite){//ako jeste favourite onda mora da se izbaci
+      this.subs.push(this.userService.addFavourite(this.post,this.userService.REMOVE)
+        .subscribe((user) => {
+          this.loggedUser = user;
+          this.authService.saveUserToLocalCache(user);
+          this.isFavourite = !this.isFavourite;
+          this.favouriteClick.emit(this.post);
+        }));
+    }else
+    this.subs.push(this.userService.addFavourite(this.post,this.userService.ADD)
+      .subscribe((user)=> {
+        this.authService.saveUserToLocalCache(user);
+        this.loggedUser = user;
+        this.isFavourite = !this.isFavourite;
+        this.favouriteClick.emit(this.post);
+      }));
+  }
+
+  getLikesNumber() {
+    return this.post.likes.filter(value => value.likeStatus.name == this.likeService.LIKE).length;
+  }
+  getDislikeNumber() {
+    return this.post.likes.filter(value => value.likeStatus.name == this.likeService.DISLIKE).length;
+  }
 }

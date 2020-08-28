@@ -27,3 +27,6 @@
 .edit{
   color: hsl(228, 64%, 44%);
 }
+.mat-card-actions{
+  color:dimgray;
+}
