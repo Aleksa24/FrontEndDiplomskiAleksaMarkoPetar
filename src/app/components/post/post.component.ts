@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {Observable, of, range, Subscription} from "rxjs";
+import {Observable, of, range, Subscription, throwError} from 'rxjs';
 import {Post} from "../../model/Post";
 import {PostService} from "../../services/post.service";
 import {User} from "../../model/User";
