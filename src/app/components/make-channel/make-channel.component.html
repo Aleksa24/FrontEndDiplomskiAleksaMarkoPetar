@@ -10,20 +10,21 @@
             <mat-error *ngIf="form.get('name').errors?.name">Name is required</mat-error>
           </mat-form-field>
           <mat-form-field appearance="fill">
-            <mat-label>Select Parent Channel</mat-label>
-            <mat-select>
+            <mat-label>Select Category</mat-label>
+            <mat-select formControlName="category">
               <mat-option>None</mat-option>
-              <mat-option *ngFor="let channel of channels" [value]="channel.name.valueOf()">
-                {{channel.name}}
+              <mat-option *ngFor="let category of categories" [value]="category.name.valueOf()">
+                {{category.name}}
               </mat-option>
             </mat-select>
           </mat-form-field>
           <mat-form-field appearance="fill">
-            <mat-label>Select Category</mat-label>
-            <mat-select>
+            <mat-label>Select Communication Direction</mat-label>
+            <mat-select formControlName="communicationDirection">
               <mat-option>None</mat-option>
-              <mat-option *ngFor="let category of categories" [value]="category.name.valueOf()">
-                {{category.name}}
+              <mat-option *ngFor="let communicationDirection of communicationDirections"
+                          [value]="communicationDirection.name.valueOf()">
+                {{communicationDirection.name}}
               </mat-option>
             </mat-select>
           </mat-form-field>
@@ -75,7 +76,8 @@
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+            (click)="addUser(row)" [ngClass]="{'highlight': usersId.has(row.id)}"></tr>
       </table>
     </div>
 

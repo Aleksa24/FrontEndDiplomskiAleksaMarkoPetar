@@ -12,7 +12,18 @@
     <textarea matInput formControlName="body"></textarea>
     <mat-error *ngIf="form.get('body').invalid">Body is required!</mat-error>
   </mat-form-field>
+
+
+
   <br>
   <button mat-raised-button color="primary" [mat-dialog-close]="form.value"  [disabled]="form.invalid">Create</button>
   <button mat-button (click)="closeDialog()">Close</button>
 </ng-form>
+
+  <form>
+    <input type="file" name="files" multiple  (change)="detectFilesAndUpdateFormGroup($event)"> <!-- id="file" -->
+    <!-- <button mat-raised-button (click)="onUpload()">Upload file</button> -->
+  </form>
+
+<mat-card *ngFor="let file of this.filesToUpload">{{file.name}}</mat-card>
+

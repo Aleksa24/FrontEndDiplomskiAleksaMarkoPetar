@@ -14,4 +14,6 @@ export class Post {
   public likes: Like[] = [];
   public comments: Comment[] = [];
   public attachments: Attachment[] = [];
+  // files to upload
+  public filesToUpload;
 }

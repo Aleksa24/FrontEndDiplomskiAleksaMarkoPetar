@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {Observable} from "rxjs";
 import {Post} from "../model/Post";
 import {Comment} from "../model/Comment";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpEvent} from '@angular/common/http';
 import {environment} from "../../environments/environment";
 import {AuthenticationService} from "./authentication.service";
 import {CommentStatus} from "../model/CommentStatus";
@@ -81,8 +81,11 @@ export class PostService {
     return this.httpClient.get<LikeStatus>(environment.apiUrl+"/comment/like-status/"+likeStatus).toPromise();
   }
 
-  addAttachment(formData:FormData):Observable<Attachment> {
-    return this.httpClient.post<Attachment>(`${environment.apiUrl}/post/addAttachment`,formData);
+  addAttachment(formData:FormData): Observable<HttpEvent<Attachment>> {
+    return this.httpClient.post<Attachment>(`${environment.apiUrl}/post/addAttachment`,formData, {
+      observe: 'events',
+      reportProgress: true
+    });
   }
 
   downloadAttachment(post: Post, attachment: Attachment): Observable<Blob>{

@@ -14,12 +14,20 @@
 }
 .attachment-card{
   background: linear-gradient(-30deg, white, deepskyblue);
+  margin: 0;
+}
+.attachment-card-error{
+  background: red;
+  color: yellow;
+  margin: 0;
 }
 
 .attachment-container{
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: flex-start;
 }
 
 .comments{
@@ -35,3 +43,4 @@
 .mat-card-actions{
   color:dimgray;
 }
+
