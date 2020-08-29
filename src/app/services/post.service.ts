@@ -56,6 +56,9 @@ export class PostService {
     let user: User =this.authService.getUserFromLocalCache();
     // user.favorites = null;//namestam da je null da ne bi ulazilo u beskonacnu petlju negde
     like.user = user;
+    let postWithId:Post = new Post();
+    postWithId.id = post.id;
+    like.post = postWithId;
     await this.getLikeStatusByName(likeStatusString)
       .then((likeStatus) => {
         like.likeStatus = likeStatus;
