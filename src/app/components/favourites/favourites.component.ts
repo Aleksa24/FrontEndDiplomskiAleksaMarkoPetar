@@ -3,6 +3,7 @@ import {Subscription} from "rxjs";
 import {AuthenticationService} from "../../services/authentication.service";
 import {User} from "../../model/User";
 import {Post} from "../../model/Post";
+import {UserService} from "../../services/user.service";
 
 @Component({
   selector: 'app-favourites',
@@ -15,14 +16,22 @@ export class FavouritesComponent implements OnInit,OnDestroy {
   user: User;
   favourites: Post[] = [];
 
-  constructor(private authService: AuthenticationService) { }
+  constructor(private authService: AuthenticationService,
+              private userService: UserService) { }
 
   ngOnInit(): void {
-    this.favourites = this.authService.getUserFromLocalCache().favorites;
+    this.user = this.authService.getUserFromLocalCache();
   }
 
   ngOnDestroy(): void {
     this.subs.forEach(value => value.unsubscribe());
   }
 
+  favouriteRemoved(postToRemove: Post) {
+    this.subs.push(this.userService.addFavourite(postToRemove,this.userService.REMOVE)
+      .subscribe((user) => {
+        this.user = user;
+        this.authService.saveUserToLocalCache(user);
+      }));
+  }
 }

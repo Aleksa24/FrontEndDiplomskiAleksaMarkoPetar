@@ -10,17 +10,24 @@
   color: hsl(0, 3%, 48%);
 }
 .mat-card {
-  margin: 2%;
-
+  margin: 2em;
 }
 .attachment-card{
   background: linear-gradient(-30deg, white, deepskyblue);
+  margin: 0;
+}
+.attachment-card-error{
+  background: red;
+  color: yellow;
+  margin: 0;
 }
 
 .attachment-container{
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: flex-start;
 }
 
 .comments{
@@ -29,3 +36,11 @@
 .selected{
   color: #4ca1af;
 }
+.favourite{
+  color:#673ab7;
+  font-size:30px;
+}
+.mat-card-actions{
+  color:dimgray;
+}
+

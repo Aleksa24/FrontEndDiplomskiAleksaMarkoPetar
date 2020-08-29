@@ -1,10 +1,11 @@
 .content{
   padding: 5px;
   margin: 30px;
-  outline: 1px solid darkblue;
-  position: absolute;
+  /*outline: 1px solid darkblue;*/
+  /*position: absolute;*/
   bottom:0;
   top:70px;
   right:0;
   left:0;
+  background: linear-gradient(-45deg, #4ca1af, #c4e0e5);
 }

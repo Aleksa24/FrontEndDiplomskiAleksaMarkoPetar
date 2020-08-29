@@ -14,6 +14,8 @@ import {ChannelService} from "../../services/channel.service";
 })
 export class PostNewComponent implements OnInit,OnDestroy {
   form: FormGroup;
+  fileForm: FormGroup;
+  filesToUpload = [];
 
   subs:Subscription[] = [];
 
@@ -23,6 +25,7 @@ export class PostNewComponent implements OnInit,OnDestroy {
 
   ngOnInit(): void {
     this.form = this.fb.group({
+      files: [this.filesToUpload],
       title:["",Validators.required],
       body:["",Validators.required],
     });
@@ -33,5 +36,15 @@ export class PostNewComponent implements OnInit,OnDestroy {
 
   closeDialog(){
     this.dialogRef.close();// u ovo moze da se ubaci neka vrednost koja se kasnije vata
+  }
+
+  detectFilesAndUpdateFormGroup(event) {
+    this.filesToUpload = [];
+    if (event.target.files.length > 0) {
+      for (const file of event.target.files){
+        this.filesToUpload.push(file);
+      }
+      this.form.patchValue({files: this.filesToUpload});
+    }
   }
 }
