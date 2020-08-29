@@ -1,11 +1,11 @@
-import {Category} from "./Category";
-import {ChannelStatus} from "./ChannelStatus";
-import {CommunicationDirection} from "./CommunicationDirection";
-import {Attachment} from "./Attachment";
-import {UserChannel} from "./UserChannel";
-import {Post} from "./Post";
+import {Category} from './Category';
+import {ChannelStatus} from './ChannelStatus';
+import {CommunicationDirection} from './CommunicationDirection';
+import {Attachment} from './Attachment';
+import {UserChannel} from './UserChannel';
+import {Post} from './Post';
 
-export class Channel{
+export class Channel {
   public id: number;
   public name: string;
   public dateCreated: Date;
