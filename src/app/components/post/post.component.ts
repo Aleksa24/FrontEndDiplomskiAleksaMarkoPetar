@@ -13,6 +13,8 @@ import {randomBytes} from 'crypto';
 import {UserService} from "../../services/user.service";
 import {LikeService} from "../../services/like.service";
 import {faPaperclip} from '@fortawesome/free-solid-svg-icons';
+import {AttachmentService} from '../../services/attachment.service';
+import {AttachmentUploadData} from '../../model/AttachmentUploadData';
 
 @Component({
   selector: 'app-post',
@@ -36,6 +38,7 @@ export class PostComponent implements OnInit,OnDestroy {
   isFavourite: boolean = false;
 
   constructor(private postService: PostService,
+              private attachmentService: AttachmentService,
               private authService: AuthenticationService,
               private userService: UserService,
               private likeService: LikeService,
@@ -168,11 +171,12 @@ export class PostComponent implements OnInit,OnDestroy {
   }
 
   uploadFile(file) {
+
     const formData = new FormData();
     formData.append('file', file);
     formData.append('userId', String(this.loggedUser.id));
-    formData.append('postId', String(this.post.id));
-
+    formData.append('attachmentParentId', String(this.post.id));
+    formData.append('attachmentParentName', 'POST');
     // this.subs.push(this.postService.addAttachment(formData).subscribe(
     //   (attachment) => {
     //     this.post.attachments.push(attachment);
@@ -185,7 +189,7 @@ export class PostComponent implements OnInit,OnDestroy {
     dummyAttachment.originalName = file.name;
     dummyAttachment.uploadProgress = 0;
     this.post.attachments.push(dummyAttachment);
-    this.postService.addAttachment(formData).pipe(
+    this.attachmentService.add(formData).pipe(
       map((event: any) => {
         if (dummyAttachment.uploadAborted){
           throw new Error('UPLOAD_ABORTED');

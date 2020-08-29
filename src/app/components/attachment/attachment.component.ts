@@ -5,6 +5,7 @@ import {Post} from '../../model/Post';
 import {PostService} from '../../services/post.service';
 import {User} from '../../model/User';
 import {AuthenticationService} from '../../services/authentication.service';
+import {AttachmentService} from '../../services/attachment.service';
 
 @Component({
   selector: 'app-attachment',
@@ -22,7 +23,9 @@ export class AttachmentComponent implements OnInit {
   faDocument = faFilePdf;
   faDelete = faTimes;
 
-  constructor(private postService: PostService, private authService: AuthenticationService) { }
+  constructor(private postService: PostService,
+              private authService: AuthenticationService,
+              private attachmentService: AttachmentService) { }
 
   ngOnInit(): void {
     this.resolveFileIconByType();
@@ -47,7 +50,7 @@ export class AttachmentComponent implements OnInit {
   }
 
   onDownloadClick(): void {
-    this.postService.downloadAttachment(this.post, this.attachment).subscribe(
+    this.attachmentService.downloadFile(this.post, this.attachment).subscribe(
       (data) => {
         const a = document.createElement('a');
         const objectUrl = URL.createObjectURL(data);
