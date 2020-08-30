@@ -1,5 +1,5 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {Subscription} from 'rxjs';
+import {Subscription, throwError} from 'rxjs';
 import {Comment} from '../../model/Comment';
 import {CommentService} from "../../services/comment.service";
 import {User} from "../../model/User";
@@ -7,6 +7,11 @@ import {AuthenticationService} from "../../services/authentication.service";
 import {Like} from "../../model/Like";
 import {MatDialog} from "@angular/material/dialog";
 import {LikeService} from "../../services/like.service";
+import {faPaperclip} from '@fortawesome/free-solid-svg-icons';
+import {Attachment} from '../../model/Attachment';
+import {catchError, map} from 'rxjs/operators';
+import {HttpEventType} from '@angular/common/http';
+import {AttachmentService} from '../../services/attachment.service';
 
 @Component({
   selector: 'app-comment',
@@ -21,11 +26,14 @@ export class CommentComponent implements OnInit, OnDestroy {
   isLiked: boolean = false;
   isDisliked: boolean = false;
   loggedUser: User;
+  faUpload = faPaperclip;
+  filesToUpload = [];
 
-  constructor(private commentService:CommentService,
+  constructor(private commentService: CommentService,
               private authService: AuthenticationService,
               private likeService: LikeService,
-              private matDialog: MatDialog) {
+              private matDialog: MatDialog,
+              private attachmentService: AttachmentService) {
   }
 
   ngOnInit(): void {
@@ -149,5 +157,83 @@ export class CommentComponent implements OnInit, OnDestroy {
   }
   getDislikeNumber() {
     return this.comment.likes.filter(value => value.likeStatus.name == this.likeService.DISLIKE).length;
+  }
+
+  detectFiles(event): void {
+    this.filesToUpload = [];
+    if (event.target.files.length > 0) {
+      for (const file of event.target.files){
+        this.filesToUpload.push(file);
+      }
+    }
+  }
+
+  getSelectedFileNames(): string {
+    let result = '';
+    this.filesToUpload.forEach(file => result += file.name + ' \n');
+    return result;
+  }
+
+  onUpload(): void {
+    if (this.filesToUpload.length > 0){
+      this.filesToUpload.forEach(file => this.uploadFile(file));
+    }
+  }
+
+  uploadFile(file): void {
+
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('userId', String(this.loggedUser.id));
+    formData.append('attachmentParentId', String(this.comment.id));
+    formData.append('attachmentParentName', 'COMMENT');
+
+    const dummyAttachment: Attachment = new Attachment();
+    dummyAttachment.uploadComplete = false;
+    dummyAttachment.originalName = file.name;
+    dummyAttachment.uploadProgress = 0;
+    this.comment.attachments.push(dummyAttachment);
+    this.attachmentService.add(formData).pipe(
+      map((event: any) => {
+        if (dummyAttachment.uploadAborted){
+          throw new Error('UPLOAD_ABORTED');
+        }
+        if (event.type === HttpEventType.UploadProgress) {
+          dummyAttachment.uploadProgress = Math.round((100 / event.total) * event.loaded);
+        } else if (event.type === HttpEventType.Response) {
+          this.comment.attachments = this.comment.attachments.filter(att => att.originalName !== file.name);
+          const uploadedAttachment: Attachment = event.body;
+          uploadedAttachment.uploadComplete = true;
+          this.comment.attachments.push(uploadedAttachment);
+        }
+      }),
+      catchError((err: any) => {
+        let dummyAttachmentRemoveName: string;
+        if (dummyAttachment.uploadAborted){
+          dummyAttachmentRemoveName = err.message;
+        }else{
+          dummyAttachmentRemoveName = err.error;
+          dummyAttachment.uploadProgress = 0;
+          dummyAttachment.uploadError = true;
+        }
+        dummyAttachment.originalName = dummyAttachmentRemoveName;
+        setTimeout(() => {
+          this.comment.attachments = this.comment.attachments.filter(att => att.originalName !== dummyAttachmentRemoveName);
+        }, 3000);
+        return throwError(err.message);
+      })
+    ).toPromise().then(
+      (value => {
+        console.log(value);
+      }),
+      (error => {
+        console.log(error);
+      })
+    );
+  }
+
+  onDeleteAttachment(attachment: Attachment): void {
+    this.comment.attachments = this.comment.attachments.filter(value => value.id !== attachment.id);
+    console.log(this.comment.attachments);
   }
 }

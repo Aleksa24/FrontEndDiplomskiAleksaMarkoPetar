@@ -6,6 +6,7 @@ import {PostService} from '../../services/post.service';
 import {User} from '../../model/User';
 import {AuthenticationService} from '../../services/authentication.service';
 import {AttachmentService} from '../../services/attachment.service';
+import {Comment} from '../../model/Comment';
 
 @Component({
   selector: 'app-attachment',
@@ -16,18 +17,22 @@ export class AttachmentComponent implements OnInit {
 
   @Input() attachment: Attachment;
   @Input() post: Post;
+  @Input() comment: Comment;
   @Input() uploadProgress: number;
   @Output() deleteAttachment: EventEmitter<Attachment> = new EventEmitter<Attachment>();
   public loggedInUser: User;
   public faDownload = faDownload;
   faDocument = faFilePdf;
   faDelete = faTimes;
+  public parentId: number;
+  public parentName: string;
 
   constructor(private postService: PostService,
               private authService: AuthenticationService,
               private attachmentService: AttachmentService) { }
 
   ngOnInit(): void {
+    this.resolveParent();
     this.resolveFileIconByType();
     this.loggedInUser = this.authService.getUserFromLocalCache();
   }
@@ -50,7 +55,7 @@ export class AttachmentComponent implements OnInit {
   }
 
   onDownloadClick(): void {
-    this.attachmentService.downloadFile(this.post, this.attachment).subscribe(
+    this.attachmentService.downloadFile(this.parentId, this.parentName, this.attachment).subscribe(
       (data) => {
         const a = document.createElement('a');
         const objectUrl = URL.createObjectURL(data);
@@ -63,11 +68,21 @@ export class AttachmentComponent implements OnInit {
   }
 
   onDeleteClick(): void {
-    this.postService.removeAttachment(this.post, this.attachment).subscribe(
+    this.attachmentService.delete(this.parentId, this.parentName, this.attachment).subscribe(
       (data) => {
         this.deleteAttachment.emit(this.attachment);
       }
     );
+  }
+  resolveParent(): void{
+    if (this.post !== undefined){
+      this.parentName = 'post';
+      this.parentId = this.post.id;
+    }
+    if (this.comment !== undefined){
+      this.parentName = 'comment';
+      this.parentId = this.comment.id;
+    }
   }
 
   onAbortUpload(): void {

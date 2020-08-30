@@ -6,6 +6,7 @@ import {Post} from "../../model/Post";
 import {PostService} from "../../services/post.service";
 import {Channel} from "../../model/Channel";
 import {ChannelService} from "../../services/channel.service";
+import {faPaperclip} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-post-new',
@@ -18,6 +19,7 @@ export class PostNewComponent implements OnInit,OnDestroy {
   filesToUpload = [];
 
   subs:Subscription[] = [];
+  faUpload = faPaperclip;
 
   constructor(public dialogRef: MatDialogRef<PostNewComponent>,
               private fb: FormBuilder,
@@ -46,5 +48,11 @@ export class PostNewComponent implements OnInit,OnDestroy {
       }
       this.form.patchValue({files: this.filesToUpload});
     }
+  }
+
+  getSelectedFileNames(): string {
+    let result = '';
+    this.filesToUpload.forEach(file => result += file.name + ' \n');
+    return result;
   }
 }

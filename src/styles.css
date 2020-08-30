@@ -13,5 +13,5 @@ html,body{
 
 .my-tooltip {
   white-space: pre-line;
-  font-size: large !important;
+  font-size: medium !important;
 }
