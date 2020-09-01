@@ -103,9 +103,9 @@ export class PostComponent implements OnInit,OnDestroy {
   onDislike(): void {
     let like: Like = this.didUserAlreadyLikedOrDisliked();
     if (like == null){
-    this.postService.like(this.post,this.postService.DISLIKE)
-      .then((post) => {
-        this.post = post;
+    this.likeService.like(this.likeService.POST,this.post.id,this.likeService.DISLIKE)
+      .then((value) => {
+        this.post.likes.push(value);
         this.isLiked = false;
         this.isDisliked = true;
       });
@@ -119,9 +119,10 @@ export class PostComponent implements OnInit,OnDestroy {
           });
       }else
       //update like
-      this.postService.updateLike(this.post,this.postService.DISLIKE,like)
-        .then((post) => {
-          this.post = post;
+      this.likeService.updateLike(like,this.likeService.DISLIKE)
+        .then((value) => {
+          this.post.likes = this.post.likes.filter(_like => _like.id != like.id);
+          this.post.likes.push(value);
           this.isLiked = false;
           this.isDisliked = true;
         });
@@ -131,9 +132,10 @@ export class PostComponent implements OnInit,OnDestroy {
   onLike(): void {
     let like: Like = this.didUserAlreadyLikedOrDisliked();
     if (like == null){
-      this.postService.like(this.post,this.postService.LIKE)
-        .then((post) => {
-          this.post = post;
+      this.likeService.like(this.likeService.POST,this.post.id,this.likeService.LIKE)
+        .then((value) => {
+          // this.post = post;
+          this.post.likes.push(value);
           this.isLiked = true;
           this.isDisliked = false;
         });
@@ -147,9 +149,10 @@ export class PostComponent implements OnInit,OnDestroy {
           });
       }else
       //update like
-      this.postService.updateLike(this.post,this.postService.LIKE,like)
-        .then((post) => {
-          this.post = post;
+      this.likeService.updateLike(like,this.likeService.LIKE)
+        .then((value) => {
+          this.post.likes = this.post.likes.filter(_like => _like.id != like.id);
+          this.post.likes.push(value);
           this.isLiked = true;
           this.isDisliked = false;
         });

@@ -82,9 +82,10 @@ export class CommentComponent implements OnInit, OnDestroy {
   onDislike(): void {
     let like: Like = this.didUserAlreadyLikedOrDisliked();
     if (this.didUserAlreadyLikedOrDisliked() == null){
-      this.commentService.like(this.comment,this.commentService.DISLIKE)
-        .then((comment) => {
-          this.comment = comment;
+      this.likeService.like(this.likeService.COMMENT,this.comment.id,this.likeService.DISLIKE)
+        .then((value) => {
+          // this.comment = comment;
+          this.comment.likes.push(value);
           this.isLiked = false;
           this.isDisliked = true;
         });
@@ -98,9 +99,10 @@ export class CommentComponent implements OnInit, OnDestroy {
           });
       }else
       //update like
-      this.commentService.updateLike(this.comment,this.commentService.DISLIKE,like)
-        .then((comment) => {
-          this.comment = comment;
+      this.likeService.updateLike(like,this.likeService.DISLIKE)
+        .then((value) => {
+          this.comment.likes = this.comment.likes.filter(_like => _like.id != like.id);
+          this.comment.likes.push(value);
           this.isLiked = false;
           this.isDisliked = true;
         });
@@ -110,9 +112,10 @@ export class CommentComponent implements OnInit, OnDestroy {
   onLike(): void {
     let like: Like = this.didUserAlreadyLikedOrDisliked();
     if (this.didUserAlreadyLikedOrDisliked() == null){
-      this.commentService.like(this.comment,this.commentService.LIKE)
-        .then((comment) => {
-          this.comment = comment;
+      this.likeService.like(this.likeService.COMMENT,this.comment.id,this.likeService.LIKE)
+        .then((value) => {
+          // this.comment = comment;
+          this.comment.likes.push(value);
           this.isLiked = true;
           this.isDisliked = false;
         });
@@ -126,9 +129,10 @@ export class CommentComponent implements OnInit, OnDestroy {
           });
       }else
       //update like
-      this.commentService.updateLike(this.comment,this.commentService.LIKE,like)
-        .then((comment) => {
-          this.comment = comment;
+      this.likeService.updateLike(like,this.likeService.LIKE)
+        .then((value) => {
+          this.comment.likes = this.comment.likes.filter(_like => _like.id != like.id);
+          this.comment.likes.push(value);
           this.isLiked = true;
           this.isDisliked = false;
         });
