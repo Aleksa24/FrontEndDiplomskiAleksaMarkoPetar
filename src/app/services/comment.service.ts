@@ -75,4 +75,7 @@ export class CommentService {
     return this.httpClient.get<LikeStatus>(environment.apiUrl+"/comment/like-status/"+likeStatus).toPromise();
   }
 
+  save(comment: Comment): Observable<Comment> {
+    return this.httpClient.post<Comment>(`${environment.apiUrl}/comment/save`, comment);
+  }
 }

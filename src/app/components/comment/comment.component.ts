@@ -28,6 +28,7 @@ export class CommentComponent implements OnInit, OnDestroy {
   loggedUser: User;
   faUpload = faPaperclip;
   filesToUpload = [];
+  editEnabled: boolean = false;
 
   constructor(private commentService: CommentService,
               private authService: AuthenticationService,
@@ -154,8 +155,19 @@ export class CommentComponent implements OnInit, OnDestroy {
   }
 
   edit() {
-    //todo:odraditi edit comment-a
+    this.editEnabled = !this.editEnabled;
   }
+  onSaveComment(): void {
+    this.editEnabled = false;
+    this.subs.push(
+      this.commentService.save(this.comment).subscribe(
+        (data) => {
+          this.comment = data;
+        }
+      )
+    );
+  }
+
   getLikesNumber() {
     return this.comment.likes.filter(value => value.likeStatus.name == this.likeService.LIKE).length;
   }
@@ -240,4 +252,6 @@ export class CommentComponent implements OnInit, OnDestroy {
     this.comment.attachments = this.comment.attachments.filter(value => value.id !== attachment.id);
     console.log(this.comment.attachments);
   }
+
+
 }

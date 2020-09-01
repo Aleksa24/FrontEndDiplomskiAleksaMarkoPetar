@@ -5,10 +5,15 @@
       <mat-card-title>{{comment.user.username}}
         <span class="title-date"> ,{{comment.dateCreated | date}}</span>
       </mat-card-title>
-      <mat-card-subtitle class="edit" (click)="edit()">Edit</mat-card-subtitle>
+      <mat-card-subtitle ><button mat-stroked-button color="primary" (click)="edit()">Edit</button></mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-      {{comment.text}}
+      <mat-form-field class="example-full-width">
+        <mat-label *ngIf="this.editEnabled">Place new comment</mat-label>
+        <textarea  [readonly]="!this.editEnabled" [(ngModel)]="this.comment.text" matInput></textarea>
+      </mat-form-field>
+      <button *ngIf="this.editEnabled" mat-raised-button (click)="onSaveComment()">Save</button>
+<!--      {{comment.text}}-->
       <span *ngIf="(comment.attachments != undefined) && (comment.attachments.length != 0)">
       <br>
         <div class="attachment-container">

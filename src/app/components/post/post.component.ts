@@ -33,7 +33,8 @@ export class PostComponent implements OnInit,OnDestroy {
   loggedUser: User;
   fileList: FileList;
   fileForm: FormGroup;
-  filesToUpload = [];
+  filesToUploadPost = [];
+  filesToUploadComment = [];
   faUpload = faPaperclip;
   isFavourite: boolean = false;
 
@@ -48,7 +49,7 @@ export class PostComponent implements OnInit,OnDestroy {
     this.loggedUser = this.authService.getUserFromLocalCache();
 
     if (this.post.filesToUpload !== undefined && this.post.filesToUpload.length > 0){
-      this.filesToUpload = this.post.filesToUpload;
+      this.filesToUploadPost = this.post.filesToUpload;
       // if, when post was created, files for uploading were selecred, puts that files in filesToUpload queue
     }
     //kreiranje forme za slanje fajla
@@ -232,10 +233,10 @@ export class PostComponent implements OnInit,OnDestroy {
   }
 
   detectFiles(event) {
-    this.filesToUpload = [];
+    this.filesToUploadPost = [];
     if (event.target.files.length > 0) {
       for (const file of event.target.files){
-        this.filesToUpload.push(file);
+        this.filesToUploadPost.push(file);
       }
     }
   }
@@ -255,8 +256,8 @@ export class PostComponent implements OnInit,OnDestroy {
   }
 
   onUpload(): void {
-    if (this.filesToUpload.length > 0){
-      this.filesToUpload.forEach(file => this.uploadFile(file));
+    if (this.filesToUploadPost.length > 0){
+      this.filesToUploadPost.forEach(file => this.uploadFile(file));
     }
   }
 
@@ -289,7 +290,7 @@ export class PostComponent implements OnInit,OnDestroy {
 
   getSelectedFileNames(): string {
     let result = '';
-    this.filesToUpload.forEach(file => result += file.name + ' \n');
+    this.filesToUploadPost.forEach(file => result += file.name + ' \n');
     return result;
   }
 }
