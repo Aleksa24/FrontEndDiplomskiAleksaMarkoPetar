@@ -2,6 +2,7 @@ import {User} from "./User";
 import {CommentStatus} from "./CommentStatus";
 import {Like} from "./Like";
 import {Attachment} from "./Attachment";
+import {Post} from './Post';
 
 export class Comment {
   public id:number;
@@ -13,5 +14,7 @@ export class Comment {
   public likes: Like[] = [];
   public attachments: Attachment[] = [];
   public comments:Comment[] = [];
+  public post: Post;
+  public filesToUpload;
 
 }

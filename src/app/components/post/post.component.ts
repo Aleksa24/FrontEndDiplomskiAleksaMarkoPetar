@@ -15,6 +15,8 @@ import {LikeService} from "../../services/like.service";
 import {faPaperclip} from '@fortawesome/free-solid-svg-icons';
 import {AttachmentService} from '../../services/attachment.service';
 import {AttachmentUploadData} from '../../model/AttachmentUploadData';
+import {Comment} from '../../model/Comment';
+import {CommentService} from '../../services/comment.service';
 
 @Component({
   selector: 'app-post',
@@ -39,6 +41,7 @@ export class PostComponent implements OnInit,OnDestroy {
   isFavourite: boolean = false;
 
   constructor(private postService: PostService,
+              private commentService: CommentService,
               private attachmentService: AttachmentService,
               private authService: AuthenticationService,
               private userService: UserService,
@@ -91,14 +94,28 @@ export class PostComponent implements OnInit,OnDestroy {
     this.isCommentOpen = !this.isCommentOpen;
   }
 
-  postComment(comment:string) {
-    if (comment == null || comment.length==0){
-      return
+  async postComment(commentText: string): Promise<void> {
+    if (commentText == null || commentText.length === 0){
+      return;
     }
-      this.postService.postComment(this.post, comment)
-        .then((post)=> {
-          this.post = post;
-        });
+    const comment: Comment = new Comment();
+    comment.text = commentText;
+    comment.user = this.authService.getUserFromLocalCache();
+    comment.post = this.post;
+
+    await this.commentService.getCommentStatusByName(this.commentService.ORIGINAL)
+      .then((recevedStatus) => {
+        comment.commentStatus = recevedStatus;
+      });
+
+    this.subs.push(this.commentService.save(comment).subscribe(
+      (data) => {
+          const savedComment = data;
+          savedComment.filesToUpload = this.filesToUploadComment;
+          this.post.comments.push(data);
+          this.isCommentOpen = true; // to ensure that files will be uploaded
+      }
+    ));
   }
 
   onDislike(): void {
@@ -241,6 +258,15 @@ export class PostComponent implements OnInit,OnDestroy {
     }
   }
 
+  detectFilesComment(event) {
+    this.filesToUploadComment = [];
+    if (event.target.files.length > 0) {
+      for (const file of event.target.files){
+        this.filesToUploadComment.push(file);
+      }
+    }
+  }
+
 
   onDeleteUpload(attachment: Attachment): void{
     this.postService.removeAttachment(this.post, attachment).subscribe(
@@ -288,9 +314,9 @@ export class PostComponent implements OnInit,OnDestroy {
     return this.post.likes.filter(value => value.likeStatus.name == this.likeService.DISLIKE).length;
   }
 
-  getSelectedFileNames(): string {
+  getSelectedFileNames(filesToUpload): string {
     let result = '';
-    this.filesToUploadPost.forEach(file => result += file.name + ' \n');
+    filesToUpload.forEach(file => result += file.name + ' \n');
     return result;
   }
 }

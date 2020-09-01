@@ -1,12 +1,12 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Subscription, throwError} from 'rxjs';
 import {Comment} from '../../model/Comment';
-import {CommentService} from "../../services/comment.service";
-import {User} from "../../model/User";
-import {AuthenticationService} from "../../services/authentication.service";
-import {Like} from "../../model/Like";
-import {MatDialog} from "@angular/material/dialog";
-import {LikeService} from "../../services/like.service";
+import {CommentService} from '../../services/comment.service';
+import {User} from '../../model/User';
+import {AuthenticationService} from '../../services/authentication.service';
+import {Like} from '../../model/Like';
+import {MatDialog} from '@angular/material/dialog';
+import {LikeService} from '../../services/like.service';
 import {faPaperclip} from '@fortawesome/free-solid-svg-icons';
 import {Attachment} from '../../model/Attachment';
 import {catchError, map} from 'rxjs/operators';
@@ -22,13 +22,13 @@ export class CommentComponent implements OnInit, OnDestroy {
 
   subs: Subscription[] = [];
   @Input() comment: Comment;
-  isReplyOpen: boolean = false
-  isLiked: boolean = false;
-  isDisliked: boolean = false;
+  isReplyOpen = false;
+  isLiked = false;
+  isDisliked = false;
   loggedUser: User;
   faUpload = faPaperclip;
   filesToUpload = [];
-  editEnabled: boolean = false;
+  editEnabled = false;
 
   constructor(private commentService: CommentService,
               private authService: AuthenticationService,
@@ -40,12 +40,25 @@ export class CommentComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.loggedUser = this.authService.getUserFromLocalCache();
 
+
+    if (this.comment.filesToUpload !== undefined  && this.comment.filesToUpload.length > 0){
+      this.filesToUpload = this.comment.filesToUpload;
+    }
+
+
     this.subs.push(this.commentService.getCommentById(this.comment.id)
       .subscribe((comment) => {
         this.comment = comment;
 
-        //prolazi da vidi da li je taj comment lajkovan kod ulogovanog usera da bi obelezio slova
-        for (let like of this.comment.likes){
+
+
+        this.onUpload();
+        this.filesToUpload = [];
+        // (TODO: (this should be in onUpload method)) if user opens comments multiple times this shouldn't trigger upload more than once
+
+
+        // prolazi da vidi da li je taj comment lajkovan kod ulogovanog usera da bi obelezio slova
+        for (const like of this.comment.likes){
           if (like.user.id == this.loggedUser.id){
             if (like.likeStatus.name == this.commentService.LIKE){
               this.isLiked = true;
@@ -71,19 +84,19 @@ export class CommentComponent implements OnInit, OnDestroy {
   }
 
   postReply(replayText: string) {
-    if (replayText == null || replayText.length==0){
-      return
+    if (replayText == null || replayText.length == 0){
+      return;
     }
-    this.commentService.postReplay(this.comment,replayText)
-      .then((commentWithNewReply) =>{
+    this.commentService.postReplay(this.comment, replayText)
+      .then((commentWithNewReply) => {
         this.comment = commentWithNewReply;
     });
   }
 
   onDislike(): void {
-    let like: Like = this.didUserAlreadyLikedOrDisliked();
+    const like: Like = this.didUserAlreadyLikedOrDisliked();
     if (this.didUserAlreadyLikedOrDisliked() == null){
-      this.likeService.like(this.likeService.COMMENT,this.comment.id,this.likeService.DISLIKE)
+      this.likeService.like(this.likeService.COMMENT, this.comment.id, this.likeService.DISLIKE)
         .then((value) => {
           // this.comment = comment;
           this.comment.likes.push(value);
@@ -91,29 +104,30 @@ export class CommentComponent implements OnInit, OnDestroy {
           this.isDisliked = true;
         });
     } else {
-      //ovaj if je slucaj kada kliknes na like koji je vec kliknut
+      // ovaj if je slucaj kada kliknes na like koji je vec kliknut
       if (like.likeStatus.name == this.commentService.DISLIKE) {
         this.likeService.deleteLike(like)
           .then((httpResponse) => {
             this.isDisliked = false;
             this.comment.likes = this.comment.likes.filter(value => value.id != like.id);
           });
-      }else
-      //update like
-      this.likeService.updateLike(like,this.likeService.DISLIKE)
+      }else {
+      // update like
+      this.likeService.updateLike(like, this.likeService.DISLIKE)
         .then((value) => {
           this.comment.likes = this.comment.likes.filter(_like => _like.id != like.id);
           this.comment.likes.push(value);
           this.isLiked = false;
           this.isDisliked = true;
         });
+      }
     }
   }
 
   onLike(): void {
-    let like: Like = this.didUserAlreadyLikedOrDisliked();
+    const like: Like = this.didUserAlreadyLikedOrDisliked();
     if (this.didUserAlreadyLikedOrDisliked() == null){
-      this.likeService.like(this.likeService.COMMENT,this.comment.id,this.likeService.LIKE)
+      this.likeService.like(this.likeService.COMMENT, this.comment.id, this.likeService.LIKE)
         .then((value) => {
           // this.comment = comment;
           this.comment.likes.push(value);
@@ -121,22 +135,23 @@ export class CommentComponent implements OnInit, OnDestroy {
           this.isDisliked = false;
         });
     } else {
-      //ovaj if je slucaj kada kliknes na like koji je vec kliknut
+      // ovaj if je slucaj kada kliknes na like koji je vec kliknut
       if (like.likeStatus.name == this.commentService.LIKE) {
         this.likeService.deleteLike(like)
           .then((httpResponse) => {
             this.isLiked = false;
             this.comment.likes = this.comment.likes.filter(value => value.id != like.id);
           });
-      }else
-      //update like
-      this.likeService.updateLike(like,this.likeService.LIKE)
+      }else {
+      // update like
+      this.likeService.updateLike(like, this.likeService.LIKE)
         .then((value) => {
           this.comment.likes = this.comment.likes.filter(_like => _like.id != like.id);
           this.comment.likes.push(value);
           this.isLiked = true;
           this.isDisliked = false;
         });
+      }
     }
 
   }
@@ -145,8 +160,8 @@ export class CommentComponent implements OnInit, OnDestroy {
    * like objekat: ako postoji lajk sa tim user-om
    * null: ako ne postoji lajk sa tim user-om
    */
-  private didUserAlreadyLikedOrDisliked():Like {
-    for (let like of this.comment.likes){
+  private didUserAlreadyLikedOrDisliked(): Like {
+    for (const like of this.comment.likes){
       if (like.user.id == this.loggedUser.id){
         return like;
       }

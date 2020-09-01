@@ -37,7 +37,7 @@
           <input #fileInput type="file" name="file" multiple  (change)="detectFiles($event)" style="display:none;" />
         </button>
         <button mat-raised-button (click)="onUpload()"
-                [matTooltip]="this.getSelectedFileNames()"
+                [matTooltip]="this.getSelectedFileNames(this.filesToUploadPost)"
                 matTooltipClass="my-tooltip"
         >Upload files</button>
       </form>
@@ -60,12 +60,13 @@
 <!--    <mat-label >Favorite food</mat-label>-->
     <input #commnent matInput placeholder="Comment" (keyup.enter)="postComment(commnent.value)">
   </mat-form-field>
-<!--  <button mat-mini-fab color="primary" type="button" (click)="fileInputComment.click()" style="margin: 5px">-->
-<!--    <fa-icon [icon]="faUpload"></fa-icon>-->
-<!--    <input #fileInputComment type="file" name="file" multiple  (change)="detectFilesComment($event)" style="display:none;" -->
-<!--           [matTooltip]="this.getSelectedFileNames()"-->
-<!--           matTooltipClass="my-tooltip"/>-->
-<!--  </button>-->
+  <button mat-mini-fab color="primary" type="button" (click)="fileInputComment.click()" style="margin: 5px"
+          [matTooltip]="this.getSelectedFileNames(this.filesToUploadComment)"
+          matTooltipClass="my-tooltip">
+    <fa-icon [icon]="faUpload"></fa-icon>
+    <input #fileInputComment type="file" name="file" multiple  (change)="detectFilesComment($event)" style="display:none;"
+           />
+  </button>
   <button mat-button (click)="postComment(commnent.value)" (keyup.enter)="postComment(commnent.value)">Post a comment</button>
 
 </mat-card>
