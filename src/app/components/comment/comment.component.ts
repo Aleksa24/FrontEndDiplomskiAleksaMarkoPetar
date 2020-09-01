@@ -29,6 +29,7 @@ export class CommentComponent implements OnInit, OnDestroy {
   faUpload = faPaperclip;
   filesToUpload = [];
   editEnabled = false;
+  filesToUploadReply = [];
 
   constructor(private commentService: CommentService,
               private authService: AuthenticationService,
@@ -83,14 +84,33 @@ export class CommentComponent implements OnInit, OnDestroy {
     this.isReplyOpen = !this.isReplyOpen;
   }
 
-  postReply(replayText: string) {
+  async postReply(replayText: string): Promise<void> {
     if (replayText == null || replayText.length == 0){
       return;
     }
-    this.commentService.postReplay(this.comment, replayText)
-      .then((commentWithNewReply) => {
-        this.comment = commentWithNewReply;
-    });
+
+    const replay: Comment = new Comment();
+    replay.text = replayText;
+    replay.user = this.authService.getUserFromLocalCache();
+
+    replay.comment = this.comment;
+
+    await this.commentService.getCommentStatusByName(this.commentService.ORIGINAL)
+      .then((recevedStatus) => {
+        replay.commentStatus = recevedStatus;
+      });
+    this.subs.push(this.commentService.save(replay).subscribe(
+      (data) => {
+        const savedComment = data;
+        savedComment.filesToUpload = this.filesToUploadReply;
+        this.comment.comments.push(data);
+        this.isReplyOpen = true; // to ensure that files will be uploaded
+      }
+    ));
+    // this.commentService.postReplay(this.comment, replayText)
+    //   .then((commentWithNewReply) => {
+    //     this.comment = commentWithNewReply;
+    // });
   }
 
   onDislike(): void {
@@ -199,9 +219,9 @@ export class CommentComponent implements OnInit, OnDestroy {
     }
   }
 
-  getSelectedFileNames(): string {
+  getSelectedFileNames(filesToUploadReply: any[]): string {
     let result = '';
-    this.filesToUpload.forEach(file => result += file.name + ' \n');
+    filesToUploadReply.forEach(file => result += file.name + ' \n');
     return result;
   }
 
@@ -266,6 +286,15 @@ export class CommentComponent implements OnInit, OnDestroy {
   onDeleteAttachment(attachment: Attachment): void {
     this.comment.attachments = this.comment.attachments.filter(value => value.id !== attachment.id);
     console.log(this.comment.attachments);
+  }
+
+  detectFilesReply(event): void {
+    this.filesToUploadReply = [];
+    if (event.target.files.length > 0) {
+      for (const file of event.target.files){
+        this.filesToUploadReply.push(file);
+      }
+    }
   }
 
 

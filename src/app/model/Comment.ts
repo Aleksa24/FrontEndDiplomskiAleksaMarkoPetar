@@ -15,6 +15,7 @@ export class Comment {
   public attachments: Attachment[] = [];
   public comments:Comment[] = [];
   public post: Post;
+  public comment: Comment;
   public filesToUpload;
 
 }

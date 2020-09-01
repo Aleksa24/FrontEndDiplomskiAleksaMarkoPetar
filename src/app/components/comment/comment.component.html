@@ -33,7 +33,7 @@
             <input #fileInput type="file" name="file" multiple  (change)="detectFiles($event)" style="display:none;" />
           </button>
           <button mat-raised-button (click)="onUpload()"
-                  [matTooltip]="this.getSelectedFileNames()"
+                  [matTooltip]="this.getSelectedFileNames(this.filesToUploadReply)"
                   matTooltipClass="my-tooltip"
           >Upload files</button>
       </div>
@@ -44,7 +44,7 @@
       {{getLikesNumber()}}
       <button class="mat-card-action-button" mat-icon-button [class.selected]="isDisliked" (click)="onDislike()" matTooltip="Dislike" matTooltipPosition="below"><mat-icon>thumb_down</mat-icon></button>
       {{getDislikeNumber()}}
-      <button class="mat-card-action-button" mat-icon-button (click)="replyButtonClicked()" matTooltip="Replays" matTooltipPosition="below"><mat-icon>message</mat-icon></button>
+      <button class="mat-card-action-button" mat-icon-button (click)="replyButtonClicked()" matTooltip="Replays" matTooltipPosition="below"><mat-icon>reply</mat-icon></button>
     </mat-card-actions>
 
     <mat-card-content *ngIf="isReplyOpen" class="replays">
@@ -56,6 +56,13 @@
       <!--    <mat-label >Favorite food</mat-label>-->
       <input #replay matInput placeholder="Replay" (keyup.enter)="postReply(replay.value)">
     </mat-form-field>
+    <button mat-mini-fab color="primary" type="button" (click)="fileInputComment.click()" style="margin: 5px"
+            [matTooltip]="this.getSelectedFileNames(this.filesToUploadReply)"
+            matTooltipClass="my-tooltip">
+      <fa-icon [icon]="faUpload"></fa-icon>
+      <input #fileInputComment type="file" name="file" multiple  (change)="detectFilesReply($event)" style="display:none;"
+      />
+    </button>
     <button mat-button (click)="postReply(replay.value)" (keyup.enter)="postReply(replay.value)">Post a reply</button>
 
   </mat-card>
