@@ -3,6 +3,7 @@ import {Channel} from "../../model/Channel";
 import {Observable, Subscription} from "rxjs";
 import {Router} from "@angular/router";
 import {ChannelService} from "../../services/channel.service";
+import {AuthenticationService} from '../../services/authentication.service';
 
 @Component({
   selector: 'app-channels',
@@ -17,10 +18,11 @@ export class ChannelsComponent implements OnInit, OnDestroy{
   subs: Subscription[] = [];
 
   constructor(private router: Router,
-              private channelService: ChannelService) { }
+              private channelService: ChannelService,
+              private authenticationService: AuthenticationService) { }
 
   ngOnInit(): void {
-    this.channels$ = this.channelService.getChannels();
+    this.channels$ = this.channelService.getChannelsForUser(this.authenticationService.getUserFromLocalCache().id);
     this.channels$.subscribe((value) => {
       this.channels = value;
     });

@@ -59,4 +59,8 @@ export class ChannelComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subs.forEach(value => value.unsubscribe());
   }
+
+  addSubchannel() {
+
+  }
 }

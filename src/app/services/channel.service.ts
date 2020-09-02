@@ -22,6 +22,10 @@ export class ChannelService {
     return this.httpClient.get<Channel[]>(environment.apiUrl + '/channel/all');
   }
 
+  getChannelsForUser(id: number): Observable<Channel[]> {
+    return this.httpClient.get<Channel[]>(environment.apiUrl + `/channel/findAllByUserId?id=${id}`);
+  }
+
   getById(id: number): Observable<Channel> {
     return this.httpClient.get<Channel>(environment.apiUrl + `/channel/${id}`);
   }
