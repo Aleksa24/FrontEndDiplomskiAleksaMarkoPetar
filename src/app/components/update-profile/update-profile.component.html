@@ -12,7 +12,7 @@
           <mat-card-actions>
             <button mat-mini-fab color="primary" type="button" (click)="fileInput.click()" style="margin: 5px">
               <fa-icon [icon]="faUpload"></fa-icon>
-              <input #fileInput type="file" name="file" accept=".png" (change)="detectFile($event)" style="display:none;" />
+              <input #fileInput type="file" name="file" accept="image/*" (change)="detectFile($event)" style="display:none;" />
             </button>
             <button mat-raised-button (click)="onChangeProfilePicture()"
                     [matTooltip]="profileImageUpload !== undefined ? profileImageUpload.name : ''"

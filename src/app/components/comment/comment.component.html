@@ -33,7 +33,7 @@
             <input #fileInput type="file" name="file" multiple  (change)="detectFiles($event)" style="display:none;" />
           </button>
           <button mat-raised-button (click)="onUpload()"
-                  [matTooltip]="this.getSelectedFileNames(this.filesToUploadReply)"
+                  [matTooltip]="this.getSelectedFileNames(this.filesToUpload)"
                   matTooltipClass="my-tooltip"
           >Upload files</button>
       </div>
