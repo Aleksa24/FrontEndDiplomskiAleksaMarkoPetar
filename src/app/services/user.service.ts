@@ -1,11 +1,13 @@
 import {Injectable} from '@angular/core';
 import {User} from '../model/User';
 import {Observable} from 'rxjs';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpEvent} from '@angular/common/http';
 import {environment} from '../../environments/environment';
 import {Role} from '../model/Role';
 import {Post} from "../model/Post";
 import {AuthenticationService} from "./authentication.service";
+import {Attachment} from '../model/Attachment';
+import {HttpResponse} from '../model/HttpResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -44,5 +46,12 @@ export class UserService {
       loggedUser.favorites = loggedUser.favorites.filter((value) => value.id != post.id);
     }
     return this.http.post<User>(`${environment.apiUrl}/user/save`,loggedUser);
+  }
+  getProfilePictureById(id: number): string {
+    return `${environment.apiUrl}/user/${id}/profile-picture`;
+  }
+
+  uploadProfileImage(formData: FormData): Observable<HttpResponse> {
+    return this.http.post<HttpResponse>(`${environment.apiUrl}/user/upload-profile-image`, formData);
   }
 }

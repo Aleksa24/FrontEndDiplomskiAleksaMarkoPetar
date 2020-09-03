@@ -1,10 +1,13 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Subscription} from 'rxjs';
+import {Subscription, throwError} from 'rxjs';
 import {UserService} from '../../services/user.service';
 import {User} from '../../model/User';
-import {HttpErrorResponse} from '@angular/common/http';
+import {HttpErrorResponse, HttpEventType} from '@angular/common/http';
 import {AuthenticationService} from '../../services/authentication.service';
+import {faPaperclip} from '@fortawesome/free-solid-svg-icons';
+import {catchError, map} from 'rxjs/operators';
+import {Attachment} from '../../model/Attachment';
 
 @Component({
   selector: 'app-update-profile',
@@ -15,6 +18,9 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
 
   public form: FormGroup;
   private subs: Subscription[] = [];
+  public profileImage;
+  public profileImageUpload: any;
+  faUpload = faPaperclip;
 
   constructor(private formBuilder: FormBuilder,
               private userService: UserService,
@@ -28,6 +34,7 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
       username: [this.authenticationService.getUserFromLocalCache().username, [Validators.required]],
       phone: [this.authenticationService.getUserFromLocalCache().phone]
     });
+    this.profileImage = this.userService.getProfilePictureById(this.authenticationService.getUserFromLocalCache().id);
   }
 
   updateUser() {
@@ -49,5 +56,30 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subs.forEach(value => value.unsubscribe());
+  }
+
+  detectFile(event): void{
+    if (event.target.files.length > 0) {
+        const reader = new FileReader();
+        reader.readAsDataURL(event.target.files[0]);
+        reader.onload = (readerEvent) => {
+          this.profileImage = reader.result;
+        };
+        this.profileImageUpload = event.target.files[0];
+    }
+  }
+
+  onChangeProfilePicture(): void {
+    if (this.profileImageUpload === undefined){
+      return;
+    }
+    const formData = new FormData();
+    formData.append('profileImage', this.profileImageUpload);
+    formData.append('id', String(this.authenticationService.getUserFromLocalCache().id));
+    this.userService.uploadProfileImage(formData).subscribe(
+      (data) => {
+        alert(data.message);
+      }
+    );
   }
 }

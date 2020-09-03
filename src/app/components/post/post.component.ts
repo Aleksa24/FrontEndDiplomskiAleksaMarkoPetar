@@ -17,6 +17,7 @@ import {AttachmentService} from '../../services/attachment.service';
 import {AttachmentUploadData} from '../../model/AttachmentUploadData';
 import {Comment} from '../../model/Comment';
 import {CommentService} from '../../services/comment.service';
+import {environment} from '../../../environments/environment';
 
 @Component({
   selector: 'app-post',
@@ -249,7 +250,7 @@ export class PostComponent implements OnInit,OnDestroy {
     );
   }
 
-  detectFiles(event) {
+  detectFiles(event){
     this.filesToUploadPost = [];
     if (event.target.files.length > 0) {
       for (const file of event.target.files){
@@ -318,5 +319,9 @@ export class PostComponent implements OnInit,OnDestroy {
     let result = '';
     filesToUpload.forEach(file => result += file.name + ' \n');
     return result;
+  }
+
+  getProfilePictureByUserId(id: number): string {
+    return this.userService.getProfilePictureById(id);
   }
 }

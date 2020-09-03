@@ -4,6 +4,7 @@ import {Observable, Subscription} from "rxjs";
 import {Router} from "@angular/router";
 import {ChannelService} from "../../services/channel.service";
 import {AuthenticationService} from '../../services/authentication.service';
+import {environment} from '../../../environments/environment';
 
 @Component({
   selector: 'app-channels',
@@ -30,5 +31,17 @@ export class ChannelsComponent implements OnInit, OnDestroy{
 
   ngOnDestroy(): void {
     this.subs.forEach(value => value.unsubscribe())
+  }
+
+  getProfilePictureForChannel(id: number) {
+    return this.channelService.getProfilePictureById(id).subscribe(
+      data => {
+        return data;
+      }
+    );
+  }
+
+  getProfilePictureByChannelId(id: number): string{
+    return `${environment.apiUrl}/channel/${id}/profile-picture`;
   }
 }

@@ -6,6 +6,7 @@ import {environment} from '../../environments/environment';
 import {Post} from '../model/Post';
 import {AuthenticationService} from './authentication.service';
 import {User} from '../model/User';
+import {Attachment} from '../model/Attachment';
 
 @Injectable({
   providedIn: 'root'
@@ -35,4 +36,9 @@ export class ChannelService {
     (`${this.host}/channel/save`, channel);
   }
 
+  getProfilePictureById(id: number): Observable<Blob> {
+    return this.httpClient.get(`${environment.apiUrl}/channel/${id}/profile-picture`, {
+      responseType: 'blob'
+    });
+  }
 }

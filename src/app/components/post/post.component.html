@@ -1,6 +1,6 @@
 <mat-card class="example-card">
   <mat-card-header>
-    <img mat-card-avatar src="assets/img/default-user-image.png">
+    <img mat-card-avatar [src]="getProfilePictureByUserId(this.post.user.id)" alt="assets/img/default-user-image.png">
     <mat-card-title>{{post.title}}
       <span class="title-date"> ,{{post.dateCreated | date}}</span>
       <mat-icon matTooltip="Add to favourites"

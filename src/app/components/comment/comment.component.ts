@@ -12,6 +12,7 @@ import {Attachment} from '../../model/Attachment';
 import {catchError, map} from 'rxjs/operators';
 import {HttpEventType} from '@angular/common/http';
 import {AttachmentService} from '../../services/attachment.service';
+import {UserService} from '../../services/user.service';
 
 @Component({
   selector: 'app-comment',
@@ -31,11 +32,13 @@ export class CommentComponent implements OnInit, OnDestroy {
   editEnabled = false;
   filesToUploadReply = [];
 
+
   constructor(private commentService: CommentService,
               private authService: AuthenticationService,
               private likeService: LikeService,
               private matDialog: MatDialog,
-              private attachmentService: AttachmentService) {
+              private attachmentService: AttachmentService,
+              private userService: UserService) {
   }
 
   ngOnInit(): void {
@@ -295,6 +298,10 @@ export class CommentComponent implements OnInit, OnDestroy {
         this.filesToUploadReply.push(file);
       }
     }
+  }
+
+  getProfilePictureByUserId(id: number): string {
+    return this.userService.getProfilePictureById(id);
   }
 
 
