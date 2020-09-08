@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
-import {Post} from "../model/Post";
-import {Attachment} from "../model/Attachment";
+import {Post} from "../../model/Post";
+import {Attachment} from "../../model/Attachment";
 import {Observable} from "rxjs";
-import {HttpResponse} from "../model/HttpResponse";
-import {environment} from "../../environments/environment";
+import {HttpResponse} from "../../model/HttpResponse";
+import {environment} from "../../../environments/environment";
 import {HttpClient} from "@angular/common/http";
-import {Like} from "../model/Like";
-import {User} from "../model/User";
-import {Comment} from "../model/Comment";
-import {AuthenticationService} from "./authentication.service";
-import {LikeStatus} from "../model/LikeStatus";
+import {Like} from "../../model/Like";
+import {User} from "../../model/User";
+import {Comment} from "../../model/Comment";
+import {AuthenticationService} from "../authentication/authentication.service";
+import {LikeStatus} from "../../model/LikeStatus";
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +25,7 @@ export class LikeService {
               private authService:AuthenticationService) { }
 
   deleteLike(like: Like):Promise<HttpResponse> {
-    return this.httpClient.delete<HttpResponse>(`${environment.apiUrl}/like/deleteLike/${like.id}`).toPromise();
+    return this.httpClient.delete<HttpResponse>(`${environment.resourceServerUrl}/like/deleteLike/${like.id}`).toPromise();
   }
 
   async like(object:string,id:number,likeStatusString:string):Promise<Like>{
@@ -47,11 +47,11 @@ export class LikeService {
       .then((likeStatus) => {
         like.likeStatus = likeStatus;
       });
-    return this.httpClient.post<Like>(environment.apiUrl+"/like/save",like).toPromise();
+    return this.httpClient.post<Like>(environment.resourceServerUrl+"/like/save",like).toPromise();
   }
 
   getLikeStatusByName(likeStatus: String): Promise<LikeStatus>{
-    return this.httpClient.get<LikeStatus>(environment.apiUrl+"/comment/like-status/"+likeStatus).toPromise();
+    return this.httpClient.get<LikeStatus>(environment.resourceServerUrl+"/comment/like-status/"+likeStatus).toPromise();
   }
 
   async updateLike(like:Like,likeStatusString:string) {
@@ -59,6 +59,6 @@ export class LikeService {
       .then((likeStatus) => {
         like.likeStatus = likeStatus;
       });
-    return this.httpClient.post<Like>(environment.apiUrl+"/like/save",like).toPromise();
+    return this.httpClient.post<Like>(environment.resourceServerUrl+"/like/save",like).toPromise();
   }
 }

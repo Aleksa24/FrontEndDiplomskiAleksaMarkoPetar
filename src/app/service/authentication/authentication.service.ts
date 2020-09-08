@@ -1,31 +1,37 @@
 import {Injectable} from '@angular/core';
-import {environment} from "../../environments/environment";
-import {HttpClient, HttpErrorResponse, HttpResponse} from "@angular/common/http";
-import {Observable} from "rxjs";
-import {User} from "../model/user";
-import {JwtHelperService} from "@auth0/angular-jwt";
+import {environment} from '../../../environments/environment';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {User} from '../../model/User';
+import {JwtHelperService} from '@auth0/angular-jwt';
+import {AuthenticationRequest} from '../../model/AuthenticationRequest';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
 
-  public host = environment.apiUrl;
   private token: string;
   private loggedUsername: string;
   private jwtHelper = new JwtHelperService();
 
-  constructor(private http: HttpClient) {
+  constructor(private httpClient: HttpClient) {
   }
 
-  login(user: User): Observable<HttpResponse<User>> {
-    return this.http.post<User>
-    (`${this.host}/auth/login`, user, {observe: 'response'}); // full response
-  }
+  login(user): Promise<AuthenticationRequest> {
+    let params = new URLSearchParams();
+    params.append('username', user.username);
+    params.append('password', user.password);
+    params.append('grant_type', 'password');
+    params.append('scope', 'read');
 
-  register(user: User): Observable<User | HttpErrorResponse> {
-    return this.http.post<User | HttpErrorResponse>
-    (`${this.host}/user/register`, user); // body
+    let headers =
+      new HttpHeaders({
+        'Content-type': 'application/x-www-form-urlencoded; charset=utf-8',
+        'Authorization': 'Basic ' + btoa(`${environment.clientId}:${environment.clientSecret}`)
+      });
+
+    return this.httpClient.post<AuthenticationRequest>(`${environment.authorizationServerUrl}/oauth/token`,
+      params.toString(), {headers: headers}).toPromise();
   }
 
   logout(): void {
@@ -58,9 +64,8 @@ export class AuthenticationService {
 
   isLogged(): boolean {
     this.loadTokenFromLocalCache();
-
     if ((this.token == null || this.token === '') ||
-      (this.jwtHelper.decodeToken(this.token).sub == null || '') ||
+      (this.jwtHelper.decodeToken(this.token).user_name == null || '') ||
       (this.jwtHelper.isTokenExpired(this.token))) {
       this.logout();
       return false;

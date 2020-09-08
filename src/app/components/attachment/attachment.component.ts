@@ -2,10 +2,10 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Attachment} from "../../model/Attachment";
 import {faArchive, faCoffee, faDownload, faFilePdf, faImage, faStarOfDavid, faTimes} from '@fortawesome/free-solid-svg-icons';
 import {Post} from '../../model/Post';
-import {PostService} from '../../services/post.service';
+import {PostService} from '../../service/post/post.service';
 import {User} from '../../model/User';
-import {AuthenticationService} from '../../services/authentication.service';
-import {AttachmentService} from '../../services/attachment.service';
+import {AuthenticationService} from '../../service/authentication/authentication.service';
+import {AttachmentService} from '../../service/attachment/attachment.service';
 import {Comment} from '../../model/Comment';
 
 @Component({

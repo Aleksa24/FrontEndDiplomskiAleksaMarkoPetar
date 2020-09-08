@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import {Observable} from "rxjs";
-import {CommentStatus} from "../model/CommentStatus";
+import {CommentStatus} from "../../model/CommentStatus";
 import {HttpClient} from "@angular/common/http";
-import {environment} from "../../environments/environment";
-import {Comment} from "../model/Comment";
-import {AuthenticationService} from "./authentication.service";
-import {Post} from "../model/Post";
-import {Like} from "../model/Like";
-import {User} from "../model/User";
-import {LikeStatus} from "../model/LikeStatus";
+import {environment} from "../../../environments/environment";
+import {Comment} from "../../model/Comment";
+import {AuthenticationService} from "../authentication/authentication.service";
+import {Post} from "../../model/Post";
+import {Like} from "../../model/Like";
+import {User} from "../../model/User";
+import {LikeStatus} from "../../model/LikeStatus";
 
 @Injectable({
   providedIn: 'root'
@@ -22,10 +22,10 @@ export class CommentService {
               private authService: AuthenticationService) { }
 
    getCommentStatusByName(statusName: string): Promise<CommentStatus> {
-    return this.httpClient.get<CommentStatus>(environment.apiUrl + "/comment/comment-status/" + statusName).toPromise();
+    return this.httpClient.get<CommentStatus>(environment.resourceServerUrl + "/comment/comment-status/" + statusName).toPromise();
   }
   getCommentById(id: number):Observable<Comment> {
-    return this.httpClient.get<Comment>(environment.apiUrl+"/comment/"+id);
+    return this.httpClient.get<Comment>(environment.resourceServerUrl+"/comment/"+id);
   }
 
   async postReplay(comment: Comment, replayText: string): Promise<Comment> {
@@ -37,7 +37,7 @@ export class CommentService {
       replay.commentStatus = commentStatus;
     });
     comment.comments.push(replay);
-    return this.httpClient.post<Comment>(environment.apiUrl+"/comment/addReplay",comment).toPromise();
+    return this.httpClient.post<Comment>(environment.resourceServerUrl+"/comment/addReplay",comment).toPromise();
   }
 
 
@@ -53,7 +53,7 @@ export class CommentService {
         like.likeStatus = likeStatus;
       });
     comment.likes.push(like);
-    return this.httpClient.post<Comment>(environment.apiUrl+"/comment/addLike",comment).toPromise();
+    return this.httpClient.post<Comment>(environment.resourceServerUrl+"/comment/addLike",comment).toPromise();
   }
 
   async updateLike(comment: Comment, likeStatusString: string, like: Like):Promise<Comment> {
@@ -63,19 +63,19 @@ export class CommentService {
       .then((likeStatus) => {
         like.likeStatus = likeStatus;
       });
-    return this.httpClient.post<Comment>(environment.apiUrl+"/comment/addLike",comment).toPromise();
+    return this.httpClient.post<Comment>(environment.resourceServerUrl+"/comment/addLike",comment).toPromise();
   }
 
   deleteLike(comment: Comment, like: Like):Promise<Comment> {
     comment.likes = comment.likes.filter(value => value.id != like.id)
-    return this.httpClient.post<Comment>(`${environment.apiUrl}/comment/save`,comment).toPromise();
+    return this.httpClient.post<Comment>(`${environment.resourceServerUrl}/comment/save`,comment).toPromise();
   }
 
   getLikeStatusByName(likeStatus: String): Promise<LikeStatus>{
-    return this.httpClient.get<LikeStatus>(environment.apiUrl+"/comment/like-status/"+likeStatus).toPromise();
+    return this.httpClient.get<LikeStatus>(environment.resourceServerUrl+"/comment/like-status/"+likeStatus).toPromise();
   }
 
   save(comment: Comment): Observable<Comment> {
-    return this.httpClient.post<Comment>(`${environment.apiUrl}/comment/save`, comment);
+    return this.httpClient.post<Comment>(`${environment.resourceServerUrl}/comment/save`, comment);
   }
 }

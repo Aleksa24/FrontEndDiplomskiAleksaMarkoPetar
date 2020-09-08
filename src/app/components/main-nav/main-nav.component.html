@@ -27,7 +27,7 @@
       <mat-menu #lazyMenu="matMenu" xPosition="before">
         <ng-template matMenuContent let-firstName="firstName">
           <button mat-menu-item>Profile</button>
-          <button mat-menu-item>Log out {{firstName}}</button>
+          <button mat-menu-item (click)="logout()">Log out {{firstName}}</button>
         </ng-template>
       </mat-menu>
       <button mat-raised-button

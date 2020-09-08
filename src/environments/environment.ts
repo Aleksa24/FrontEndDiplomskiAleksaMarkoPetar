@@ -4,7 +4,10 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:8080'
+  resourceServerUrl: 'http://localhost:9090',
+  authorizationServerUrl: 'http://localhost:8080',
+  clientId: 'client1',
+  clientSecret: 'secret1'
 };
 
 /*

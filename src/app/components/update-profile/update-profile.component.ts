@@ -1,10 +1,10 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Subscription, throwError} from 'rxjs';
-import {UserService} from '../../services/user.service';
+import {UserService} from '../../service/user/user.service';
 import {User} from '../../model/User';
 import {HttpErrorResponse, HttpEventType} from '@angular/common/http';
-import {AuthenticationService} from '../../services/authentication.service';
+import {AuthenticationService} from '../../service/authentication/authentication.service';
 import {faPaperclip} from '@fortawesome/free-solid-svg-icons';
 import {catchError, map} from 'rxjs/operators';
 import {Attachment} from '../../model/Attachment';

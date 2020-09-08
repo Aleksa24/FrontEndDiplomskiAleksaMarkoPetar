@@ -1,21 +1,22 @@
 import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {ChannelService} from '../../services/channel.service';
+import {ChannelService} from '../../service/channel/channel.service';
 import {Channel} from '../../model/Channel';
 import {Category} from '../../model/Category';
-import {CategoryService} from '../../services/category.service';
+import {CategoryService} from '../../service/category/category.service';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {merge, Observable, of as observableOf, Subscription} from 'rxjs';
 import {catchError, map, startWith, switchMap} from 'rxjs/operators';
-import {UserService} from '../../services/user.service';
+import {UserService} from '../../service/user/user.service';
 import {User} from '../../model/User';
 import {UserChannel} from '../../model/UserChannel';
 import {CommunicationDirection} from '../../model/CommunicationDirection';
 import {CommunicationDirectionService} from '../../service/communication-direction/communication-direction.service';
 import {ChannelStatus} from '../../model/ChannelStatus';
 import {ChannelRole} from '../../model/ChannelRole';
+import {environment} from '../../../environments/environment';
 
 @Component({
   selector: 'app-make-channel',
@@ -165,7 +166,7 @@ export class ExampleHttpDatabase {
   }
 
   getRepoIssues(sort: string, order: string, page: number, pageSize: number): Observable<User1[]> {
-    const href = 'http://localhost:8080/user/all_pagination';
+    const href = `${environment.resourceServerUrl}/user/all_pagination`; // TODO refactor
     const requestUrl =
       `${href}?sort=${sort},${order}&page=${page}&size=${pageSize}`;
 

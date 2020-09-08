@@ -3,9 +3,9 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Subscription} from "rxjs";
 import {Post} from "../../model/Post";
-import {PostService} from "../../services/post.service";
+import {PostService} from "../../service/post/post.service";
 import {Channel} from "../../model/Channel";
-import {ChannelService} from "../../services/channel.service";
+import {ChannelService} from "../../service/channel/channel.service";
 import {faPaperclip} from '@fortawesome/free-solid-svg-icons';
 
 @Component({

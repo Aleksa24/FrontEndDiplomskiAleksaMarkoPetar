@@ -1,9 +1,9 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from "rxjs";
-import {AuthenticationService} from "../../services/authentication.service";
+import {AuthenticationService} from "../../service/authentication/authentication.service";
 import {User} from "../../model/User";
 import {Post} from "../../model/Post";
-import {UserService} from "../../services/user.service";
+import {UserService} from "../../service/user/user.service";
 
 @Component({
   selector: 'app-favourites',

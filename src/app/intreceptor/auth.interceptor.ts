@@ -6,7 +6,8 @@ import {
   HttpInterceptor
 } from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {AuthenticationService} from "../services/authentication.service";
+import {AuthenticationService} from '../service/authentication/authentication.service';
+import {environment} from '../../environments/environment';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -15,19 +16,13 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   intercept(request: HttpRequest<unknown>, handler: HttpHandler): Observable<HttpEvent<any>> {
-    if (request.url.includes(`${this.authenticationService.host}/user/login`)) {
-      return handler.handle(request);
-    }
-    if (request.url.includes(`${this.authenticationService.host}/user/register`)) {
-      return handler.handle(request);
-    }
-    if (request.url.includes(`${this.authenticationService.host}/user/reset-password`)) {
+    if (request.url.includes(`${environment.authorizationServerUrl}/oauth/token`)) {
       return handler.handle(request);
     }
     this.authenticationService.loadTokenFromLocalCache();
     const token = this.authenticationService.getToken();
 
-    const cloneRequest = request.clone({setHeaders: {Authorization: `Bearer ${token}`}})
+    const cloneRequest = request.clone({setHeaders: {Authorization: `Bearer ${token}`}});
     return handler.handle(cloneRequest);
   }
 }

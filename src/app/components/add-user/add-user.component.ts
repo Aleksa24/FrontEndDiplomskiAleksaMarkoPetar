@@ -3,8 +3,8 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Subscription} from 'rxjs';
 import {User} from '../../model/User';
 import {Role} from '../../model/Role';
-import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
-import {UserService} from '../../services/user.service';
+import {HttpErrorResponse} from '@angular/common/http';
+import {UserService} from '../../service/user/user.service';
 
 @Component({
   selector: 'app-add-user',
@@ -38,7 +38,7 @@ export class AddUserComponent implements OnInit, OnDestroy {
         console.log(response);
       },
       (errorResponse:HttpErrorResponse) => {
-        console.dir(errorResponse); // TODO odradi obradjivanje greska
+        console.dir(errorResponse); // TODO error handle
       }
     ));
   }

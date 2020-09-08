@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ChannelService} from '../../services/channel.service';
+import {ChannelService} from '../../service/channel/channel.service';
 import {ActivatedRoute} from '@angular/router';
 import {Channel} from '../../model/Channel';
 import {switchMap} from 'rxjs/operators';
@@ -7,7 +7,7 @@ import {Observable, Subscription} from 'rxjs';
 import {MatDialog} from "@angular/material/dialog";
 import {PostNewComponent} from "../post-new/post-new.component";
 import {Post} from "../../model/Post";
-import {PostService} from "../../services/post.service";
+import {PostService} from "../../service/post/post.service";
 
 @Component({
   selector: 'app-channel',

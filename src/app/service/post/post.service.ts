@@ -1,20 +1,20 @@
 import { Injectable } from '@angular/core';
 import {Observable} from "rxjs";
-import {Post} from "../model/Post";
-import {Comment} from "../model/Comment";
+import {Post} from "../../model/Post";
+import {Comment} from "../../model/Comment";
 import {HttpClient, HttpEvent} from '@angular/common/http';
-import {environment} from "../../environments/environment";
-import {AuthenticationService} from "./authentication.service";
-import {CommentStatus} from "../model/CommentStatus";
-import {CommentService} from "./comment.service";
+import {environment} from "../../../environments/environment";
+import {AuthenticationService} from "../authentication/authentication.service";
+import {CommentStatus} from "../../model/CommentStatus";
+import {CommentService} from "../comment/comment.service";
 import {timeout} from "rxjs/operators";
-import {Channel} from "../model/Channel";
-import {Like} from "../model/Like";
-import {LikeStatus} from "../model/LikeStatus";
-import {User} from "../model/User";
+import {Channel} from "../../model/Channel";
+import {Like} from "../../model/Like";
+import {LikeStatus} from "../../model/LikeStatus";
+import {User} from "../../model/User";
 import {brotliCompress} from "zlib";
-import {Attachment} from "../model/Attachment";
-import {HttpResponse} from '../model/HttpResponse';
+import {Attachment} from "../../model/Attachment";
+import {HttpResponse} from '../../model/HttpResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +29,7 @@ export class PostService {
               private commentService: CommentService) { }
 
   getById(id: number):Observable<Post> {
-    return this.httpClient.get<Post>(environment.apiUrl+"/post/"+id);
+    return this.httpClient.get<Post>(environment.resourceServerUrl+"/post/"+id);
   }
 
   async postComment(post:Post,commentText:string):Promise<Post> {
@@ -42,13 +42,13 @@ export class PostService {
     });
     post.comments.push(comment);
 
-    return this.httpClient.post<Post>(environment.apiUrl+"/post/addComment",post).toPromise();
+    return this.httpClient.post<Post>(environment.resourceServerUrl+"/post/addComment",post).toPromise();
   }
 
   savePost(channel: Channel, post: Post): Observable<Post> {
     post.channel = channel;
     post.user = this.authService.getUserFromLocalCache();
-    return this.httpClient.post<Post>(environment.apiUrl+"/post/save",post);
+    return this.httpClient.post<Post>(environment.resourceServerUrl+"/post/save",post);
   }
 
   async like(post: Post,likeStatusString: string): Promise<Post> {
@@ -64,7 +64,7 @@ export class PostService {
         like.likeStatus = likeStatus;
       });
     post.likes.push(like);
-    return this.httpClient.post<Post>(environment.apiUrl+"/post/addLike",post).toPromise();
+    return this.httpClient.post<Post>(environment.resourceServerUrl+"/post/addLike",post).toPromise();
   }
 
   async updateLike(post: Post, likeStatusString: string, like: Like):Promise<Post> {
@@ -74,28 +74,28 @@ export class PostService {
       .then((likeStatus) => {
         like.likeStatus = likeStatus;
       });
-    return this.httpClient.post<Post>(environment.apiUrl+"/post/addLike",post).toPromise();
+    return this.httpClient.post<Post>(environment.resourceServerUrl+"/post/addLike",post).toPromise();
   }
 
   getLikeStatusByName(likeStatus: String): Promise<LikeStatus>{
-    return this.httpClient.get<LikeStatus>(environment.apiUrl+"/comment/like-status/"+likeStatus).toPromise();
+    return this.httpClient.get<LikeStatus>(environment.resourceServerUrl+"/comment/like-status/"+likeStatus).toPromise();
   }
 
   addAttachment(formData:FormData): Observable<HttpEvent<Attachment>> {
-    return this.httpClient.post<Attachment>(`${environment.apiUrl}/post/addAttachment`,formData, {
+    return this.httpClient.post<Attachment>(`${environment.resourceServerUrl}/post/addAttachment`,formData, {
       observe: 'events',
       reportProgress: true
     });
   }
 
   downloadAttachment(post: Post, attachment: Attachment): Observable<Blob>{
-    return this.httpClient.get(`${environment.apiUrl}/post/${post.id}/file/${attachment.originalName}`, {
+    return this.httpClient.get(`${environment.resourceServerUrl}/post/${post.id}/file/${attachment.originalName}`, {
       responseType: 'blob'
     });
   }
 
   removeAttachment(post: Post, attachment: Attachment): Observable<HttpResponse> {
-    return this.httpClient.delete<HttpResponse>(`${environment.apiUrl}/post/${post.id}/attachment/${attachment.id}/delete`);
+    return this.httpClient.delete<HttpResponse>(`${environment.resourceServerUrl}/post/${post.id}/attachment/${attachment.id}/delete`);
   }
 
 }

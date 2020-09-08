@@ -1,9 +1,9 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Channel} from "../../model/Channel";
-import {Observable, Subscription} from "rxjs";
-import {Router} from "@angular/router";
-import {ChannelService} from "../../services/channel.service";
-import {AuthenticationService} from '../../services/authentication.service';
+import {Channel} from '../../model/Channel';
+import {Observable, Subscription} from 'rxjs';
+import {Router} from '@angular/router';
+import {ChannelService} from '../../service/channel/channel.service';
+import {AuthenticationService} from '../../service/authentication/authentication.service';
 import {environment} from '../../../environments/environment';
 
 @Component({
@@ -11,7 +11,7 @@ import {environment} from '../../../environments/environment';
   templateUrl: './channels.component.html',
   styleUrls: ['./channels.component.css']
 })
-export class ChannelsComponent implements OnInit, OnDestroy{
+export class ChannelsComponent implements OnInit, OnDestroy {
 
   //neka se crveni radi sta treba za sada, ovo je samo za testiranje da li radi sta treba
   channels$: Observable<Channel[]>;
@@ -20,7 +20,8 @@ export class ChannelsComponent implements OnInit, OnDestroy{
 
   constructor(private router: Router,
               private channelService: ChannelService,
-              private authenticationService: AuthenticationService) { }
+              private authenticationService: AuthenticationService) {
+  }
 
   ngOnInit(): void {
     this.channels$ = this.channelService.getChannelsForUser(this.authenticationService.getUserFromLocalCache().id);
@@ -30,7 +31,7 @@ export class ChannelsComponent implements OnInit, OnDestroy{
   }
 
   ngOnDestroy(): void {
-    this.subs.forEach(value => value.unsubscribe())
+    this.subs.forEach(value => value.unsubscribe());
   }
 
   getProfilePictureForChannel(id: number) {
@@ -41,7 +42,7 @@ export class ChannelsComponent implements OnInit, OnDestroy{
     );
   }
 
-  getProfilePictureByChannelId(id: number): string{
-    return `${environment.apiUrl}/channel/${id}/profile-picture`;
+  getProfilePictureByChannelId(id: number): string {
+    return `${environment.resourceServerUrl}/channel/${id}/profile-picture`;
   }
 }

@@ -1,18 +1,18 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Subscription, throwError} from 'rxjs';
 import {Comment} from '../../model/Comment';
-import {CommentService} from '../../services/comment.service';
+import {CommentService} from '../../service/comment/comment.service';
 import {User} from '../../model/User';
-import {AuthenticationService} from '../../services/authentication.service';
+import {AuthenticationService} from '../../service/authentication/authentication.service';
 import {Like} from '../../model/Like';
 import {MatDialog} from '@angular/material/dialog';
-import {LikeService} from '../../services/like.service';
+import {LikeService} from '../../service/like/like.service';
 import {faPaperclip} from '@fortawesome/free-solid-svg-icons';
 import {Attachment} from '../../model/Attachment';
 import {catchError, map} from 'rxjs/operators';
 import {HttpEventType} from '@angular/common/http';
-import {AttachmentService} from '../../services/attachment.service';
-import {UserService} from '../../services/user.service';
+import {AttachmentService} from '../../service/attachment/attachment.service';
+import {UserService} from '../../service/user/user.service';
 
 @Component({
   selector: 'app-comment',

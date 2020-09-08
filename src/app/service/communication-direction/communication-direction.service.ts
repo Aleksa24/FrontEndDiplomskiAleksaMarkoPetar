@@ -13,6 +13,6 @@ export class CommunicationDirectionService {
 
   getCommunicationDirections(): Observable<CommunicationDirection[]>{
     return this.httpClient.get<CommunicationDirection[]>(
-      environment.apiUrl+"/communication-direction/all");
+      environment.resourceServerUrl+"/communication-direction/all");
   }
 }

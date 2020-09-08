@@ -1,22 +1,22 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {Observable, of, range, Subscription, throwError} from 'rxjs';
 import {Post} from "../../model/Post";
-import {PostService} from "../../services/post.service";
+import {PostService} from "../../service/post/post.service";
 import {User} from "../../model/User";
-import {AuthenticationService} from "../../services/authentication.service";
+import {AuthenticationService} from "../../service/authentication/authentication.service";
 import {Like} from "../../model/Like";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Attachment} from '../../model/Attachment';
 import {HttpEventType} from '@angular/common/http';
 import {catchError, map, takeWhile} from 'rxjs/operators';
 import {randomBytes} from 'crypto';
-import {UserService} from "../../services/user.service";
-import {LikeService} from "../../services/like.service";
+import {UserService} from "../../service/user/user.service";
+import {LikeService} from "../../service/like/like.service";
 import {faPaperclip} from '@fortawesome/free-solid-svg-icons';
-import {AttachmentService} from '../../services/attachment.service';
+import {AttachmentService} from '../../service/attachment/attachment.service';
 import {AttachmentUploadData} from '../../model/AttachmentUploadData';
 import {Comment} from '../../model/Comment';
-import {CommentService} from '../../services/comment.service';
+import {CommentService} from '../../service/comment/comment.service';
 import {environment} from '../../../environments/environment';
 
 @Component({
