@@ -17,7 +17,7 @@ import {CommunicationDirectionService} from '../../service/communication-directi
 import {ChannelStatus} from '../../model/ChannelStatus';
 import {ChannelRole} from '../../model/ChannelRole';
 import {environment} from '../../../environments/environment';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-make-channel',
@@ -53,7 +53,8 @@ export class MakeChannelComponent implements OnInit, AfterViewInit, OnDestroy {
               private _httpClient: HttpClient,
               private userService: UserService,
               private communicationDirectionService: CommunicationDirectionService,
-              private route: ActivatedRoute) {
+              private activatedRoute: ActivatedRoute,
+              private router: Router) {
   }
 
   ngOnInit(): void {
@@ -63,11 +64,15 @@ export class MakeChannelComponent implements OnInit, AfterViewInit, OnDestroy {
       communicationDirection: ['']
     });
 
-    this.subs.push(this.route.paramMap.pipe(
+    this.subs.push(this.activatedRoute.paramMap.pipe(
       switchMap((params) => {
         return params.get('id');
       })
-    ).subscribe((value) => this.parentChannelId = parseInt(value)));
+    ).subscribe((value) => {
+      console.log(value);
+      this.parentChannelId = parseInt(value);
+      console.log(this.parentChannelId);
+    }));
 
     this.categoryService.getCategories().subscribe((value) => {
       this.categories = value;
@@ -85,7 +90,8 @@ export class MakeChannelComponent implements OnInit, AfterViewInit, OnDestroy {
     let communicationDirection: CommunicationDirection = new CommunicationDirection();
     let channelStatus: ChannelStatus = new ChannelStatus();
 
-    if (this.parentChannelId !== -1) {
+    console.log(this.parentChannelId);
+    if (this.parentChannelId !== 0) {
       let parentChannel: Channel = new Channel();
       parentChannel.id = this.parentChannelId;
       channel.parentChannel = parentChannel;
@@ -113,10 +119,10 @@ export class MakeChannelComponent implements OnInit, AfterViewInit, OnDestroy {
     console.log(channel);
     this.subs.push(this.channelService.saveChannel(channel).subscribe(
       (response: Channel) => {
-        console.log(response);
+        this.router.navigate([`/channel/${response.id}`]).then();
       },
       (errorResponse: HttpErrorResponse) => {
-        console.dir(errorResponse); // TODO odradi obradjivanje greska
+        console.dir(errorResponse); // TODO error handle
       }
     ));
   }

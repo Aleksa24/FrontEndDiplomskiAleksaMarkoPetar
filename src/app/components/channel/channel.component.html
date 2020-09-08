@@ -11,6 +11,7 @@
       </mat-nav-list>
       <button mat-stroked-button (click)="openNewPostDialog()">New post</button>
       <button mat-stroked-button [routerLink]="['/make-channel', channel.id]">Add Subchannel</button>
+      <button mat-stroked-button [routerLink]="['/edit-channel', channel.id]">Edit Channel</button>
     </mat-sidenav>
 
     <mat-sidenav-content>
