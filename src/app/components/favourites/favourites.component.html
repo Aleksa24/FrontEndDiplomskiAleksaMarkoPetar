@@ -1,5 +1,5 @@
 <app-main-nav>
-  <div class="content">
+  <div>
     <app-post *ngFor="let post of user.favorites" [post]="post" (favouriteClick)="favouriteRemoved($event)"></app-post>
   </div>
 </app-main-nav>
