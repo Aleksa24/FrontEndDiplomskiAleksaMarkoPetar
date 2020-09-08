@@ -3,7 +3,7 @@
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons"); /* bez ovoga ne ucitava mat-icon */
 
 body {
-  background-image: url("https://mdbootstrap.com/img/Photos/Horizontal/Nature/full page/img(11).jpg"); /* TODO  save image */
+  background-image: url("/assets/img/img1.jpg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -20,4 +20,6 @@ html, body {
   font-size: medium !important;
 }
 
-[hidden] { display: none !important;}
+[hidden] {
+  display: none !important;
+}

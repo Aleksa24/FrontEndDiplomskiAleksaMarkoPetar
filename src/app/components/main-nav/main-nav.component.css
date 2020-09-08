@@ -29,4 +29,13 @@ span {
   padding-right: 1rem;
 }
 
+mat-sidenav-content {
+  background-image: url("https://mdbootstrap.com/img/Photos/Horizontal/Nature/full page/img(11).jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+
+
 

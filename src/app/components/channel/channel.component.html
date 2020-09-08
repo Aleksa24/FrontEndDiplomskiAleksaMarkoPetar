@@ -1,25 +1,27 @@
 <app-main-nav>
 
-  <mat-toolbar>
-    <button mat-raised-button color="accent" class="title"><strong>{{channel.name}}</strong></button>
-    <button [hidden]="channel.parentChannel === null"
-            mat-raised-button color="warn"
-            [routerLink]="['/channel', channel.parentChannel?.id]">Back to {{channel.parentChannel?.name}}
-    </button>
-    <button mat-raised-button color="primary" (click)="openNewPostDialog()">New post</button>
-    <button mat-raised-button color="primary" [routerLink]="['/make-channel', channel.id]">Add Subchannel</button>
-    <button mat-raised-button color="primary" [routerLink]="['/edit-channel', channel.id]">Edit Channel</button>
-    <div *ngIf="this.channel.channels !== undefined">
-      <button mat-raised-button color="primary" [matMenuTriggerFor]="menu">Subchannels<mat-icon>arrow_drop_down</mat-icon></button>
-      <mat-menu #menu="matMenu">
-        <button *ngFor="let subchannel of channel.channels"
-                mat-menu-item
-                [routerLink]="['/channel',subchannel.id]">{{subchannel.name}}</button>
-      </mat-menu>
-    </div>
-  </mat-toolbar>
+  <div *ngIf="this.channel !== undefined">
+    <mat-toolbar [class.mat-elevation-z8]="true">
+      <button mat-raised-button color="accent" class="title"><strong>{{channel.name}}</strong></button>
+      <button mat-raised-button color="primary" (click)="openNewPostDialog()">New post</button>
+      <button mat-raised-button color="primary" [routerLink]="['/make-channel', channel.id]">Add Subchannel</button>
+      <button mat-raised-button color="primary" [routerLink]="['/edit-channel', channel.id]">Edit Channel</button>
+      <div *ngIf="this.channel.channels !== undefined">
+        <button mat-raised-button color="primary" [matMenuTriggerFor]="menu">Subchannels
+          <mat-icon>arrow_drop_down</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button *ngFor="let subchannel of channel.channels"
+                  mat-menu-item
+                  [routerLink]="['/channel',subchannel.id]">{{subchannel.name}}</button>
+        </mat-menu>
+      </div>
+      <button [hidden]="channel.parentChannel === null"
+              mat-raised-button color="warn"
+              [routerLink]="['/channel', channel.parentChannel?.id]">Back to {{channel.parentChannel?.name}}
+      </button>
+    </mat-toolbar>
 
-  <div class="content">
     <app-post *ngFor="let post of channel.posts" [post]="post"></app-post>
   </div>
 

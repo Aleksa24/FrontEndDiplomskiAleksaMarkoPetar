@@ -10,7 +10,7 @@
   color: hsl(0, 3%, 48%);
 }
 .mat-card {
-  margin: 2em;
+  margin: 3em 20%;
 }
 .attachment-card{
   background: linear-gradient(-30deg, white, deepskyblue);
