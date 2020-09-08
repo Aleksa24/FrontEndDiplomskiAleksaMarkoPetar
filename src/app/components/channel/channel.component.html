@@ -4,14 +4,23 @@
                  mode='side'
                  opened=true>
 
-      <mat-nav-list *ngIf="this.channel.channels !== undefined">
-        <a mat-list-item
-           *ngFor="let subchannel of channel.channels"
-           [routerLink]="['/channel',subchannel.id]">{{subchannel.name}}</a>
-      </mat-nav-list>
-      <button mat-stroked-button (click)="openNewPostDialog()">New post</button>
-      <button mat-stroked-button [routerLink]="['/make-channel', channel.id]">Add Subchannel</button>
-      <button mat-stroked-button [routerLink]="['/edit-channel', channel.id]">Edit Channel</button>
+      <div>
+        <button [hidden]="channel.parentChannel === null"
+                mat-raised-button color="accent"
+                [routerLink]="['/channel', channel.parentChannel?.id]">Back to {{channel.parentChannel?.name}}
+        </button>
+        <button mat-raised-button color="primary" (click)="openNewPostDialog()">New post</button>
+        <button mat-raised-button color="primary" [routerLink]="['/make-channel', channel.id]">Add Subchannel</button>
+        <button mat-raised-button color="primary" [routerLink]="['/edit-channel', channel.id]">Edit Channel</button>
+      </div>
+      <div>
+        <h1 class="mat-display-1">Subchannels</h1>
+        <mat-nav-list *ngIf="this.channel.channels !== undefined">
+          <button mat-list-item
+             *ngFor="let subchannel of channel.channels"
+             [routerLink]="['/channel',subchannel.id]">{{subchannel.name}}</button>
+        </mat-nav-list>
+      </div>
     </mat-sidenav>
 
     <mat-sidenav-content>

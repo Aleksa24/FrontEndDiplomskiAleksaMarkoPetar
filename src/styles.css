@@ -19,3 +19,5 @@ html, body {
   white-space: pre-line;
   font-size: medium !important;
 }
+
+[hidden] { display: none !important;}
