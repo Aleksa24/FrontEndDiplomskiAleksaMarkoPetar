@@ -16,5 +16,6 @@ export class Channel {
   public attachments: Attachment[] = [];
   public userChannels: UserChannel[] = [];
   public posts: Post[] = [];
+  public parentChannel: Channel;
 
 }

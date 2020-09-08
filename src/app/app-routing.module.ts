@@ -19,7 +19,7 @@ const routes: Routes = [
   {path: 'channels', component: ChannelsComponent, canActivate: [AuthenticationGuard]},
   {path: 'favourites', component: FavouritesComponent, canActivate: [AuthenticationGuard]},
   {path: 'add-user', component: AddUserComponent, canActivate: [AuthenticationGuard]},
-  {path: 'make-channel', component: MakeChannelComponent, canActivate: [AuthenticationGuard]},
+  {path: 'make-channel/:id', component: MakeChannelComponent, canActivate: [AuthenticationGuard]},
   {path: 'update-profile', component: UpdateProfileComponent, canActivate: [AuthenticationGuard]},
   {path: 'channel/:id', component: ChannelComponent, canActivate: [AuthenticationGuard]},
   {path: '', redirectTo: '/login', pathMatch: 'full'},

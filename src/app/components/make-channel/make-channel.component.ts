@@ -17,6 +17,7 @@ import {CommunicationDirectionService} from '../../service/communication-directi
 import {ChannelStatus} from '../../model/ChannelStatus';
 import {ChannelRole} from '../../model/ChannelRole';
 import {environment} from '../../../environments/environment';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-make-channel',
@@ -39,6 +40,8 @@ export class MakeChannelComponent implements OnInit, AfterViewInit, OnDestroy {
   isLoadingResults = true;
   isRateLimitReached = false;
 
+  parentChannelId: number;
+
   private subs: Subscription[] = [];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -49,7 +52,8 @@ export class MakeChannelComponent implements OnInit, AfterViewInit, OnDestroy {
               private categoryService: CategoryService,
               private _httpClient: HttpClient,
               private userService: UserService,
-              private communicationDirectionService: CommunicationDirectionService) {
+              private communicationDirectionService: CommunicationDirectionService,
+              private route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
@@ -59,9 +63,12 @@ export class MakeChannelComponent implements OnInit, AfterViewInit, OnDestroy {
       communicationDirection: ['']
     });
 
-    this.channelService.getChannels().subscribe((value) => {
-      this.channels = value;
-    });
+    this.subs.push(this.route.paramMap.pipe(
+      switchMap((params) => {
+        return params.get('id');
+      })
+    ).subscribe((value) => this.parentChannelId = parseInt(value)));
+
     this.categoryService.getCategories().subscribe((value) => {
       this.categories = value;
     });
@@ -77,6 +84,12 @@ export class MakeChannelComponent implements OnInit, AfterViewInit, OnDestroy {
     let category: Category = new Category();
     let communicationDirection: CommunicationDirection = new CommunicationDirection();
     let channelStatus: ChannelStatus = new ChannelStatus();
+
+    if (this.parentChannelId !== -1) {
+      let parentChannel: Channel = new Channel();
+      parentChannel.id = this.parentChannelId;
+      channel.parentChannel = parentChannel;
+    }
 
     category.id = this.getIdByName(this.categories,
       this.form.get('category').value);

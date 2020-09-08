@@ -4,10 +4,10 @@ import {ActivatedRoute} from '@angular/router';
 import {Channel} from '../../model/Channel';
 import {switchMap} from 'rxjs/operators';
 import {Observable, Subscription} from 'rxjs';
-import {MatDialog} from "@angular/material/dialog";
-import {PostNewComponent} from "../post-new/post-new.component";
-import {Post} from "../../model/Post";
-import {PostService} from "../../service/post/post.service";
+import {MatDialog} from '@angular/material/dialog';
+import {PostNewComponent} from '../post-new/post-new.component';
+import {Post} from '../../model/Post';
+import {PostService} from '../../service/post/post.service';
 
 @Component({
   selector: 'app-channel',
@@ -35,12 +35,14 @@ export class ChannelComponent implements OnInit, OnDestroy {
   }
 
   openNewPostDialog() {
-    let refDialog = this.matDialog.open(PostNewComponent,{
-      height:"500px",width:"400px"
+    let refDialog = this.matDialog.open(PostNewComponent, {
+      height: '500px', width: '400px'
     });
 
     refDialog.afterClosed().subscribe((result) => {
-      if (result === undefined) {return; }
+      if (result === undefined) {
+        return;
+      }
       const post: Post = new Post();
       post.title = result.title;
       post.body = result.body;
@@ -48,10 +50,10 @@ export class ChannelComponent implements OnInit, OnDestroy {
         .subscribe((savedPost) => {
           savedPost.filesToUpload = result.files; // files that were chosen while new post is created
           console.log(savedPost);
-          console.log("kanal je primljen");
+          console.log('kanal je primljen');
           this.channel.posts.push(savedPost);
-      }));
-    },(error => {
+        }));
+    }, (error => {
       console.dir(error);
     }));
   }
@@ -61,6 +63,6 @@ export class ChannelComponent implements OnInit, OnDestroy {
   }
 
   addSubchannel() {
-
+    console.log(this.channel);
   }
 }

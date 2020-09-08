@@ -15,12 +15,7 @@ export class ChannelService {
 
   public host = environment.resourceServerUrl;
 
-  constructor(private httpClient: HttpClient,
-              private authService: AuthenticationService) {
-  }
-
-  getChannels(): Observable<Channel[]> {
-    return this.httpClient.get<Channel[]>(environment.resourceServerUrl + '/channel/all');
+  constructor(private httpClient: HttpClient) {
   }
 
   getChannelsForUser(id: number): Observable<Channel[]> {

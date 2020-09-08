@@ -13,7 +13,6 @@ import {environment} from '../../../environments/environment';
 })
 export class ChannelsComponent implements OnInit, OnDestroy {
 
-  //neka se crveni radi sta treba za sada, ovo je samo za testiranje da li radi sta treba
   channels$: Observable<Channel[]>;
   channels: Channel[];
   subs: Subscription[] = [];
