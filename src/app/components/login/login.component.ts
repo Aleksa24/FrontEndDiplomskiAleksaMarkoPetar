@@ -6,6 +6,8 @@ import {Router} from '@angular/router';
 import {AuthenticationService} from '../../service/authentication/authentication.service';
 import {AuthenticationRequest} from '../../model/AuthenticationRequest';
 import {UserService} from '../../service/user/user.service';
+import {AuthenticationFailedResponse} from '../../http/response/AuthenticationFailedResponse';
+import {error} from '@angular/compiler/src/util';
 
 @Component({
   selector: 'app-login',
@@ -14,8 +16,9 @@ import {UserService} from '../../service/user/user.service';
 })
 export class LoginComponent implements OnInit, OnDestroy {
 
-  private subs: Subscription[];
-  public form: FormGroup;
+  public subscriptions: Subscription[];
+  public formGroup: FormGroup;
+  public authenticationFailedResponseMessage = '';
 
   constructor(private formBuilder: FormBuilder,
               private router: Router,
@@ -24,30 +27,35 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.subs = [];
-    this.form = this.formBuilder.group({
+    this.subscriptions = [];
+    this.formGroup = this.formBuilder.group({
       username: ['petar', Validators.required],
       password: ['petar', Validators.required]
     });
   }
 
   ngOnDestroy(): void {
-    this.subs.forEach(value => value.unsubscribe());
+    this.subscriptions.forEach(value => value.unsubscribe());
   }
 
   async login(user: User) {
+    let isValid = true;
     await this.authenticationService.login(user).then(
-      (value: AuthenticationRequest) => {
-        this.authenticationService.saveTokenToLocalCache(value.access_token);
+      (res: AuthenticationRequest) => {
+        this.authenticationService.saveTokenToLocalCache(res.access_token);
       },
-      err => {
-        console.log(err);
-        return;
+      (err: AuthenticationFailedResponse) => {
+        this.authenticationFailedResponseMessage = err.error.error_description;
+        isValid = false;
       });
+    if (!isValid) {
+      return;
+    }
     await this.userService.findByUsername(user.username).then(
-      (value: User) => this.authenticationService.saveUserToLocalCache(value),
-      err => console.log(err)
-    );
+      (res: User) => this.authenticationService.saveUserToLocalCache(res),
+      (err: AuthenticationFailedResponse) => {
+        console.log(err);
+      });
     this.router.navigateByUrl('/home').then();
   }
 }
