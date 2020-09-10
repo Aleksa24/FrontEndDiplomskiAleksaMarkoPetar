@@ -1,0 +1,45 @@
+<h2 mat-dialog-title>Add Users</h2>
+<mat-dialog-content>
+  <div *ngIf="dataSource">
+    <mat-table [dataSource]="dataSource.content">
+      <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: columnsToDisplay"
+               (click)="addUser(row)"
+               [ngClass]="{'highlight': usersId.has(row.id)}">
+      </mat-row>
+
+      <ng-container matColumnDef="firstName">
+        <mat-header-cell *matHeaderCellDef>First Name</mat-header-cell>
+        <mat-cell *matCellDef="let row">{{row.firstName}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="lastName">
+        <mat-header-cell *matHeaderCellDef>Last Name</mat-header-cell>
+        <mat-cell *matCellDef="let row">{{row.lastName}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="email">
+        <mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
+        <mat-cell *matCellDef="let row">{{row.email}}</mat-cell>
+      </ng-container>
+
+    </mat-table>
+    <mat-paginator
+      [length]="dataSource.totalElements"
+      [pageSize]="dataSource.pageable.pageSize"
+      [pageSizeOptions]="[5, 10, 25, 100]"
+      (page)="pageEvent = $event; onPaginateChange($event)"
+      showFirstLastButtons
+    ></mat-paginator>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-raised-button
+          [mat-dialog-close]="true"
+          color="primary"
+          (click)="addUsersToChannel()">
+    Save Changes
+  </button>
+</mat-dialog-actions>
+

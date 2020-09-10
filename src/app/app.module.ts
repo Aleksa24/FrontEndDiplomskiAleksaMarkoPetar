@@ -26,12 +26,12 @@ import {MatCardModule} from '@angular/material/card';
 import {UpdateProfileComponent} from './components/update-profile/update-profile.component';
 import { PostComponent } from './components/post/post.component';
 import { CommentComponent } from './components/comment/comment.component';
-import {ChannelComponent} from './components/channel/channel.component';
+import {ChannelComponent} from './components/channels/channel/channel.component';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatMenuModule} from '@angular/material/menu';
-import { MakeChannelComponent } from './components/make-channel/make-channel.component';
+import { MakeChannelComponent } from './components/channels/channel/make-channel/make-channel.component';
 import {MatSelectModule} from '@angular/material/select';
-import {PostNewComponent} from './components/post-new/post-new.component';
+import {PostNewComponent} from './components/post/post-new/post-new.component';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
@@ -42,6 +42,9 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {AuthInterceptor} from './intreceptor/auth.interceptor';
+import { EditChannelComponent } from './components/edit-channel/edit-channel.component';
+import { AddUsersComponent } from './components/edit-channel/add-users/add-users.component';
+import { RemoveUsersComponent } from './components/edit-channel/remove-users/remove-users.component';
 
 @NgModule({
   declarations: [
@@ -59,6 +62,9 @@ import {AuthInterceptor} from './intreceptor/auth.interceptor';
     MakeChannelComponent,
     PostNewComponent,
     AttachmentComponent,
+    EditChannelComponent,
+    AddUsersComponent,
+    RemoveUsersComponent,
   ],
     imports: [
         BrowserModule,
