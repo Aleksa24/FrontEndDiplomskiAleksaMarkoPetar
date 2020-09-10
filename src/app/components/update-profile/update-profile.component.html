@@ -1,63 +1,65 @@
 <app-main-nav>
-    <mat-card class="center">
-      <mat-card-title>Update Profile</mat-card-title>
-      <mat-card-content>
+    <div class="content">
+      <mat-card class="center">
+        <mat-card-title>Update Profile</mat-card-title>
+        <mat-card-content>
 
-        <mat-card>
-          <mat-card-title>Profile image</mat-card-title>
+          <mat-card>
+            <mat-card-title>Profile image</mat-card-title>
 
 
-          <img [class.mat-elevation-z8]="true" mat-card-sm-image [src]="profileImage" alt="Profile image absent">
+            <img [class.mat-elevation-z8]="true" mat-card-sm-image [src]="profileImage" alt="Profile image absent">
 
-          <mat-card-actions>
-            <button mat-mini-fab color="primary" type="button" (click)="fileInput.click()" style="margin: 5px">
-              <fa-icon [icon]="faUpload"></fa-icon>
-              <input #fileInput type="file" name="file" accept="image/*" (change)="detectFile($event)" style="display:none;" />
-            </button>
-            <button mat-raised-button (click)="onChangeProfilePicture()"
-                    [matTooltip]="profileImageUpload !== undefined ? profileImageUpload.name : ''"
-                    matTooltipClass="my-tooltip">ChangeProfilePicture</button>
-          </mat-card-actions>
+            <mat-card-actions>
+              <button mat-mini-fab color="primary" type="button" (click)="fileInput.click()" style="margin: 5px">
+                <fa-icon [icon]="faUpload"></fa-icon>
+                <input #fileInput type="file" name="file" accept="image/*" (change)="detectFile($event)" style="display:none;" />
+              </button>
+              <button mat-raised-button (click)="onChangeProfilePicture()"
+                      [matTooltip]="profileImageUpload !== undefined ? profileImageUpload.name : ''"
+                      matTooltipClass="my-tooltip">ChangeProfilePicture</button>
+            </mat-card-actions>
 
-        </mat-card>
+          </mat-card>
 
-        <form [formGroup]="form">
-          <p>
-            <mat-form-field appearance="outline" color="primary">
-              <mat-label>First Name</mat-label>
-              <input matInput formControlName="firstName" required>
-              <mat-error *ngIf="form.get('firstName').errors?.required">First Name is required</mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field appearance="outline" color="primary">
-              <mat-label>Last Name</mat-label>
-              <input matInput formControlName="lastName" required>
-              <mat-error *ngIf="form.get('lastName').errors?.required">Last Name is required</mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field appearance="outline" color="primary">
-              <mat-label>Username</mat-label>
-              <input matInput formControlName="username" required>
-              <mat-error *ngIf="form.get('username').errors?.required">Username is required</mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field appearance="outline" color="primary">
-              <mat-label>Phone</mat-label>
-              <input matInput formControlName="phone">
-            </mat-form-field>
-          </p>
-        </form>
-      </mat-card-content>
-      <mat-card-actions align="end">
-        <button mat-raised-button
-                color="primary"
-                (click)="updateUser();"
-                [disabled]="form.invalid">
-          Update Profile
-        </button>
-      </mat-card-actions>
-    </mat-card>
+          <form [formGroup]="form">
+            <p>
+              <mat-form-field appearance="outline" color="primary">
+                <mat-label>First Name</mat-label>
+                <input matInput formControlName="firstName" required>
+                <mat-error *ngIf="form.get('firstName').errors?.required">First Name is required</mat-error>
+              </mat-form-field>
+            </p>
+            <p>
+              <mat-form-field appearance="outline" color="primary">
+                <mat-label>Last Name</mat-label>
+                <input matInput formControlName="lastName" required>
+                <mat-error *ngIf="form.get('lastName').errors?.required">Last Name is required</mat-error>
+              </mat-form-field>
+            </p>
+            <p>
+              <mat-form-field appearance="outline" color="primary">
+                <mat-label>Username</mat-label>
+                <input matInput formControlName="username" required>
+                <mat-error *ngIf="form.get('username').errors?.required">Username is required</mat-error>
+              </mat-form-field>
+            </p>
+            <p>
+              <mat-form-field appearance="outline" color="primary">
+                <mat-label>Phone</mat-label>
+                <input matInput formControlName="phone">
+              </mat-form-field>
+            </p>
+          </form>
+        </mat-card-content>
+        <mat-card-actions align="end">
+          <button mat-raised-button
+                  color="primary"
+                  (click)="updateUser();"
+                  [disabled]="form.invalid">
+            Update Profile
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
 </app-main-nav>
