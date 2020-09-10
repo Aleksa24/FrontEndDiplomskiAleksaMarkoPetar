@@ -1,31 +1,44 @@
 .example-card {
-  max-width: 400px;
+  max-width: 289px;
   text-align: center;
+  margin-right: 15px;
+  margin-bottom: 15px;
 }
 
 .example-header-image {
   background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
   background-size: cover;
 }
-.mat-card{
-  height: 300px;
-  width: 300px;
+
+.mat-card {
+  height: 289px;
+  width: 289px;
 }
-.mat-card-title{
+
+.mat-card-title {
   font-size: 30px;
-  padding-left:20px
+  padding-left: 20px
 }
-.mat-grid-tile{
+
+.mat-grid-tile {
   margin: 3px;
   outline: 1px solid darkblue;
 }
-.mat-grid-list{
+
+.mat-grid-list {
 
 }
 
-img{
+img {
   width: auto;
   max-width: 200px;
   height: auto;
   max-height: 200px;
+}
+
+.content {
+  padding: 20px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 }

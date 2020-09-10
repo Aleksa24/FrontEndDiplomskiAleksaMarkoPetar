@@ -1,21 +1,18 @@
 <app-main-nav>
 
-  <mat-grid-list cols="5" rowHeight="300px" [gutterSize]="'10px'">
-    <mat-grid-tile *ngFor="let channel of channels$ | async">
-      <mat-card class="example-card">
-        <mat-card-header>
-          <mat-card-title>
-            <button mat-raised-button color="primary" [routerLink]="['/channel',channel.id]">{{channel.name}}</button>
-          </mat-card-title>
-          <a></a>
-        </mat-card-header>
-        <mat-card-content>
-          <img [src]="channel.profilePicture" [routerLink]="['/channel',channel.id]">
-        </mat-card-content>
-      </mat-card>
-    </mat-grid-tile>
-
-  </mat-grid-list>
+  <div class="content">
+        <mat-card class="example-card" *ngFor="let channel of channels$ | async">
+          <mat-card-header>
+            <mat-card-title>
+              <button mat-raised-button color="primary" [routerLink]="['/channel',channel.id]">{{channel.name}}</button>
+            </mat-card-title>
+            <a></a>
+          </mat-card-header>
+          <mat-card-content>
+            <img [src]="channel.profilePicture" [routerLink]="['/channel',channel.id]">
+          </mat-card-content>
+        </mat-card>
+  </div>
 
 
 </app-main-nav>
