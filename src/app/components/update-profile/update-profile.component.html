@@ -7,16 +7,16 @@
           <mat-card-title>Profile image</mat-card-title>
 
 
-          <img [class.mat-elevation-z8]="true" mat-card-sm-image [src]="profileImage" alt="Profile image absent">
+
+          <img *ngIf="profileImage !== undefined" [class.mat-elevation-z8]="true" mat-card-sm-image [src]="profileImage" alt="Profile image absent">
+
 
           <mat-card-actions>
-            <button mat-mini-fab color="primary" type="button" (click)="fileInput.click()" style="margin: 5px">
-              <fa-icon [icon]="faUpload"></fa-icon>
+
+            <button mat-raised-button color="primary" type="button" (click)="fileInput.click()" style="margin: 5px">
+              ChangeProfilePicture
               <input #fileInput type="file" name="file" accept="image/*" (change)="detectFile($event)" style="display:none;" />
             </button>
-            <button mat-raised-button (click)="onChangeProfilePicture()"
-                    [matTooltip]="profileImageUpload !== undefined ? profileImageUpload.name : ''"
-                    matTooltipClass="my-tooltip">ChangeProfilePicture</button>
           </mat-card-actions>
 
         </mat-card>

@@ -6,6 +6,15 @@
         <span class="title-date"> ,{{comment.dateCreated | date}}</span>
       </mat-card-title>
       <mat-card-subtitle  ><button *ngIf="this.loggedUser.id === this.comment.user.id" mat-stroked-button color="primary" (click)="edit()">Edit</button></mat-card-subtitle>
+
+      <mat-card-actions *ngIf="comment.likes !== undefined">
+        <button class="mat-card-action-button" mat-icon-button [class.selected]="isLiked" (click)="onLike()" matTooltip="Like" matTooltipPosition="below"><mat-icon>thumb_up</mat-icon></button>
+        {{getLikesNumber()}}
+        <button class="mat-card-action-button" mat-icon-button [class.selected]="isDisliked" (click)="onDislike()" matTooltip="Dislike" matTooltipPosition="below"><mat-icon>thumb_down</mat-icon></button>
+        {{getDislikeNumber()}}
+        <button class="mat-card-action-button" mat-icon-button (click)="replyButtonClicked()" matTooltip="Replays" matTooltipPosition="below"><mat-icon>reply</mat-icon></button>
+      </mat-card-actions>
+
     </mat-card-header>
     <mat-card-content>
       <mat-form-field class="example-full-width">
@@ -26,26 +35,18 @@
 
 
     </span>
-      <hr>
+      <br>
       <div *ngIf="comment.user.id == loggedUser.id">
-          <button mat-mini-fab color="primary" type="button" (click)="fileInput.click()" style="margin: 5px">
-            <fa-icon [icon]="faUpload"></fa-icon>
-            <input #fileInput type="file" name="file" multiple  (change)="detectFiles($event)" style="display:none;" />
-          </button>
-          <button mat-raised-button (click)="onUpload()"
+          <button mat-stroked-button color="primary" type="button" (click)="fileInput.click()" style="margin: 5px"
                   [matTooltip]="this.getSelectedFileNames(this.filesToUpload)"
-                  matTooltipClass="my-tooltip"
-          >Upload files</button>
+                  matTooltipClass="my-tooltip">
+            <fa-icon [icon]="faUpload"></fa-icon>
+            <input #fileInput type="file" name="file" multiple  (change)="onUploadFiles($event)" style="display:none;" />
+          </button>
       </div>
 
     </mat-card-content>
-    <mat-card-actions *ngIf="comment.likes !== undefined">
-      <button class="mat-card-action-button" mat-icon-button [class.selected]="isLiked" (click)="onLike()" matTooltip="Like" matTooltipPosition="below"><mat-icon>thumb_up</mat-icon></button>
-      {{getLikesNumber()}}
-      <button class="mat-card-action-button" mat-icon-button [class.selected]="isDisliked" (click)="onDislike()" matTooltip="Dislike" matTooltipPosition="below"><mat-icon>thumb_down</mat-icon></button>
-      {{getDislikeNumber()}}
-      <button class="mat-card-action-button" mat-icon-button (click)="replyButtonClicked()" matTooltip="Replays" matTooltipPosition="below"><mat-icon>reply</mat-icon></button>
-    </mat-card-actions>
+
 
     <mat-card-content *ngIf="isReplyOpen" class="replays">
       <app-comment *ngFor="let comment of comment.comments" [comment]="comment"></app-comment>

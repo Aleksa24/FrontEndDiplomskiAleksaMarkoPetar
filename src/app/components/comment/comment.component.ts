@@ -228,6 +228,9 @@ export class CommentComponent implements OnInit, OnDestroy {
   getSelectedFileNames(filesToUploadReply: any[]): string {
     let result = '';
     filesToUploadReply.forEach(file => result += file.name + ' \n');
+    if (result === ''){
+      return 'Select files to upload as an attachment';
+    }
     return result;
   }
 
@@ -314,4 +317,8 @@ export class CommentComponent implements OnInit, OnDestroy {
   }
 
 
+  onUploadFiles($event: Event): void {
+    this.detectFiles($event);
+    this.onUpload();
+  }
 }

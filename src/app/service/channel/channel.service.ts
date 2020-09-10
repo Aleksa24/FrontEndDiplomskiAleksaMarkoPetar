@@ -7,6 +7,7 @@ import {Post} from '../../model/Post';
 import {AuthenticationService} from '../authentication/authentication.service';
 import {User} from '../../model/User';
 import {Attachment} from '../../model/Attachment';
+import {HttpResponse} from '../../model/HttpResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -35,5 +36,9 @@ export class ChannelService {
     return this.httpClient.get(`${environment.resourceServerUrl}/channel/${id}/profile-picture`, {
       responseType: 'blob'
     });
+  }
+
+  uploadProfileImage(formData: FormData): Observable<HttpResponse> {
+    return this.httpClient.post<HttpResponse>(`${environment.resourceServerUrl}/channel/upload-profile-image`, formData);
   }
 }

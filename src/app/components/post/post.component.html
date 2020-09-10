@@ -15,9 +15,20 @@
                 (click)="favourite()">bookmark</mat-icon>
     </mat-card-title>
     <mat-card-subtitle>{{post.user.firstName+" "+post.user.lastName+", "+post.user.username}}</mat-card-subtitle>
+
+    <mat-card-actions *ngIf="post.likes !== undefined">
+      <button mat-icon-button [class.selected]="isLiked" (click)="onLike()" matTooltip="Like" matTooltipPosition="below"><mat-icon>thumb_up</mat-icon></button>
+      {{getLikesNumber()}}
+      <button mat-icon-button [class.selected]="isDisliked" (click)="onDislike()" matTooltip="Dislike" matTooltipPosition="below"><mat-icon>thumb_down</mat-icon></button>
+      {{getDislikeNumber()}}
+      <button mat-icon-button (click)="commentButtonClicked()" matTooltip="Comments" matTooltipPosition="below"><mat-icon>message</mat-icon></button>
+    </mat-card-actions>
+
   </mat-card-header>
   <mat-card-content>
-      {{post.body}}
+      <span class="post-body">{{post.body}}</span>
+      <br>
+      <br>
       <span *ngIf="(post.attachments != undefined) && (post.attachments.length != 0)">
       <br>
         <div class="attachment-container">
@@ -32,24 +43,16 @@
     </span>
     <div *ngIf="post.user.id == loggedUser.id">
       <form [formGroup]="fileForm">
-        <button mat-mini-fab color="primary" type="button" (click)="fileInput.click()" style="margin: 5px">
+        <button mat-stroked-button color="primary" type="button" (click)="fileInput.click()" style="margin: 5px"
+                matTooltip="Select files to upload as attachment to this post"
+                matTooltipClass="my-tooltip">
           <fa-icon [icon]="faUpload"></fa-icon>
-          <input #fileInput type="file" name="file" multiple  (change)="detectFiles($event)" style="display:none;" />
+          <input #fileInput type="file" name="file" multiple  (change)="onUploadFiles($event)" style="display:none;" />
         </button>
-        <button mat-raised-button (click)="onUpload()"
-                [matTooltip]="this.getSelectedFileNames(this.filesToUploadPost)"
-                matTooltipClass="my-tooltip"
-        >Upload files</button>
       </form>
     </div>
   </mat-card-content>
-  <mat-card-actions *ngIf="post.likes !== undefined">
-    <button mat-icon-button [class.selected]="isLiked" (click)="onLike()" matTooltip="Like" matTooltipPosition="below"><mat-icon>thumb_up</mat-icon></button>
-    {{getLikesNumber()}}
-    <button mat-icon-button [class.selected]="isDisliked" (click)="onDislike()" matTooltip="Dislike" matTooltipPosition="below"><mat-icon>thumb_down</mat-icon></button>
-    {{getDislikeNumber()}}
-    <button mat-icon-button (click)="commentButtonClicked()" matTooltip="Comments" matTooltipPosition="below"><mat-icon>message</mat-icon></button>
-  </mat-card-actions>
+
 
   <mat-card-content *ngIf="isCommentOpen" class="comments">
     <app-comment *ngFor="let comment of post.comments" [comment]="comment"></app-comment>
@@ -58,7 +61,7 @@
 
   <mat-form-field class="comment">
 <!--    <mat-label >Favorite food</mat-label>-->
-    <input #commnent matInput placeholder="Comment" (keyup.enter)="postComment(commnent.value)">
+    <input #comment matInput placeholder="Comment" (keyup.enter)="postComment(comment.value)">
   </mat-form-field>
   <button mat-mini-fab color="primary" type="button" (click)="fileInputComment.click()" style="margin: 5px"
           [matTooltip]="this.getSelectedFileNames(this.filesToUploadComment)"
@@ -67,7 +70,7 @@
     <input #fileInputComment type="file" name="file" multiple  (change)="detectFilesComment($event)" style="display:none;"
            />
   </button>
-  <button mat-button (click)="postComment(commnent.value)" (keyup.enter)="postComment(commnent.value)">Post a comment</button>
+  <button mat-button (click)="postComment(comment.value)" (keyup.enter)="postComment(comment.value)">Post a comment</button>
 
 </mat-card>
 
