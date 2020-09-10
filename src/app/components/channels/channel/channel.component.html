@@ -1,7 +1,7 @@
 <app-main-nav>
 
-  <div *ngIf="this.channel !== undefined">
-    <mat-toolbar [class.mat-elevation-z8]="true">
+  <div *ngIf="this.channel">
+    <div class="toolbar">
       <button mat-raised-button color="accent" class="title"><strong>{{channel.name}}</strong></button>
       <button mat-raised-button color="primary" (click)="openNewPostDialog()">New post</button>
       <button mat-raised-button color="primary" [routerLink]="['/make-channel', channel.id]">Add Subchannel</button>
@@ -20,9 +20,11 @@
               mat-raised-button color="warn"
               [routerLink]="['/channel', channel.parentChannel?.id]">Back to {{channel.parentChannel?.name}}
       </button>
-    </mat-toolbar>
+    </div>
 
-    <app-post *ngFor="let post of channel.posts" [post]="post"></app-post>
+    <div class="post-content">
+      <app-post *ngFor="let post of channel.posts" [post]="post"></app-post>
+    </div>
   </div>
 
 </app-main-nav>

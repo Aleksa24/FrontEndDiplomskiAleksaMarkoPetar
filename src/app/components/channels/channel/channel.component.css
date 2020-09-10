@@ -1,14 +1,19 @@
-.mat-toolbar {
-  background: url("../../../../assets/img/img2.jpg") no-repeat;
-  background-size: cover;
-  margin: 0 !important;
-}
-
 .mat-raised-button {
-  margin-left: 3px;
+  margin-bottom: 5px;
 }
 
 ::ng-deep .title {
   font-size: 30px;
 }
 
+.post-content {
+  padding-top: 100px;
+}
+
+.toolbar {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  background: none;
+  z-index: 1;
+}
