@@ -7,10 +7,11 @@ import {ChannelsComponent} from './components/channels/channels.component';
 import {FavouritesComponent} from './components/favourites/favourites.component';
 import {AddUserComponent} from './components/add-user/add-user.component';
 import {UpdateProfileComponent} from './components/update-profile/update-profile.component';
-import {ChannelComponent} from './components/channel/channel.component';
-import {MakeChannelComponent} from './components/make-channel/make-channel.component';
+import {ChannelComponent} from './components/channels/channel/channel.component';
+import {MakeChannelComponent} from './components/channels/channel/make-channel/make-channel.component';
 import {AuthenticationGuard} from './guard/authentication/authentication.guard';
 import {LoginGuard} from './guard/login/login.guard';
+import {EditChannelComponent} from './components/edit-channel/edit-channel.component';
 
 
 const routes: Routes = [
@@ -20,6 +21,7 @@ const routes: Routes = [
   {path: 'favourites', component: FavouritesComponent, canActivate: [AuthenticationGuard]},
   {path: 'add-user', component: AddUserComponent, canActivate: [AuthenticationGuard]},
   {path: 'make-channel/:id', component: MakeChannelComponent, canActivate: [AuthenticationGuard]},
+  {path: 'edit-channel/:id', component: EditChannelComponent, canActivate: [AuthenticationGuard]},
   {path: 'update-profile', component: UpdateProfileComponent, canActivate: [AuthenticationGuard]},
   {path: 'channel/:id', component: ChannelComponent, canActivate: [AuthenticationGuard]},
   {path: '', redirectTo: '/login', pathMatch: 'full'},

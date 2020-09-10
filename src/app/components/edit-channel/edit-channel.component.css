@@ -1,0 +1,24 @@
+.mat-radio-button {
+  margin-left: 12px;
+}
+
+.center {
+  margin: auto;
+  width: 30%;
+  padding: 10px;
+}
+
+.mat-form-field {
+  width: 80%;
+}
+
+/* TODO set all cases */
+@media (max-width: 600px) {
+  .center {
+    width: 80%
+  }
+}
+
+.mat-raised-button {
+  margin-right: 3px;
+}
