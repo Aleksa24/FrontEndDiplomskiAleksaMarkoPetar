@@ -52,8 +52,10 @@ export class UserService {
     return this.http.post<User>(`${environment.resourceServerUrl}/user/save`, loggedUser);
   }
 
-  getProfilePictureById(id: number): string {
-    return `${environment.resourceServerUrl}/user/${id}/profile-picture`;
+  getProfilePictureById(id: number): Observable<Blob> {
+    return this.http.get(`${environment.resourceServerUrl}/user/${id}/profile-picture`, {
+      responseType: 'blob'
+    });
   }
 
   uploadProfileImage(formData: FormData): Observable<HttpResponse> {

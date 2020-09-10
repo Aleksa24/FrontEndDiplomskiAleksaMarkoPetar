@@ -18,4 +18,5 @@ export class Channel {
   public posts: Post[] = [];
   public parentChannel: Channel;
 
+  public profilePicture;
 }

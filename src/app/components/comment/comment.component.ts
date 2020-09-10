@@ -13,6 +13,7 @@ import {catchError, map} from 'rxjs/operators';
 import {HttpEventType} from '@angular/common/http';
 import {AttachmentService} from '../../service/attachment/attachment.service';
 import {UserService} from '../../service/user/user.service';
+import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-comment',
@@ -38,7 +39,8 @@ export class CommentComponent implements OnInit, OnDestroy {
               private likeService: LikeService,
               private matDialog: MatDialog,
               private attachmentService: AttachmentService,
-              private userService: UserService) {
+              private userService: UserService,
+              private sanitizer: DomSanitizer) {
   }
 
   ngOnInit(): void {
@@ -57,6 +59,7 @@ export class CommentComponent implements OnInit, OnDestroy {
 
 
         this.onUpload();
+        this.getProfilePictureByUserId(this.comment.user.id);
         this.filesToUpload = [];
         // (TODO: (this should be in onUpload method)) if user opens comments multiple times this shouldn't trigger upload more than once
 
@@ -300,8 +303,14 @@ export class CommentComponent implements OnInit, OnDestroy {
     }
   }
 
-  getProfilePictureByUserId(id: number): string {
-    return this.userService.getProfilePictureById(id);
+  getProfilePictureByUserId(id: number) {
+    return this.userService.getProfilePictureById(id).subscribe(
+      data => {
+        const objectURL = URL.createObjectURL(data);
+        const img = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+        this.comment.user.profilePicture = img;
+      }
+    );
   }
 
 

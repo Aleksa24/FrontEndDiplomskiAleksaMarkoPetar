@@ -1,7 +1,7 @@
 <div>
   <mat-card>
     <mat-card-header>
-      <img mat-card-avatar [src]="getProfilePictureByUserId(comment.user.id)" alt="assets/img/default-user-image.png">
+      <img mat-card-avatar [src]="this.comment.user.profilePicture" alt="assets/img/default-user-image.png">
       <mat-card-title>{{comment.user.username}}
         <span class="title-date"> ,{{comment.dateCreated | date}}</span>
       </mat-card-title>

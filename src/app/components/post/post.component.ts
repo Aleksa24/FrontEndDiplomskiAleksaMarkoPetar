@@ -18,6 +18,7 @@ import {AttachmentUploadData} from '../../model/AttachmentUploadData';
 import {Comment} from '../../model/Comment';
 import {CommentService} from '../../service/comment/comment.service';
 import {environment} from '../../../environments/environment';
+import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-post',
@@ -47,7 +48,8 @@ export class PostComponent implements OnInit,OnDestroy {
               private authService: AuthenticationService,
               private userService: UserService,
               private likeService: LikeService,
-              private fb: FormBuilder) { }
+              private fb: FormBuilder,
+              private sanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
     this.loggedUser = this.authService.getUserFromLocalCache();
@@ -64,6 +66,7 @@ export class PostComponent implements OnInit,OnDestroy {
     this.subs.push(this.postService.getById(this.post.id).subscribe((post) => {
       this.post=post;
       this.onUpload(); // emits the event onUpload in case there are files to be uploaded
+      this.getProfilePictureByUserId(this.post.user.id);
       //prolazi da vidi da li je taj post lajkovan kod ulogovanog usera da bi obelezio slova
       for (let like of this.post.likes){
         if (like.user.id == this.loggedUser.id){
@@ -321,7 +324,13 @@ export class PostComponent implements OnInit,OnDestroy {
     return result;
   }
 
-  getProfilePictureByUserId(id: number): string {
-    return this.userService.getProfilePictureById(id);
+  getProfilePictureByUserId(id: number) {
+    this.userService.getProfilePictureById(id).subscribe(
+      data => {
+        const objectURL = URL.createObjectURL(data);
+        const img = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+        this.post.user.profilePicture = img;
+      }
+    );
   }
 }

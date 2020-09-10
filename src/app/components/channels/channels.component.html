@@ -10,7 +10,7 @@
           <a></a>
         </mat-card-header>
         <mat-card-content>
-          <img [src]="getProfilePictureByChannelId(channel.id)" [routerLink]="['/channel',channel.id]">
+          <img [src]="channel.profilePicture" [routerLink]="['/channel',channel.id]">
         </mat-card-content>
       </mat-card>
     </mat-grid-tile>

@@ -14,5 +14,6 @@ export class User{
   public role: Role;
   public favorites: Post[] = [];
 
+  public profilePicture;
 
 }

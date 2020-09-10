@@ -18,8 +18,8 @@ export class ChannelService {
   constructor(private httpClient: HttpClient) {
   }
 
-  getChannelsForUser(id: number): Observable<Channel[]> {
-    return this.httpClient.get<Channel[]>(environment.resourceServerUrl + `/channel/findAllByUserId?id=${id}`);
+  getChannelsForUser(id: number): Promise<Channel[]> {
+    return this.httpClient.get<Channel[]>(environment.resourceServerUrl + `/channel/findAllByUserId?id=${id}`).toPromise();
   }
 
   getById(id: number): Observable<Channel> {

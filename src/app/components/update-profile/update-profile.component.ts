@@ -8,6 +8,7 @@ import {AuthenticationService} from '../../service/authentication/authentication
 import {faPaperclip} from '@fortawesome/free-solid-svg-icons';
 import {catchError, map} from 'rxjs/operators';
 import {Attachment} from '../../model/Attachment';
+import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-update-profile',
@@ -24,7 +25,8 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
 
   constructor(private formBuilder: FormBuilder,
               private userService: UserService,
-              private authenticationService: AuthenticationService) {
+              private authenticationService: AuthenticationService,
+              private sanitizer: DomSanitizer) {
   }
 
   ngOnInit(): void {
@@ -34,7 +36,13 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
       username: [this.authenticationService.getUserFromLocalCache().username, [Validators.required]],
       phone: [this.authenticationService.getUserFromLocalCache().phone]
     });
-    this.profileImage = this.userService.getProfilePictureById(this.authenticationService.getUserFromLocalCache().id);
+    this.profileImage = this.userService.getProfilePictureById(this.authenticationService.getUserFromLocalCache().id).subscribe(
+      data => {
+        const objectURL = URL.createObjectURL(data);
+        const img = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+        this.profileImage = img;
+    }
+    );
   }
 
   updateUser() {
