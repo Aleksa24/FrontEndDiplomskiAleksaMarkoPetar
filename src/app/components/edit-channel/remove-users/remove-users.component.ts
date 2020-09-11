@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {UsersPaginationResponse} from '../../../http/response/UsersPaginationResponse';
 import {PageEvent} from '@angular/material/paginator';
 import {UserService} from '../../../service/user/user.service';
 import {Channel} from '../../../model/Channel';
 import {Subscription} from 'rxjs';
+import {AuthenticationService} from '../../../service/authentication/authentication.service';
+import {MAT_DIALOG_DATA} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-remove-users',
@@ -21,14 +23,19 @@ export class RemoveUsersComponent implements OnInit {
 
   usersId: Set<number> = new Set<number>();
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService,
+              private authenticationService: AuthenticationService,
+              @Inject(MAT_DIALOG_DATA) private  channelId) { }
 
   ngOnInit(): void {
     this.initDataSource();
   }
 
   private initDataSource() {
-    this.userService.findAll(0, 10).subscribe(
+    this.userService.findAllUsersInChannel(this.channelId,
+      this.authenticationService.getUserFromLocalCache().id,
+      0,
+      10).subscribe(
       (value: UsersPaginationResponse) => {
         console.log(value);
         this.dataSource = value;
@@ -41,7 +48,10 @@ export class RemoveUsersComponent implements OnInit {
     console.log($event);
     let page = $event.pageIndex;
     let size = $event.pageSize;
-    this.userService.findAll(page, size).subscribe(
+    this.userService.findAllUsersInChannel(this.channelId,
+      this.authenticationService.getUserFromLocalCache().id,
+      0,
+      10).subscribe(
       (value: UsersPaginationResponse) => {
         console.log(value);
         this.dataSource = value;

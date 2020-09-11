@@ -45,6 +45,8 @@ import {AuthInterceptor} from './intreceptor/auth.interceptor';
 import { EditChannelComponent } from './components/edit-channel/edit-channel.component';
 import { AddUsersComponent } from './components/edit-channel/add-users/add-users.component';
 import { RemoveUsersComponent } from './components/edit-channel/remove-users/remove-users.component';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 
 @NgModule({
   declarations: [
@@ -66,37 +68,39 @@ import { RemoveUsersComponent } from './components/edit-channel/remove-users/rem
     AddUsersComponent,
     RemoveUsersComponent,
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        BrowserAnimationsModule,
-        MatCheckboxModule,
-        MatGridListModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatButtonModule,
-        FormsModule,
-        ReactiveFormsModule,
-        HttpClientModule,
-        LayoutModule,
-        MatToolbarModule,
-        MatSidenavModule,
-        MatIconModule,
-        MatListModule,
-        MatCardModule,
-        MatRadioModule,
-        MatMenuModule,
-        MatSelectModule,
-        MatDialogModule,
-        MatTableModule,
-        MatPaginatorModule,
-        MatProgressSpinnerModule,
-        MatSortModule,
-        FontAwesomeModule,
-        MatTooltipModule,
-        MatProgressBarModule
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    MatCheckboxModule,
+    MatGridListModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    LayoutModule,
+    MatToolbarModule,
+    MatSidenavModule,
+    MatIconModule,
+    MatListModule,
+    MatCardModule,
+    MatRadioModule,
+    MatMenuModule,
+    MatSelectModule,
+    MatDialogModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatProgressSpinnerModule,
+    MatSortModule,
+    FontAwesomeModule,
+    MatTooltipModule,
+    MatProgressBarModule,
+    MatAutocompleteModule,
+    MatSlideToggleModule
 
-    ],
+  ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
     useClass: AuthInterceptor,

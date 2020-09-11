@@ -18,6 +18,7 @@ import {ChannelRole} from '../../../../model/ChannelRole';
 import {User} from '../../../../model/User';
 import {AuthenticationService} from '../../../../service/authentication/authentication.service';
 import {url} from 'inspector';
+import {Message, ValidationFailedResponse} from '../../../../http/response/ValidationFailedResponse';
 
 @Component({
   selector: 'app-make-channel',
@@ -35,6 +36,7 @@ export class MakeChannelComponent implements OnInit, OnDestroy {
   public profileImage;
   public profileImageUpload;
   faUpload = faImage;
+  nameValidationFailedResponseMessage = '';
 
   constructor(private formBuilder: FormBuilder,
               private channelService: ChannelService,
@@ -139,8 +141,8 @@ export class MakeChannelComponent implements OnInit, OnDestroy {
           }
         );
       },
-      (errorResponse: HttpErrorResponse) => {
-        console.dir(errorResponse); // TODO error handle
+      (error: ValidationFailedResponse) => {
+        this.nameValidationFailedResponseMessage = MakeChannelComponent.findByName(error.error.error, 'name');
       }
     ));
   }
@@ -175,6 +177,15 @@ export class MakeChannelComponent implements OnInit, OnDestroy {
         console.log(this.profileImageUpload);
       }
     );
+  }
+
+  private static findByName(error: Message[], name: string) {
+    for (let item of error) {
+      if (item.name) {
+        return item.name;
+      }
+    }
+    return '';
   }
 }
 
