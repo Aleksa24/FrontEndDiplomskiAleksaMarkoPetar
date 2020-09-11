@@ -16,14 +16,6 @@
     </mat-card-title>
     <mat-card-subtitle>{{post.user.firstName+" "+post.user.lastName+", "+post.user.username}}</mat-card-subtitle>
 
-    <mat-card-actions *ngIf="post.likes !== undefined">
-      <button mat-icon-button [class.selected]="isLiked" (click)="onLike()" matTooltip="Like" matTooltipPosition="below"><mat-icon>thumb_up</mat-icon></button>
-      {{getLikesNumber()}}
-      <button mat-icon-button [class.selected]="isDisliked" (click)="onDislike()" matTooltip="Dislike" matTooltipPosition="below"><mat-icon>thumb_down</mat-icon></button>
-      {{getDislikeNumber()}}
-      <button mat-icon-button (click)="commentButtonClicked()" matTooltip="Comments" matTooltipPosition="below"><mat-icon>message</mat-icon></button>
-    </mat-card-actions>
-
   </mat-card-header>
   <mat-card-content>
       <span class="post-body">{{post.body}}</span>
@@ -58,6 +50,14 @@
     <app-comment *ngFor="let comment of post.comments" [comment]="comment"></app-comment>
     <p *ngIf="post.comments.length==0">No comments</p>
   </mat-card-content>
+
+  <mat-card-actions *ngIf="post.likes !== undefined">
+    <button mat-icon-button [class.selected]="isLiked" (click)="onLike()" matTooltip="Like" matTooltipPosition="below"><mat-icon>thumb_up</mat-icon></button>
+    {{getLikesNumber()}}
+    <button mat-icon-button [class.selected]="isDisliked" (click)="onDislike()" matTooltip="Dislike" matTooltipPosition="below"><mat-icon>thumb_down</mat-icon></button>
+    {{getDislikeNumber()}}
+    <button mat-icon-button (click)="commentButtonClicked()" matTooltip="Comments" matTooltipPosition="below"><mat-icon>message</mat-icon></button>
+  </mat-card-actions>
 
   <mat-form-field class="comment">
 <!--    <mat-label >Favorite food</mat-label>-->
