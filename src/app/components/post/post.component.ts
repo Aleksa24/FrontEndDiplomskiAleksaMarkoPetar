@@ -12,7 +12,7 @@ import {catchError, map, takeWhile} from 'rxjs/operators';
 import {randomBytes} from 'crypto';
 import {UserService} from '../../service/user/user.service';
 import {LikeService} from '../../service/like/like.service';
-import {faPaperclip} from '@fortawesome/free-solid-svg-icons';
+import {faCloudUploadAlt, faPaperclip} from '@fortawesome/free-solid-svg-icons';
 import {AttachmentService} from '../../service/attachment/attachment.service';
 import {AttachmentUploadData} from '../../model/AttachmentUploadData';
 import {Comment} from '../../model/Comment';
@@ -41,6 +41,7 @@ export class PostComponent implements OnInit, OnDestroy {
   filesToUploadComment = [];
   faUpload = faPaperclip;
   isFavourite = false;
+  faCommitUpload = faCloudUploadAlt;
 
   constructor(private postService: PostService,
               private commentService: CommentService,
@@ -204,13 +205,7 @@ export class PostComponent implements OnInit, OnDestroy {
     formData.append('userId', String(this.loggedUser.id));
     formData.append('attachmentParentId', String(this.post.id));
     formData.append('attachmentParentName', 'POST');
-    // this.subs.push(this.postService.addAttachment(formData).subscribe(
-    //   (attachment) => {
-    //     this.post.attachments.push(attachment);
-    //   }, error =>{
-    //     console.dir(error);
-    //   }
-    // ));
+
     const dummyAttachment: Attachment = new Attachment();
     dummyAttachment.uploadComplete = false;
     dummyAttachment.originalName = file.name;
@@ -258,6 +253,7 @@ export class PostComponent implements OnInit, OnDestroy {
   detectFiles(event){
     this.filesToUploadPost = [];
     if (event.target.files.length > 0) {
+      console.log('Upload detect files');
       for (const file of event.target.files){
         this.filesToUploadPost.push(file);
       }
@@ -289,6 +285,7 @@ export class PostComponent implements OnInit, OnDestroy {
 
   onUpload(): void {
     if (this.filesToUploadPost.length > 0){
+      console.log('Upolad1');
       this.filesToUploadPost.forEach(file => this.uploadFile(file));
     }
   }
@@ -324,9 +321,6 @@ export class PostComponent implements OnInit, OnDestroy {
   getSelectedFileNames(filesToUpload): string {
     let result = '';
     filesToUpload.forEach(file => result += file.name + ' \n');
-    if (result === ''){
-      return 'Select files to upload for your comment';
-    }
     return result;
   }
 

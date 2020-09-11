@@ -1,2 +1,5 @@
 todo: postaviti konstante umesto stringova svuda gde je potrebno (i na serveru)
 todo: uraditi animacije
+todo: uraditi progres korisnika
+todo: uraditi poene za progres
+todo: postaviti verzionisanje baze podataka na serveru

@@ -1,6 +1,7 @@
 <mat-card class="example-card">
   <mat-card-header>
-    <img mat-card-avatar [src]="this.post.user.profilePicture" alt="assets/img/default-user-image.png">
+    <img *ngIf="this.post.user.profilePicture;else picture_progress" mat-card-avatar [src]="this.post.user.profilePicture" alt="">
+    <ng-template #picture_progress><mat-spinner [diameter]="30"></mat-spinner></ng-template>
     <mat-card-title>{{post.title}}
       <span class="title-date"> ,{{post.dateCreated | date}}</span>
       <mat-icon matTooltip="Add to favourites"
@@ -39,7 +40,12 @@
                 matTooltip="Select files to upload as attachment to this post"
                 matTooltipClass="my-tooltip">
           <fa-icon [icon]="faUpload"></fa-icon>
-          <input #fileInput type="file" name="file" multiple  (change)="onUploadFiles($event)" style="display:none;" />
+          <input #fileInput type="file" name="file" multiple (change)="detectFiles($event)" style="display:none;" />
+        </button>
+        <button mat-stroked-button color="primary" type="button" (click)="onUpload()"
+                [matTooltip]="getSelectedFileNames(this.filesToUploadPost)"
+                matTooltipClass="my-tooltip">
+          <fa-icon [icon]="faCommitUpload"></fa-icon>
         </button>
       </form>
     </div>
