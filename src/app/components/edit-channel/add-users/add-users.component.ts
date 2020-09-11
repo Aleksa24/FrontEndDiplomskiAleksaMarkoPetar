@@ -1,9 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, Input, OnInit} from '@angular/core';
 import {UsersPaginationResponse} from '../../../http/response/UsersPaginationResponse';
 import {PageEvent} from '@angular/material/paginator';
 import {UserService} from '../../../service/user/user.service';
 import {Channel} from '../../../model/Channel';
 import {Subscription} from 'rxjs';
+import {AuthenticationService} from '../../../service/authentication/authentication.service';
+import {MAT_DIALOG_DATA} from '@angular/material/dialog';
 
 
 @Component({
@@ -17,20 +19,26 @@ export class AddUsersComponent implements OnInit {
   pageEvent: PageEvent;
   columnsToDisplay: string[] = ['firstName', 'lastName', 'email'];
 
-  channel: Channel;
+
   subs: Subscription[] = [];
 
   usersId: Set<number> = new Set<number>();
 
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService,
+              private authenticationService: AuthenticationService,
+              @Inject(MAT_DIALOG_DATA) private  channelId) {
   }
 
   ngOnInit(): void {
     this.initDataSource();
   }
 
-  private initDataSource() {
-    this.userService.findAll(0, 10).subscribe(
+  initDataSource() {
+    console.log(this.channelId);
+    this.userService.findAllUsersNotInChannel(this.channelId,
+      this.authenticationService.getUserFromLocalCache().id,
+      0,
+      10).subscribe(
       (value: UsersPaginationResponse) => {
         console.log(value);
         this.dataSource = value;
@@ -43,7 +51,10 @@ export class AddUsersComponent implements OnInit {
     console.log($event);
     let page = $event.pageIndex;
     let size = $event.pageSize;
-    this.userService.findAll(page, size).subscribe(
+    this.userService.findAllUsersNotInChannel(this.channelId,
+      this.authenticationService.getUserFromLocalCache().id,
+      0,
+      10).subscribe(
       (value: UsersPaginationResponse) => {
         console.log(value);
         this.dataSource = value;

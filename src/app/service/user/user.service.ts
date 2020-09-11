@@ -33,6 +33,26 @@ export class UserService {
       environment.resourceServerUrl + '/user/all-pagination', {params});
   }
 
+  findAllUsersNotInChannel(channelId: number, loggedUserId: number, page: number, size: number): Observable<UsersPaginationResponse> {
+    let params = new HttpParams();
+    params = params.append('channelId', String(channelId));
+    params = params.append('loggedUserId', String(loggedUserId));
+    params = params.append('page', String(page));
+    params = params.append('size', String(size));
+    return this.http.get<UsersPaginationResponse>(
+      environment.resourceServerUrl + '/user/all-pagination-users-not-in-channel', {params});
+  }
+
+  findAllUsersInChannel(channelId: number, loggedUserId: number, page: number, size: number): Observable<UsersPaginationResponse> {
+    let params = new HttpParams();
+    params = params.append('channelId', String(channelId));
+    params = params.append('loggedUserId', String(loggedUserId));
+    params = params.append('page', String(page));
+    params = params.append('size', String(size));
+    return this.http.get<UsersPaginationResponse>(
+      environment.resourceServerUrl + '/user/all-pagination-users-in-channel', {params});
+  }
+
   findByUsername(username: string): Promise<User> {
     return this.http.get<User>(`${this.host}/user/find-by-username?username=${username}`).toPromise();
   }
