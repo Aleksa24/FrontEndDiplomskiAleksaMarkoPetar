@@ -23,6 +23,25 @@
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
       <span>Aplikacija</span>
+
+      <form class="example-form">
+        <mat-form-field class="example-full-width" floatLabel="never">
+          <input #autocompleteField
+                 matInput
+                 placeholder="Search posts and channels"
+                 aria-label="Search"
+                 [matAutocomplete]="auto"
+                 [formControl]="searchableCtrl"
+                 (keyup)="letterEntered(autocompleteField.value)">
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let searchable of searchables" [value]="searchable">
+<!--              <img class="example-option-img" aria-hidden [src]="state.flag" height="25">-->
+              <button mat-raised-button color="primary" (click)="search(searchable)">{{searchable.getText()}}</button>
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </form>
+
       <mat-menu #lazyMenu="matMenu" xPosition="before">
         <ng-template matMenuContent let-firstName="firstName">
           <button mat-menu-item routerLink="/update-profile">Profile</button>

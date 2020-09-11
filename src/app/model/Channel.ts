@@ -4,8 +4,10 @@ import {CommunicationDirection} from './CommunicationDirection';
 import {Attachment} from './Attachment';
 import {UserChannel} from './UserChannel';
 import {Post} from './Post';
+import {Searchable} from "./Searchable";
 
-export class Channel {
+export class Channel implements Searchable{
+
   public id: number;
   public name: string;
   public dateCreated: Date;
@@ -19,4 +21,17 @@ export class Channel {
   public parentChannel: Channel;
 
   public profilePicture;
+
+  getText(): string {
+    return `${this.name}, channel`;
+  }
+  type():Channel {
+    return this;
+  }
+  toString():string{
+    return `${this.name}, channel`;
+  }
+  getId(): number {
+    return this.id;
+  }
 }
