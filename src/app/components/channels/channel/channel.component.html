@@ -2,12 +2,13 @@
 
   <div *ngIf="this.channel">
     <div class="toolbar">
-      <button mat-raised-button color="accent" class="title"><strong>{{channel.name}}</strong></button>
-      <button mat-raised-button color="primary" (click)="openNewPostDialog()">New post</button>
-      <button mat-raised-button color="primary" [routerLink]="['/make-channel', channel.id]">Add Subchannel</button>
-      <button mat-raised-button color="primary" [routerLink]="['/edit-channel', channel.id]">Edit Channel</button>
-      <div *ngIf="this.channel.channels !== undefined">
-        <button mat-raised-button color="primary" [matMenuTriggerFor]="menu">Subchannels
+      <div *ngIf="this.channel.channels !== undefined" class="toolbar">
+        <button mat-raised-button color="accent" class="title flex-item"><strong>{{channel.name}}</strong></button>
+        <hr>
+        <button mat-raised-button color="primary" (click)="openNewPostDialog()" class="flex-item">New post</button>
+        <button mat-raised-button color="primary" [routerLink]="['/make-channel', channel.id]" class="flex-item">Add Subchannel</button>
+        <button mat-raised-button color="primary" [routerLink]="['/edit-channel', channel.id]" class="flex-item">Edit Channel</button>
+        <button mat-raised-button color="primary" [matMenuTriggerFor]="menu" class="flex-item">Subchannels
           <mat-icon>arrow_drop_down</mat-icon>
         </button>
         <mat-menu #menu="matMenu">

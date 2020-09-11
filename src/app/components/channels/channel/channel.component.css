@@ -17,3 +17,7 @@
   background: none;
   z-index: 1;
 }
+
+.flex-item {
+  align-self: flex-start;
+}

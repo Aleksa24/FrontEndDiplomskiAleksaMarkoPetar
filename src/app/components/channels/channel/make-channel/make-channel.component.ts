@@ -47,8 +47,8 @@ export class MakeChannelComponent implements OnInit, OnDestroy {
   private initForm() {
     this.form = this.formBuilder.group({
       name: ['', [Validators.required]],
-      category: [''],
-      communicationDirection: ['']
+      category: ['', [Validators.required]],
+      communicationDirection: ['', [Validators.required]]
     });
   }
 
