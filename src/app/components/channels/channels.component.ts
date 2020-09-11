@@ -30,12 +30,12 @@ export class ChannelsComponent implements OnInit, OnDestroy {
       this.channels = value;
     });
 
-    this.channels.forEach( chan =>
-      this.channelService.getProfilePictureById(chan.id).subscribe(
+    this.channels.forEach(channel =>
+      this.channelService.getProfilePictureById(channel.id).subscribe(
         data => {
           const objectURL = URL.createObjectURL(data);
           const img = this.sanitizer.bypassSecurityTrustUrl(objectURL);
-          chan.profilePicture = img;
+          channel.profilePicture = img;
         }
       )
     );
@@ -51,9 +51,5 @@ export class ChannelsComponent implements OnInit, OnDestroy {
         return data;
       }
     );
-  }
-
-  getProfilePictureByChannelId(id: number): string {
-    return `${environment.resourceServerUrl}/channel/${id}/profile-picture`;
   }
 }
