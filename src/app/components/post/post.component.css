@@ -1,5 +1,6 @@
 .example-card {
   /*max-width: 400px;*/
+  min-width: 200px;
 }
 
 .example-header-image {
@@ -14,12 +15,14 @@
 }
 .attachment-card{
   background: linear-gradient(-30deg, white, deepskyblue);
-  margin: 0;
+  margin: 3px 3px;
+  padding: 5px;
 }
 .attachment-card-error{
   background: red;
   color: yellow;
-  margin: 0;
+  margin: 3px 3px;
+  padding: 5px;
 }
 
 .attachment-container{
@@ -44,3 +47,16 @@
   color:dimgray;
 }
 
+.post-body{
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+  font-size: 20px;
+
+}
+
+@media(max-width: 730px) {
+
+  .example-card{
+    margin-left: 30%;
+    margin-right: 2%;
+  }
+}

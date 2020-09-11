@@ -1,6 +1,6 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Subscription, throwError} from 'rxjs';
+import {Observable, Subscription, throwError} from 'rxjs';
 import {UserService} from '../../service/user/user.service';
 import {User} from '../../model/User';
 import {HttpErrorResponse, HttpEventType} from '@angular/common/http';
@@ -9,6 +9,8 @@ import {faPaperclip} from '@fortawesome/free-solid-svg-icons';
 import {catchError, map} from 'rxjs/operators';
 import {Attachment} from '../../model/Attachment';
 import {DomSanitizer} from '@angular/platform-browser';
+import {log} from 'util';
+import {HttpResponse} from '../../model/HttpResponse';
 
 @Component({
   selector: 'app-update-profile',
@@ -29,6 +31,8 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
               private sanitizer: DomSanitizer) {
   }
 
+
+
   ngOnInit(): void {
     this.form = this.formBuilder.group({
       firstName: [this.authenticationService.getUserFromLocalCache().firstName, [Validators.required]],
@@ -36,7 +40,7 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
       username: [this.authenticationService.getUserFromLocalCache().username, [Validators.required]],
       phone: [this.authenticationService.getUserFromLocalCache().phone]
     });
-    this.profileImage = this.userService.getProfilePictureById(this.authenticationService.getUserFromLocalCache().id).subscribe(
+    this.userService.getProfilePictureById(this.authenticationService.getUserFromLocalCache().id).subscribe(
       data => {
         const objectURL = URL.createObjectURL(data);
         const img = this.sanitizer.bypassSecurityTrustUrl(objectURL);
@@ -60,6 +64,13 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
         console.dir(errorResponse);
       }
     ));
+    this.subs.push(
+      this.onChangeProfilePicture().subscribe(
+        (data) => {
+          console.log(data.message);
+        }
+      )
+    );
   }
 
   ngOnDestroy(): void {
@@ -77,17 +88,13 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
     }
   }
 
-  onChangeProfilePicture(): void {
+  onChangeProfilePicture(): Observable<HttpResponse> {
     if (this.profileImageUpload === undefined){
-      return;
+      return null;
     }
     const formData = new FormData();
     formData.append('profileImage', this.profileImageUpload);
     formData.append('id', String(this.authenticationService.getUserFromLocalCache().id));
-    this.userService.uploadProfileImage(formData).subscribe(
-      (data) => {
-        alert(data.message);
-      }
-    );
+    return this.userService.uploadProfileImage(formData);
   }
 }

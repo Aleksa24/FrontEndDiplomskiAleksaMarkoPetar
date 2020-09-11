@@ -1,7 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {UserService} from '../../service/user/user.service';
-import {UsersPaginationResponse} from '../../http/response/UsersPaginationResponse';
-import {PageEvent} from '@angular/material/paginator';
 import {ChannelService} from '../../service/channel/channel.service';
 import {Channel} from '../../model/Channel';
 import {switchMap} from 'rxjs/operators';
@@ -15,6 +12,8 @@ import {CommunicationDirection} from '../../model/CommunicationDirection';
 import {MatDialog} from '@angular/material/dialog';
 import {AddUsersComponent} from './add-users/add-users.component';
 import {RemoveUsersComponent} from './remove-users/remove-users.component';
+import {DomSanitizer} from '@angular/platform-browser';
+import {faImage} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-edit-channel',
@@ -30,12 +29,18 @@ export class EditChannelComponent implements OnInit {
   categories: Category[];
   communicationDirections: CommunicationDirection[];
 
+  public profileImage;
+  faUpload = faImage;
+  private profileImageUpload: any;
+
+
   constructor(private channelService: ChannelService,
               private activatedRoute: ActivatedRoute,
               private formBuilder: FormBuilder,
               private categoryService: CategoryService,
               private communicationDirectionService: CommunicationDirectionService,
-              public dialog: MatDialog) {
+              public dialog: MatDialog,
+              private sanitizer: DomSanitizer) {
   }
 
   ngOnInit(): void {
@@ -52,6 +57,13 @@ export class EditChannelComponent implements OnInit {
       })
     ).subscribe((value) => {
       this.channel = value;
+      this.channelService.getProfilePictureById(this.channel.id).subscribe(
+        (data) => {
+          const objectURL = URL.createObjectURL(data);
+          const img = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+          this.profileImage = img;
+        }
+      );
       this.initForm();
     }));
   }
@@ -94,5 +106,17 @@ export class EditChannelComponent implements OnInit {
 
   editChannel() {
     // TODO
+  }
+
+
+  detectFile(event): void{
+    if (event.target.files.length > 0) {
+      const reader = new FileReader();
+      reader.readAsDataURL(event.target.files[0]);
+      reader.onload = (readerEvent) => {
+        this.profileImage = reader.result;
+      };
+      this.profileImageUpload = event.target.files[0];
+    }
   }
 }

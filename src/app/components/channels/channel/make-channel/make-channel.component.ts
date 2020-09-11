@@ -12,6 +12,7 @@ import {CommunicationDirection} from '../../../../model/CommunicationDirection';
 import {CommunicationDirectionService} from '../../../../service/communication-direction/communication-direction.service';
 import {ChannelStatus} from '../../../../model/ChannelStatus';
 import {ActivatedRoute, Router} from '@angular/router';
+import {faImage, faPaperclip} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-make-channel',
@@ -26,6 +27,9 @@ export class MakeChannelComponent implements OnInit, OnDestroy {
   communicationDirections: CommunicationDirection[];
   parentChannelId: number;
   private subs: Subscription[] = [];
+  public profileImage;
+  public profileImageUpload;
+  faUpload = faImage;
 
   constructor(private formBuilder: FormBuilder,
               private channelService: ChannelService,
@@ -112,7 +116,15 @@ export class MakeChannelComponent implements OnInit, OnDestroy {
     console.log(channel);
     this.subs.push(this.channelService.saveChannel(channel).subscribe(
       (response: Channel) => {
-        this.router.navigate([`/channel/${response.id}`]).then();
+        const formData = new FormData();
+        formData.append('id', String(response.id));
+        formData.append('profileImage', this.profileImageUpload);
+        this.channelService.uploadProfileImage(formData).subscribe(
+          (data) => {
+            console.log(data.message);
+            this.router.navigate([`/channel/${response.id}`]).then();
+          }
+        );
       },
       (errorResponse: HttpErrorResponse) => {
         console.dir(errorResponse); // TODO error handle
@@ -125,6 +137,17 @@ export class MakeChannelComponent implements OnInit, OnDestroy {
       if (item.name === value) {
         return item.id;
       }
+    }
+  }
+
+  detectFile(event): void{
+    if (event.target.files.length > 0) {
+      const reader = new FileReader();
+      reader.readAsDataURL(event.target.files[0]);
+      reader.onload = (readerEvent) => {
+        this.profileImage = reader.result;
+      };
+      this.profileImageUpload = event.target.files[0];
     }
   }
 

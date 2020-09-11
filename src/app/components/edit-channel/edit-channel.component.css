@@ -22,3 +22,9 @@
 .mat-raised-button {
   margin-right: 3px;
 }
+img{
+  width: auto;
+  max-width: 200px;
+  height: auto;
+  max-height: 200px;
+}
