@@ -6,13 +6,17 @@ import {Category} from '../../../../model/Category';
 import {CategoryService} from '../../../../service/category/category.service';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Subscription} from 'rxjs';
-import { switchMap} from 'rxjs/operators';
+import {switchMap} from 'rxjs/operators';
 import {UserService} from '../../../../service/user/user.service';
 import {CommunicationDirection} from '../../../../model/CommunicationDirection';
 import {CommunicationDirectionService} from '../../../../service/communication-direction/communication-direction.service';
 import {ChannelStatus} from '../../../../model/ChannelStatus';
 import {ActivatedRoute, Router} from '@angular/router';
 import {faImage, faPaperclip} from '@fortawesome/free-solid-svg-icons';
+import {UserChannel} from '../../../../model/UserChannel';
+import {ChannelRole} from '../../../../model/ChannelRole';
+import {User} from '../../../../model/User';
+import {AuthenticationService} from '../../../../service/authentication/authentication.service';
 
 @Component({
   selector: 'app-make-channel',
@@ -38,7 +42,8 @@ export class MakeChannelComponent implements OnInit, OnDestroy {
               private userService: UserService,
               private communicationDirectionService: CommunicationDirectionService,
               private activatedRoute: ActivatedRoute,
-              private router: Router) {
+              private router: Router,
+              private authenticationService: AuthenticationService) {
   }
 
   ngOnInit(): void {
@@ -103,17 +108,16 @@ export class MakeChannelComponent implements OnInit, OnDestroy {
     channel.category = category;
     channel.communicationDirection = communicationDirection;
     channel.channelStatus = channelStatus;
-    // for (let id of this.usersId) {
-    //   let userChannel: UserChannel = new UserChannel();
-    //   let channelRole: ChannelRole = new ChannelRole();
-    //   channelRole.id = 1;
-    //   userChannel.channelRole = channelRole;
-    //   let user: User = new User();
-    //   user.id = id;
-    //   userChannel.user = user;
-    //   channel.userChannels.push(userChannel);
-    // }
-    console.log(channel);
+
+    let userChannel: UserChannel = new UserChannel();
+    let channelRole: ChannelRole = new ChannelRole();
+    channelRole.id = 1;
+    userChannel.channelRole = channelRole;
+    let user: User = new User();
+    user.id = this.authenticationService.getUserFromLocalCache().id;
+    userChannel.user = user;
+    channel.userChannels.push(userChannel);
+
     this.subs.push(this.channelService.saveChannel(channel).subscribe(
       (response: Channel) => {
         const formData = new FormData();
@@ -140,7 +144,7 @@ export class MakeChannelComponent implements OnInit, OnDestroy {
     }
   }
 
-  detectFile(event): void{
+  detectFile(event): void {
     if (event.target.files.length > 0) {
       const reader = new FileReader();
       reader.readAsDataURL(event.target.files[0]);

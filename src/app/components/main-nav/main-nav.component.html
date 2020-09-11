@@ -10,7 +10,6 @@
       <a mat-list-item [routerLink]="['/make-channel', '0']">Make a channel</a>
       <a mat-list-item routerLink="/favourites">Favourites</a>
       <a mat-list-item routerLink="/add-user">Add user</a>
-      <a mat-list-item routerLink="/update-profile">Update Profile</a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -26,7 +25,7 @@
       <span>Aplikacija</span>
       <mat-menu #lazyMenu="matMenu" xPosition="before">
         <ng-template matMenuContent let-firstName="firstName">
-          <button mat-menu-item>Profile</button>
+          <button mat-menu-item routerLink="/update-profile">Profile</button>
           <button mat-menu-item (click)="logout()">Log out {{firstName}}</button>
         </ng-template>
       </mat-menu>

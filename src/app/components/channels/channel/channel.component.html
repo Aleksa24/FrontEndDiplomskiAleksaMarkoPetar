@@ -11,16 +11,16 @@
         <button mat-raised-button color="primary" [matMenuTriggerFor]="menu" class="flex-item">Subchannels
           <mat-icon>arrow_drop_down</mat-icon>
         </button>
+        <button [hidden]="channel.parentChannel === null"
+                mat-raised-button color="warn"
+                [routerLink]="['/channel', channel.parentChannel?.id]">Back to {{channel.parentChannel?.name}}
+        </button>
         <mat-menu #menu="matMenu">
           <button *ngFor="let subchannel of channel.channels"
                   mat-menu-item
                   [routerLink]="['/channel',subchannel.id]">{{subchannel.name}}</button>
         </mat-menu>
       </div>
-      <button [hidden]="channel.parentChannel === null"
-              mat-raised-button color="warn"
-              [routerLink]="['/channel', channel.parentChannel?.id]">Back to {{channel.parentChannel?.name}}
-      </button>
     </div>
 
     <div class="post-content">
