@@ -41,4 +41,13 @@ export class ChannelService {
   uploadProfileImage(formData: FormData): Observable<HttpResponse> {
     return this.httpClient.post<HttpResponse>(`${environment.resourceServerUrl}/channel/upload-profile-image`, formData);
   }
+
+  getDefaultPicture(): Observable<Blob>{
+    return this.httpClient.get(`${environment.clientUrl}/assets/img/channel-default-image.png`, {responseType: 'blob'});
+  }
+
+
+  getDefaultPictureUrl(): string {
+    return `${environment.clientUrl}/assets/img/channel-default-image.png`;
+  }
 }

@@ -17,6 +17,7 @@ import {UserChannel} from '../../../../model/UserChannel';
 import {ChannelRole} from '../../../../model/ChannelRole';
 import {User} from '../../../../model/User';
 import {AuthenticationService} from '../../../../service/authentication/authentication.service';
+import {url} from 'inspector';
 
 @Component({
   selector: 'app-make-channel',
@@ -48,6 +49,7 @@ export class MakeChannelComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.initForm();
+    this.initDefaultProfilePicture();
     this.initParentChannelId();
     this.initCategories();
     this.initCommunicationDirections();
@@ -62,13 +64,20 @@ export class MakeChannelComponent implements OnInit, OnDestroy {
   }
 
   private initParentChannelId() {
-    this.subs.push(this.activatedRoute.paramMap.pipe(
-      switchMap((params) => {
-        return params.get('id');
-      })
-    ).subscribe((value) => {
-      this.parentChannelId = parseInt(value);
-    }));
+    // this.subs.push(this.activatedRoute.paramMap.pipe(
+    //   switchMap((params) => {
+    //     return params.get('id');
+    //   })
+    // ).subscribe((value) => {
+    //   this.parentChannelId = Number(value);
+    //   console.log(value);
+    // }));
+
+    this.subs.push(this.activatedRoute.paramMap.subscribe(
+      (paramMap) => {
+        this.parentChannelId = Number(paramMap.get('id'));
+      }
+    ));
   }
 
   private initCategories() {
@@ -93,7 +102,7 @@ export class MakeChannelComponent implements OnInit, OnDestroy {
     let channelStatus: ChannelStatus = new ChannelStatus();
 
     console.log(this.parentChannelId);
-    if (this.parentChannelId !== 0) {
+    if (this.parentChannelId !== -1) {
       let parentChannel: Channel = new Channel();
       parentChannel.id = this.parentChannelId;
       channel.parentChannel = parentChannel;
@@ -152,9 +161,20 @@ export class MakeChannelComponent implements OnInit, OnDestroy {
         this.profileImage = reader.result;
       };
       this.profileImageUpload = event.target.files[0];
+      console.log(this.profileImageUpload);
     }
   }
 
 
+  private initDefaultProfilePicture(): void {
+
+    this.profileImage = this.channelService.getDefaultPictureUrl();
+    this.channelService.getDefaultPicture().subscribe(
+      (data) => {
+        this.profileImageUpload = new File([data], 'channel-default-image.png');
+        console.log(this.profileImageUpload);
+      }
+    );
+  }
 }
 

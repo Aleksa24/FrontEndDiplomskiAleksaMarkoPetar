@@ -7,7 +7,7 @@ import {AuthenticationService} from '../../service/authentication/authentication
 import {Like} from '../../model/Like';
 import {MatDialog} from '@angular/material/dialog';
 import {LikeService} from '../../service/like/like.service';
-import {faPaperclip} from '@fortawesome/free-solid-svg-icons';
+import {faCloudUploadAlt, faPaperclip} from '@fortawesome/free-solid-svg-icons';
 import {Attachment} from '../../model/Attachment';
 import {catchError, map} from 'rxjs/operators';
 import {HttpEventType} from '@angular/common/http';
@@ -32,6 +32,7 @@ export class CommentComponent implements OnInit, OnDestroy {
   filesToUpload = [];
   editEnabled = false;
   filesToUploadReply = [];
+  faCommitUpload = faCloudUploadAlt;
 
 
   constructor(private commentService: CommentService,

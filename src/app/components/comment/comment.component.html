@@ -1,7 +1,8 @@
 <div>
   <mat-card>
     <mat-card-header>
-      <img mat-card-avatar [src]="this.comment.user.profilePicture" alt="assets/img/default-user-image.png">
+      <img mat-card-avatar *ngIf="this.comment.user.profilePicture; else picture_progress" [src]="this.comment.user.profilePicture" alt="assets/img/default-user-image.png">
+      <ng-template #picture_progress><mat-spinner [diameter]="30"></mat-spinner></ng-template>
       <mat-card-title>{{comment.user.username}}
         <span class="title-date"> ,{{comment.dateCreated | date}}</span>
       </mat-card-title>
@@ -41,7 +42,12 @@
                   [matTooltip]="this.getSelectedFileNames(this.filesToUpload)"
                   matTooltipClass="my-tooltip">
             <fa-icon [icon]="faUpload"></fa-icon>
-            <input #fileInput type="file" name="file" multiple  (change)="onUploadFiles($event)" style="display:none;" />
+            <input #fileInput type="file" name="file" multiple  (change)="detectFiles($event)" style="display:none;" />
+          </button>
+          <button mat-stroked-button color="primary" type="button" (click)="onUpload()"
+                [matTooltip]="getSelectedFileNames(this.filesToUpload)"
+                matTooltipClass="my-tooltip">
+          <fa-icon [icon]="faCommitUpload"></fa-icon>
           </button>
       </div>
 

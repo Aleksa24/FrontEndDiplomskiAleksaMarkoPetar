@@ -6,6 +6,7 @@ export const environment = {
   production: false,
   resourceServerUrl: 'http://localhost:9090',
   authorizationServerUrl: 'http://localhost:8080',
+  clientUrl: 'http://localhost:4200',
   clientId: 'client1',
   clientSecret: 'secret1'
 };

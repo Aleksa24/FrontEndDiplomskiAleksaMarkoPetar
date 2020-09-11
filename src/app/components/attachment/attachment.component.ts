@@ -1,6 +1,16 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Attachment} from "../../model/Attachment";
-import {faArchive, faCoffee, faDownload, faFilePdf, faImage, faStarOfDavid, faTimes} from '@fortawesome/free-solid-svg-icons';
+import {
+  faArchive,
+  faCoffee,
+  faDownload,
+  faFilePdf,
+  faImage,
+  faStarOfDavid,
+  faTimes,
+  faTrash,
+  faTrashAlt
+} from '@fortawesome/free-solid-svg-icons';
 import {Post} from '../../model/Post';
 import {PostService} from '../../service/post/post.service';
 import {User} from '../../model/User';
@@ -23,7 +33,7 @@ export class AttachmentComponent implements OnInit {
   public loggedInUser: User;
   public faDownload = faDownload;
   faDocument = faFilePdf;
-  faDelete = faTimes;
+  faDelete = faTrashAlt;
   public parentId: number;
   public parentName: string;
 
