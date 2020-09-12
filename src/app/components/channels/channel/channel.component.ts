@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewChecked, Component, OnDestroy, OnInit} from '@angular/core';
 import {ChannelService} from '../../../service/channel/channel.service';
 import {ActivatedRoute} from '@angular/router';
 import {Channel} from '../../../model/Channel';
@@ -14,7 +14,8 @@ import {PostService} from '../../../service/post/post.service';
   templateUrl: './channel.component.html',
   styleUrls: ['./channel.component.css']
 })
-export class ChannelComponent implements OnInit, OnDestroy {
+export class ChannelComponent implements OnInit, OnDestroy, AfterViewChecked {
+
   channel$: Observable<Channel>;
   channel: Channel;
   subs: Subscription[] = [];
@@ -34,7 +35,25 @@ export class ChannelComponent implements OnInit, OnDestroy {
     ).subscribe((value) => {
       value.posts.sort((postA, postB) =>postA.dateCreated>postB.dateCreated ? -1:1);
       this.channel = value;
+
+      setTimeout(() => {
+        let postIdForNavigation = this.postService.getPostIdForNavigation();
+        if (postIdForNavigation>0){
+          document.getElementById(String(postIdForNavigation)).scrollIntoView();
+          this.postService.savePostIdForNavigation(-1);
+        }
+      },750)
     }));
+  }
+
+  ngAfterViewChecked(): void {
+    setTimeout(() => {
+      let postIdForNavigation = this.postService.getPostIdForNavigation();
+      if (postIdForNavigation>0){
+        document.getElementById(String(postIdForNavigation)).scrollIntoView();
+        this.postService.savePostIdForNavigation(-1);
+      }
+    },3000)
   }
 
   openNewPostDialog() {

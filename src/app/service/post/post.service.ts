@@ -23,6 +23,7 @@ export class PostService {
 
   LIKE: string = "Like";
   DISLIKE: string = "Dislike";
+  postIdForNavigation:number = -1;
 
   constructor(private httpClient: HttpClient,
               private authService: AuthenticationService,
@@ -98,4 +99,10 @@ export class PostService {
     return this.httpClient.delete<HttpResponse>(`${environment.resourceServerUrl}/post/${post.id}/attachment/${attachment.id}/delete`);
   }
 
+  savePostIdForNavigation(postIdForNavigation: number):void {
+    this.postIdForNavigation = postIdForNavigation;
+  }
+  getPostIdForNavigation():number {
+    return this.postIdForNavigation;
+  }
 }

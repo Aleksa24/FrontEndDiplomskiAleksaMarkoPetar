@@ -24,7 +24,7 @@
     </div>
 
     <div class="post-content">
-      <app-post *ngFor="let post of channel.posts" [post]="post"></app-post>
+      <app-post [id]=[post.id] *ngFor="let post of channel.posts" [post]="post"></app-post>
     </div>
   </div>
 

@@ -12,6 +12,8 @@ import {serialize} from "v8";
 import {Post} from "../../model/Post";
 import {hasOwnProperty} from "tslint/lib/utils";
 import {Channel} from "../../model/Channel";
+import {ChannelService} from "../../service/channel/channel.service";
+import {PostService} from "../../service/post/post.service";
 
 
 export interface State {
@@ -43,7 +45,9 @@ export class MainNavComponent implements OnInit,OnDestroy {
   constructor(private breakpointObserver: BreakpointObserver,
               private authenticationService: AuthenticationService,
               private router: Router,
-              private searchableService: SearchableService) {
+              private searchableService: SearchableService,
+              private channelService: ChannelService,
+              private postService: PostService) {
   }
 
   ngOnInit(): void {
@@ -71,7 +75,6 @@ export class MainNavComponent implements OnInit,OnDestroy {
     );
   }
 
-
   ngOnDestroy(): void {
     this.subs.forEach(value => value.unsubscribe());
   }
@@ -85,9 +88,17 @@ export class MainNavComponent implements OnInit,OnDestroy {
       let autocompleteField = document.getElementById("autocompleteField").value = "";
     }
     if ("title" in searchable) {
-      //todo:
-      //ucitati ceo post
-      //ucitati kanal, i u kanalu otici na taj post
+      // @ts-ignore
+      this.channelService.getChannelIdByPostId(searchable.getId())
+        .then((id) => {
+          // @ts-ignore
+          this.postService.savePostIdForNavigation(searchable.getId());
+          // @ts-ignore
+          this.router.navigate([`/channel/${id}`]).then();
+          this.searchables = [];
+          // @ts-ignore
+          let autocompleteField = document.getElementById("autocompleteField").value = "";
+        });
     }
   }
 }

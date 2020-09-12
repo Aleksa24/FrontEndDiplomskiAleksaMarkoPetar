@@ -50,4 +50,8 @@ export class ChannelService {
   getDefaultPictureUrl(): string {
     return `${environment.clientUrl}/assets/img/channel-default-image.png`;
   }
+
+  getChannelIdByPostId(id: number): Promise<number> {
+    return this.httpClient.get<number>(`${environment.resourceServerUrl}/channel/find-id-by-post-id?postId=${id}`).toPromise();
+  }
 }
