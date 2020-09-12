@@ -55,6 +55,10 @@ mat-sidenav-content {
   margin-right: 0;
   margin-left: 8px;
 }
+.search-button{
+  width:100%;
+  text-align: left;
+}
 
 
 

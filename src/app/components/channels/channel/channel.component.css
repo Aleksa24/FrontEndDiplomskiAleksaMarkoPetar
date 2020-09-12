@@ -21,3 +21,7 @@
 .flex-item {
   align-self: flex-start;
 }
+.side-button{
+  width:100%;
+  text-align: left;
+}

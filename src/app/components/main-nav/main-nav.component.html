@@ -37,7 +37,7 @@
           <mat-autocomplete #auto="matAutocomplete">
             <mat-option *ngFor="let searchable of searchables" [value]="searchable">
 <!--              <img class="example-option-img" aria-hidden [src]="state.flag" height="25">-->
-              <button mat-raised-button color="primary" (click)="search(searchable)">{{searchable.getText()}}</button>
+              <button mat-flat-button class="search-button" (click)="search(searchable)">{{searchable.getText()}}</button>
             </mat-option>
           </mat-autocomplete>
         </mat-form-field>
