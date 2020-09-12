@@ -80,11 +80,14 @@ export class MainNavComponent implements OnInit,OnDestroy {
     if ("name" in searchable) {
       // @ts-ignore
       this.router.navigate([`/channel/${searchable.getId()}`]).then();
+      this.searchables = [];
+      // @ts-ignore
+      let autocompleteField = document.getElementById("autocompleteField").value = "";
     }
     if ("title" in searchable) {
-      // @ts-ignore
-      this.router.navigate([`/channel/${searchable.getId()}`]).then();
+      //todo:
+      //ucitati ceo post
+      //ucitati kanal, i u kanalu otici na taj post
     }
-    // if ("title" in searchable)
   }
 }

@@ -31,7 +31,10 @@ export class ChannelComponent implements OnInit, OnDestroy {
         const id = params.get('id');
         return this.channelService.getById(parseInt(id));
       })
-    ).subscribe((value) => this.channel = value));
+    ).subscribe((value) => {
+      value.posts.sort((postA, postB) =>postA.dateCreated>postB.dateCreated ? -1:1);
+      this.channel = value;
+    }));
   }
 
   openNewPostDialog() {
@@ -49,9 +52,7 @@ export class ChannelComponent implements OnInit, OnDestroy {
       this.subs.push(this.postService.savePost(this.channel, post)
         .subscribe((savedPost) => {
           savedPost.filesToUpload = result.files; // files that were chosen while new post is created
-          console.log(savedPost);
-          console.log('kanal je primljen');
-          this.channel.posts.push(savedPost);
+          this.channel.posts.unshift(savedPost);
         }));
     }, (error => {
       console.dir(error);
