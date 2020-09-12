@@ -42,6 +42,8 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
     });
     this.userService.getProfilePictureById(this.authenticationService.getUserFromLocalCache().id).subscribe(
       data => {
+        this.profileImageUpload = new File([data], 'profile-image');
+        // in case user does not change picture the same picture will be uploaded
         const objectURL = URL.createObjectURL(data);
         const img = this.sanitizer.bypassSecurityTrustUrl(objectURL);
         this.profileImage = img;

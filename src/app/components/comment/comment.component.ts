@@ -201,10 +201,13 @@ export class CommentComponent implements OnInit, OnDestroy {
   }
   onSaveComment(): void {
     this.editEnabled = false;
+    const userProfilePictureBackup = this.comment.user.profilePicture;
+    // because when new comment comes from the server the profile picture will not be in it so we must create backup
     this.subs.push(
       this.commentService.save(this.comment).subscribe(
         (data) => {
           this.comment = data;
+          this.comment.user.profilePicture = userProfilePictureBackup;
         }
       )
     );
