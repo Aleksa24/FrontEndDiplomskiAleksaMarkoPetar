@@ -45,12 +45,7 @@
 
     </mat-card-content>
 
-
-    <mat-card-content *ngIf="isReplyOpen" class="replays">
-      <app-comment *ngFor="let comment of comment.comments" [comment]="comment"></app-comment>
-      <p *ngIf="comment.comments.length==0">No replays</p>
-    </mat-card-content>
-
+    <hr class="hr-main">
     <mat-card-actions *ngIf="comment.likes !== undefined">
       <button class="mat-card-action-button" mat-icon-button [class.selected]="isLiked" (click)="onLike()" matTooltip="Like" matTooltipPosition="below"><mat-icon>thumb_up</mat-icon></button>
       {{getLikesNumber()}}
@@ -58,6 +53,11 @@
       {{getDislikeNumber()}}
       <button class="mat-card-action-button" mat-icon-button (click)="replyButtonClicked()" matTooltip="Replays" matTooltipPosition="below"><mat-icon>reply</mat-icon></button>
     </mat-card-actions>
+
+    <mat-card-content *ngIf="isReplyOpen" class="replays">
+      <app-comment *ngFor="let comment of comment.comments" [comment]="comment"></app-comment>
+      <p *ngIf="comment.comments.length==0">No replays</p>
+    </mat-card-content>
 
     <mat-form-field class="comment">
       <!--    <mat-label >Favorite food</mat-label>-->

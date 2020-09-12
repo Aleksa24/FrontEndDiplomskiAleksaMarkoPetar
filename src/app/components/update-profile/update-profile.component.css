@@ -17,4 +17,5 @@ img{
 
 .content {
   margin-top: 30px;
+  min-width: 1000px;
 }

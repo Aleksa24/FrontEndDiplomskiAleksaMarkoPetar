@@ -30,3 +30,7 @@
 .mat-card-actions{
   color:dimgray;
 }
+.hr-main{
+  border: 5px solid #4ca1af;
+  border-radius: 50%;
+}

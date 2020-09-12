@@ -21,6 +21,7 @@ export class FavouritesComponent implements OnInit,OnDestroy {
 
   ngOnInit(): void {
     this.user = this.authService.getUserFromLocalCache();
+    this.user.favorites.sort((postA, postB) =>postA.dateCreated>postB.dateCreated ? -1:1);
   }
 
   ngOnDestroy(): void {
