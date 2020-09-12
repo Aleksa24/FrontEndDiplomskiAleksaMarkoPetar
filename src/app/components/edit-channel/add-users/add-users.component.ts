@@ -53,8 +53,8 @@ export class AddUsersComponent implements OnInit {
     let size = $event.pageSize;
     this.userService.findAllUsersNotInChannel(this.channelId,
       this.authenticationService.getUserFromLocalCache().id,
-      0,
-      10).subscribe(
+      page,
+      size).subscribe(
       (value: UsersPaginationResponse) => {
         console.log(value);
         this.dataSource = value;
