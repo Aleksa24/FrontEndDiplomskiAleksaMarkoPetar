@@ -25,7 +25,8 @@ export class RemoveUsersComponent implements OnInit {
 
   constructor(private userService: UserService,
               private authenticationService: AuthenticationService,
-              @Inject(MAT_DIALOG_DATA) private  channelId) { }
+              @Inject(MAT_DIALOG_DATA) private  channelId) {
+  }
 
   ngOnInit(): void {
     this.initDataSource();
