@@ -1,7 +1,7 @@
-import {Role} from "./Role";
-import {Post} from "./Post";
+import {Role} from './Role';
+import {Post} from './Post';
 
-export class User{
+export class User {
 
   public id: number;
   public username: string;
@@ -15,5 +15,9 @@ export class User{
   public favorites: Post[] = [];
 
   public profilePicture;
+
+  getAuthorities(): string[] {
+    return this.role.userPermissions.map(value => value.name);
+  }
 
 }

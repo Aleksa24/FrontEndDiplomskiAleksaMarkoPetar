@@ -101,4 +101,8 @@ export class MainNavComponent implements OnInit,OnDestroy {
         });
     }
   }
+
+  hideAddUser() {
+    return false; // TODO
+  }
 }

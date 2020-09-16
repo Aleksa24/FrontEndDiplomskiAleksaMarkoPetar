@@ -9,7 +9,7 @@
       <a mat-list-item routerLink="/channels">Channels</a>
       <a mat-list-item [routerLink]="['/make-channel', '-1']">Make a channel</a>
       <a mat-list-item routerLink="/favourites">Favourites</a>
-      <a mat-list-item routerLink="/add-user">Add user</a>
+      <a [hidden]="hideAddUser()" mat-list-item routerLink="/add-user">Add user</a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
