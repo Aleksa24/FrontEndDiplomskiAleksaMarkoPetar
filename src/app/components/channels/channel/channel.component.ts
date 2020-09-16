@@ -1,8 +1,8 @@
 import {AfterViewChecked, Component, OnDestroy, OnInit} from '@angular/core';
 import {ChannelService} from '../../../service/channel/channel.service';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, NavigationEnd, NavigationStart, Router} from '@angular/router';
 import {Channel} from '../../../model/Channel';
-import {switchMap} from 'rxjs/operators';
+import {switchMap,filter} from 'rxjs/operators';
 import {Observable, Subscription} from 'rxjs';
 import {MatDialog} from '@angular/material/dialog';
 import {PostNewComponent} from '../../post/post-new/post-new.component';
@@ -15,8 +15,7 @@ import {AuthenticationService} from "../../../service/authentication/authenticat
   templateUrl: './channel.component.html',
   styleUrls: ['./channel.component.css']
 })
-export class ChannelComponent implements OnInit, OnDestroy
-  , AfterViewChecked
+export class ChannelComponent implements OnInit, OnDestroy, AfterViewChecked
 {
 
   channel$: Observable<Channel>;
@@ -27,7 +26,8 @@ export class ChannelComponent implements OnInit, OnDestroy
               private postService: PostService,
               private authService: AuthenticationService,
               private route: ActivatedRoute,
-              private matDialog: MatDialog) {
+              private matDialog: MatDialog,
+              private router: Router) {
   }
 
   ngOnInit(): void {
@@ -40,13 +40,6 @@ export class ChannelComponent implements OnInit, OnDestroy
       value.posts.sort((postA, postB) =>postA.dateCreated>postB.dateCreated ? -1:1);
       this.channel = value;
 
-      setTimeout(() => {
-        let postIdForNavigation = this.postService.getPostIdForNavigation();
-        if (postIdForNavigation>0){
-          document.getElementById(String(postIdForNavigation)).scrollIntoView();
-          this.postService.savePostIdForNavigation(-1);
-        }
-      },1000)
     }));
   }
 
@@ -57,7 +50,7 @@ export class ChannelComponent implements OnInit, OnDestroy
           document.getElementById(String(postIdForNavigation)).scrollIntoView();
           this.postService.savePostIdForNavigation(-1);
         }
-      },3000)
+      },1000)
   }
 
   openNewPostDialog() {
@@ -89,7 +82,6 @@ export class ChannelComponent implements OnInit, OnDestroy
   isPostingAllowed(): boolean {
     if (this.channel.communicationDirection.name == this.channelService.BIDIRECTIONAL) return true;
     let user = this.authService.getUserFromLocalCache();
-    console.log(this.channel.userChannels)
     let userChannelOwner = this.channel.userChannels
       .find(value => value.user.id == user.id && value.channelRole.name == this.channelService.OWNER)
     return userChannelOwner != undefined;

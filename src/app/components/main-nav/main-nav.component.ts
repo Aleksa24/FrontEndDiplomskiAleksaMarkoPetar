@@ -97,7 +97,7 @@ export class MainNavComponent implements OnInit,OnDestroy {
           this.router.navigate([`/channel/${id}`]).then();
           this.searchables = [];
           // @ts-ignore
-          let autocompleteField = document.getElementById("autocompleteField").value = "";
+          document.getElementById("autocompleteField").value = "";
         });
     }
   }
