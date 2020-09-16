@@ -26,7 +26,6 @@ const routes: Routes = [
   {path: 'update-profile', component: UpdateProfileComponent, canActivate: [AuthenticationGuard]},
   {path: 'channel/:id', component: ChannelComponent, canActivate: [AuthenticationGuard,RoleGuard]},
   {path: '', redirectTo: 'login', pathMatch: 'full'},
-
 ];
 
 @NgModule({

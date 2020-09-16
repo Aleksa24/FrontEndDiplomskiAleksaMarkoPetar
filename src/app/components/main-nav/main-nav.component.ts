@@ -102,7 +102,13 @@ export class MainNavComponent implements OnInit,OnDestroy {
     }
   }
 
-  hideAddUser() {
-    return false; // TODO
+  isAddUserAllowed():boolean {
+    if (this.user.role.userPermissions.map(value => value.name).includes("user:write")) return true;
+    return false;
+  }
+
+  isMakeChannelAllowed() {
+    if (this.user.role.userPermissions.map(value => value.name).includes("channel:write")) return true;
+    return false;
   }
 }
