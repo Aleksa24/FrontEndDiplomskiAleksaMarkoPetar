@@ -5,10 +5,10 @@
       <div *ngIf="this.channel.channels !== undefined" class="toolbar">
         <button mat-raised-button color="accent" class="title flex-item"><strong>{{channel.name}}</strong></button>
         <hr>
-        <button mat-raised-button color="primary" (click)="openNewPostDialog()" class="flex-item">New post</button>
+        <button mat-raised-button color="primary" (click)="openNewPostDialog()" class="flex-item side-button">New post</button>
         <button mat-raised-button color="primary" [routerLink]="['/make-channel', channel.id]" class="flex-item side-button">Add Subchannel</button>
         <button mat-raised-button color="primary" [routerLink]="['/edit-channel', channel.id]" class="flex-item side-button">Edit Channel</button>
-        <button mat-raised-button color="primary" [matMenuTriggerFor]="menu" class="flex-item">Subchannels
+        <button mat-raised-button color="primary" [hidden]="channel.channels.length==0" [matMenuTriggerFor]="menu" class="flex-item side-button">Subchannels
           <mat-icon>arrow_drop_down</mat-icon>
         </button>
         <button [hidden]="channel.parentChannel === null"
