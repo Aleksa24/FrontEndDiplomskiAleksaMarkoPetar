@@ -16,7 +16,8 @@ export class ChannelService {
 
   public host = environment.resourceServerUrl;
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient,
+              private authService: AuthenticationService) {
   }
 
   getChannelsForUser(id: number): Promise<Channel[]> {
@@ -53,5 +54,10 @@ export class ChannelService {
 
   getChannelIdByPostId(id: number): Promise<number> {
     return this.httpClient.get<number>(`${environment.resourceServerUrl}/channel/find-id-by-post-id?postId=${id}`).toPromise();
+  }
+
+  isUserInChannel(channelId:number):Promise<boolean> {
+    let userId = this.authService.getUserFromLocalCache().id;
+    return this.httpClient.get<boolean>(`${environment.resourceServerUrl}/channel/is-user-in-channel?userId=${userId}&channelId=${channelId}`).toPromise();
   }
 }

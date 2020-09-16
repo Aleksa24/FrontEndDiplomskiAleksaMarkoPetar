@@ -14,7 +14,9 @@ import {PostService} from '../../../service/post/post.service';
   templateUrl: './channel.component.html',
   styleUrls: ['./channel.component.css']
 })
-export class ChannelComponent implements OnInit, OnDestroy, AfterViewChecked {
+export class ChannelComponent implements OnInit, OnDestroy
+  , AfterViewChecked
+{
 
   channel$: Observable<Channel>;
   channel: Channel;
@@ -42,18 +44,18 @@ export class ChannelComponent implements OnInit, OnDestroy, AfterViewChecked {
           document.getElementById(String(postIdForNavigation)).scrollIntoView();
           this.postService.savePostIdForNavigation(-1);
         }
-      },750)
+      },1000)
     }));
   }
 
   ngAfterViewChecked(): void {
-    setTimeout(() => {
-      let postIdForNavigation = this.postService.getPostIdForNavigation();
-      if (postIdForNavigation>0){
-        document.getElementById(String(postIdForNavigation)).scrollIntoView();
-        this.postService.savePostIdForNavigation(-1);
-      }
-    },3000)
+      setTimeout(() => {
+        let postIdForNavigation = this.postService.getPostIdForNavigation();
+        if (postIdForNavigation>0){
+          document.getElementById(String(postIdForNavigation)).scrollIntoView();
+          this.postService.savePostIdForNavigation(-1);
+        }
+      },3000)
   }
 
   openNewPostDialog() {

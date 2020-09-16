@@ -12,6 +12,7 @@ import {MakeChannelComponent} from './components/channels/channel/make-channel/m
 import {AuthenticationGuard} from './guard/authentication/authentication.guard';
 import {LoginGuard} from './guard/login/login.guard';
 import {EditChannelComponent} from './components/edit-channel/edit-channel.component';
+import {RoleGuard} from "./guard/role/role.guard";
 
 
 const routes: Routes = [
@@ -19,12 +20,12 @@ const routes: Routes = [
   {path: 'home', component: HomeComponent, canActivate: [AuthenticationGuard]},
   {path: 'channels', component: ChannelsComponent, canActivate: [AuthenticationGuard]},
   {path: 'favourites', component: FavouritesComponent, canActivate: [AuthenticationGuard]},
-  {path: 'add-user', component: AddUserComponent, canActivate: [AuthenticationGuard]},
-  {path: 'make-channel/:id', component: MakeChannelComponent, canActivate: [AuthenticationGuard]},
-  {path: 'edit-channel/:id', component: EditChannelComponent, canActivate: [AuthenticationGuard]},
+  {path: 'add-user', component: AddUserComponent, canActivate: [AuthenticationGuard,RoleGuard]},
+  {path: 'make-channel/:id', component: MakeChannelComponent, canActivate: [AuthenticationGuard,RoleGuard]},
+  {path: 'edit-channel/:id', component: EditChannelComponent, canActivate: [AuthenticationGuard,RoleGuard]},
   {path: 'update-profile', component: UpdateProfileComponent, canActivate: [AuthenticationGuard]},
-  {path: 'channel/:id', component: ChannelComponent, canActivate: [AuthenticationGuard]},
-  {path: '', redirectTo: '/login', pathMatch: 'full'},
+  {path: 'channel/:id', component: ChannelComponent, canActivate: [AuthenticationGuard,RoleGuard]},
+  {path: '', redirectTo: 'login', pathMatch: 'full'},
 
 ];
 
