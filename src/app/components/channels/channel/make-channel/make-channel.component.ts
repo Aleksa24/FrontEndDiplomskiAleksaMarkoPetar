@@ -122,7 +122,7 @@ export class MakeChannelComponent implements OnInit, OnDestroy {
 
     let userChannel: UserChannel = new UserChannel();
     let channelRole: ChannelRole = new ChannelRole();
-    channelRole.id = 1;
+    channelRole.id = 2;
     userChannel.channelRole = channelRole;
     let user: User = new User();
     user.id = this.authenticationService.getUserFromLocalCache().id;

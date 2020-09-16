@@ -8,6 +8,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {PostNewComponent} from '../../post/post-new/post-new.component';
 import {Post} from '../../../model/Post';
 import {PostService} from '../../../service/post/post.service';
+import {AuthenticationService} from "../../../service/authentication/authentication.service";
 
 @Component({
   selector: 'app-channel',
@@ -24,6 +25,7 @@ export class ChannelComponent implements OnInit, OnDestroy
 
   constructor(private channelService: ChannelService,
               private postService: PostService,
+              private authService: AuthenticationService,
               private route: ActivatedRoute,
               private matDialog: MatDialog) {
   }
@@ -84,7 +86,12 @@ export class ChannelComponent implements OnInit, OnDestroy
     this.subs.forEach(value => value.unsubscribe());
   }
 
-  addSubchannel() {
-    console.log(this.channel);
+  isPostingAllowed(): boolean {
+    if (this.channel.communicationDirection.name == this.channelService.BIDIRECTIONAL) return true;
+    let user = this.authService.getUserFromLocalCache();
+    console.log(this.channel.userChannels)
+    let userChannelOwner = this.channel.userChannels
+      .find(value => value.user.id == user.id && value.channelRole.name == this.channelService.OWNER)
+    return userChannelOwner != undefined;
   }
 }

@@ -27,7 +27,8 @@ export class RoleGuard implements CanActivate {
        await this.channelService.isUserInChannel(Number(next.url[1].path))
          .then(value =>{
          if (value === false) {
-           this.router.navigate(["/home"]).then(); return false;
+           this.router.navigate(["/home"]).then();
+           return false;
          }
          if (value === true) boolean = value;
        });

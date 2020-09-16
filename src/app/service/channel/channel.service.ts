@@ -15,6 +15,10 @@ import {HttpResponse} from '../../model/HttpResponse';
 export class ChannelService {
 
   public host = environment.resourceServerUrl;
+  OWNER: string = "Owner";
+  PARTICIPANT: string = "Participant";
+  BIDIRECTIONAL: string = "Bidirectional";
+  UNIDIRECTIONAL: string = "Unidirectional";
 
   constructor(private httpClient: HttpClient,
               private authService: AuthenticationService) {
