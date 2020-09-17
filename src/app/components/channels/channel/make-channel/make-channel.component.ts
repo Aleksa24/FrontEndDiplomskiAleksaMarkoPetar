@@ -142,6 +142,7 @@ export class MakeChannelComponent implements OnInit, OnDestroy {
         );
       },
       (error: ValidationFailedResponse) => {
+        console.log(error);
         this.nameValidationFailedResponseMessage = MakeChannelComponent.findByName(error.error.error, 'name');
       }
     ));
@@ -181,8 +182,8 @@ export class MakeChannelComponent implements OnInit, OnDestroy {
 
   private static findByName(error: Message[], name: string) {
     for (let item of error) {
-      if (item.name) {
-        return item.name;
+      if (item.type == name) {
+        return item.message;
       }
     }
     return '';

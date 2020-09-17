@@ -130,7 +130,7 @@ export class EditChannelComponent implements OnInit {
     channel.communicationDirection = communicationDirection;
     channel.channelStatus = channelStatus;
 
-    this.subs.push(this.channelService.saveChannel(channel).subscribe(
+    this.subs.push(this.channelService.editChannel(channel).subscribe(
       (response: Channel) => {
         const formData = new FormData();
         formData.append('id', String(response.id));

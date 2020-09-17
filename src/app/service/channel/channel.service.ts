@@ -38,6 +38,11 @@ export class ChannelService {
     (`${this.host}/channel/save`, channel);
   }
 
+  editChannel(channel: Channel): Observable<Channel | HttpErrorResponse> {
+    return this.httpClient.post<Channel | HttpErrorResponse>
+    (`${this.host}/channel/edit`, channel);
+  }
+
   getProfilePictureById(id: number): Observable<Blob> {
     return this.httpClient.get(`${environment.resourceServerUrl}/channel/${id}/profile-picture`, {
       responseType: 'blob'
@@ -73,4 +78,5 @@ export class ChannelService {
     return this.httpClient.get<Channel[]>(
       environment.resourceServerUrl + '/channel/find-all-by-channel-and-user', {params});
   }
+
 }
