@@ -40,6 +40,7 @@ export class EditChannelComponent implements OnInit {
   private profileImageUpload: any;
 
   nameValidationFailedResponseMessage = '';
+  globalValidationFailedResponseMessage = '';
 
   constructor(private channelService: ChannelService,
               private activatedRoute: ActivatedRoute,
@@ -142,15 +143,17 @@ export class EditChannelComponent implements OnInit {
         );
       },
       (error: ValidationFailedResponse) => {
+        console.log(error);
         this.nameValidationFailedResponseMessage = EditChannelComponent.findByName(error.error.error, 'name');
+        this.globalValidationFailedResponseMessage = EditChannelComponent.findByName(error.error.error, 'global');
       }
     ));
   }
 
   private static findByName(error: Message[], name: string) {
     for (let item of error) {
-      if (item.name) {
-        return item.name;
+      if (item.type == name) {
+        return item.message;
       }
     }
     return '';

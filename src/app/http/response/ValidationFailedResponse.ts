@@ -5,5 +5,6 @@ export class ValidationFailedResponse {
 }
 
 export class Message {
-  name: string;
+  type: string;
+  message: string;
 }
