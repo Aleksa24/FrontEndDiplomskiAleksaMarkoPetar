@@ -1,13 +1,14 @@
 import {Injectable} from '@angular/core';
 import {Channel} from '../../model/Channel';
 import {Observable} from 'rxjs';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpParams} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {Post} from '../../model/Post';
 import {AuthenticationService} from '../authentication/authentication.service';
 import {User} from '../../model/User';
 import {Attachment} from '../../model/Attachment';
 import {HttpResponse} from '../../model/HttpResponse';
+import {UsersPaginationResponse} from '../../http/response/UsersPaginationResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -15,10 +16,10 @@ import {HttpResponse} from '../../model/HttpResponse';
 export class ChannelService {
 
   public host = environment.resourceServerUrl;
-  OWNER: string = "Owner";
-  PARTICIPANT: string = "Participant";
-  BIDIRECTIONAL: string = "Bidirectional";
-  UNIDIRECTIONAL: string = "Unidirectional";
+  OWNER: string = 'Owner';
+  PARTICIPANT: string = 'Participant';
+  BIDIRECTIONAL: string = 'Bidirectional';
+  UNIDIRECTIONAL: string = 'Unidirectional';
 
   constructor(private httpClient: HttpClient,
               private authService: AuthenticationService) {
@@ -47,7 +48,7 @@ export class ChannelService {
     return this.httpClient.post<HttpResponse>(`${environment.resourceServerUrl}/channel/upload-profile-image`, formData);
   }
 
-  getDefaultPicture(): Observable<Blob>{
+  getDefaultPicture(): Observable<Blob> {
     return this.httpClient.get(`${environment.clientUrl}/assets/img/channel-default-image.png`, {responseType: 'blob'});
   }
 
@@ -60,8 +61,16 @@ export class ChannelService {
     return this.httpClient.get<number>(`${environment.resourceServerUrl}/channel/find-id-by-post-id?postId=${id}`).toPromise();
   }
 
-  isUserInChannel(channelId:number):Promise<boolean> {
+  isUserInChannel(channelId: number): Promise<boolean> {
     let userId = this.authService.getUserFromLocalCache().id;
     return this.httpClient.get<boolean>(`${environment.resourceServerUrl}/channel/is-user-in-channel?userId=${userId}&channelId=${channelId}`).toPromise();
+  }
+
+  getSubChannelsForUser(channelId: number, userId: number): Observable<Channel[]> {
+    let params = new HttpParams();
+    params = params.append('channelId', String(channelId));
+    params = params.append('userId', String(userId));
+    return this.httpClient.get<Channel[]>(
+      environment.resourceServerUrl + '/channel/find-all-by-channel-and-user', {params});
   }
 }

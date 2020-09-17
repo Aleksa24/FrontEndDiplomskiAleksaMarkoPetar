@@ -2,24 +2,24 @@ import {AfterViewChecked, Component, OnDestroy, OnInit} from '@angular/core';
 import {ChannelService} from '../../../service/channel/channel.service';
 import {ActivatedRoute, NavigationEnd, NavigationStart, Router} from '@angular/router';
 import {Channel} from '../../../model/Channel';
-import {switchMap,filter} from 'rxjs/operators';
+import {switchMap, filter} from 'rxjs/operators';
 import {Observable, Subscription} from 'rxjs';
 import {MatDialog} from '@angular/material/dialog';
 import {PostNewComponent} from '../../post/post-new/post-new.component';
 import {Post} from '../../../model/Post';
 import {PostService} from '../../../service/post/post.service';
-import {AuthenticationService} from "../../../service/authentication/authentication.service";
+import {AuthenticationService} from '../../../service/authentication/authentication.service';
 
 @Component({
   selector: 'app-channel',
   templateUrl: './channel.component.html',
   styleUrls: ['./channel.component.css']
 })
-export class ChannelComponent implements OnInit, OnDestroy, AfterViewChecked
-{
+export class ChannelComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   channel$: Observable<Channel>;
   channel: Channel;
+  subChannels: Channel[] = [];
   subs: Subscription[] = [];
 
   constructor(private channelService: ChannelService,
@@ -37,20 +37,27 @@ export class ChannelComponent implements OnInit, OnDestroy, AfterViewChecked
         return this.channelService.getById(parseInt(id));
       })
     ).subscribe((value) => {
-      value.posts.sort((postA, postB) =>postA.dateCreated>postB.dateCreated ? -1:1);
+      value.posts.sort((postA, postB) => postA.dateCreated > postB.dateCreated ? -1 : 1);
       this.channel = value;
-
+    }));
+    this.subs.push(this.route.paramMap.pipe(
+      switchMap((params) => {
+        const id = params.get('id');
+        return this.channelService.getSubChannelsForUser(parseInt(id), this.authService.getUserFromLocalCache().id);
+      })
+    ).subscribe((value) => {
+      this.subChannels = value;
     }));
   }
 
   ngAfterViewChecked(): void {
-      setTimeout(() => {
-        let postIdForNavigation = this.postService.getPostIdForNavigation();
-        if (postIdForNavigation>0){
-          document.getElementById(String(postIdForNavigation)).scrollIntoView();
-          this.postService.savePostIdForNavigation(-1);
-        }
-      },1000)
+    setTimeout(() => {
+      let postIdForNavigation = this.postService.getPostIdForNavigation();
+      if (postIdForNavigation > 0) {
+        document.getElementById(String(postIdForNavigation)).scrollIntoView();
+        this.postService.savePostIdForNavigation(-1);
+      }
+    }, 1000);
   }
 
   openNewPostDialog() {
@@ -80,10 +87,12 @@ export class ChannelComponent implements OnInit, OnDestroy, AfterViewChecked
   }
 
   isPostingAllowed(): boolean {
-    if (this.channel.communicationDirection.name == this.channelService.BIDIRECTIONAL) return true;
+    if (this.channel.communicationDirection.name == this.channelService.BIDIRECTIONAL) {
+      return true;
+    }
     let user = this.authService.getUserFromLocalCache();
     let userChannelOwner = this.channel.userChannels
-      .find(value => value.user.id == user.id && value.channelRole.name == this.channelService.OWNER)
+      .find(value => value.user.id == user.id && value.channelRole.name == this.channelService.OWNER);
     return userChannelOwner != undefined;
   }
 }
