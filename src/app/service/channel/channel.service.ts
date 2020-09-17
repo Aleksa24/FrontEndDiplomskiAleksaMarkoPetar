@@ -3,12 +3,8 @@ import {Channel} from '../../model/Channel';
 import {Observable} from 'rxjs';
 import {HttpClient, HttpErrorResponse, HttpParams} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
-import {Post} from '../../model/Post';
 import {AuthenticationService} from '../authentication/authentication.service';
-import {User} from '../../model/User';
-import {Attachment} from '../../model/Attachment';
 import {HttpResponse} from '../../model/HttpResponse';
-import {UsersPaginationResponse} from '../../http/response/UsersPaginationResponse';
 import {UserChannel} from '../../model/UserChannel';
 
 @Injectable({
@@ -82,6 +78,13 @@ export class ChannelService {
 
   saveUserChannel(userChannel: UserChannel): Observable<UserChannel> {
     return this.httpClient.post<UserChannel>(environment.resourceServerUrl + '/channel/save-user-channel', userChannel);
+  }
+
+  deleteUserChannel(userId: number, channelId: number): Observable<UserChannel> {
+    let params = new HttpParams();
+    params = params.append('userId', String(userId));
+    params = params.append('channelId', String(channelId));
+    return this.httpClient.delete<UserChannel>(environment.resourceServerUrl + '/channel/delete-user-channel', {params});
   }
 
 }
