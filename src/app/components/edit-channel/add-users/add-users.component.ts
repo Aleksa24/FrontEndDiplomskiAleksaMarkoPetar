@@ -6,6 +6,11 @@ import {Channel} from '../../../model/Channel';
 import {Subscription} from 'rxjs';
 import {AuthenticationService} from '../../../service/authentication/authentication.service';
 import {MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {UserChannel} from '../../../model/UserChannel';
+import {ChannelRole} from '../../../model/ChannelRole';
+import {User} from '../../../model/User';
+import {ChannelService} from '../../../service/channel/channel.service';
+import {log} from 'util';
 
 
 @Component({
@@ -26,6 +31,7 @@ export class AddUsersComponent implements OnInit {
 
   constructor(private userService: UserService,
               private authenticationService: AuthenticationService,
+              private channelService: ChannelService,
               @Inject(MAT_DIALOG_DATA) private  channelId) {
   }
 
@@ -72,8 +78,21 @@ export class AddUsersComponent implements OnInit {
   }
 
   addUsersToChannel() {
-    // TODO
+    let userChannel: UserChannel = new UserChannel();
+    let channelRole: ChannelRole = new ChannelRole();
+    channelRole.id = 1;
+    userChannel.channelRole = channelRole;
+    for (let id of this.usersId) {
+      let user: User = new User();
+      let channel: Channel = new Channel();
+      user.id = id;
+      userChannel.user = user;
+      channel.id = this.channelId;
+      userChannel.channel = channel;
+      this.channelService.saveUserChannel(userChannel).subscribe(
+        value => console.log(value),
+        error => console.log(error)
+      );
+    }
   }
-
-
 }

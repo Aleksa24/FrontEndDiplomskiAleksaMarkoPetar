@@ -9,6 +9,7 @@ import {User} from '../../model/User';
 import {Attachment} from '../../model/Attachment';
 import {HttpResponse} from '../../model/HttpResponse';
 import {UsersPaginationResponse} from '../../http/response/UsersPaginationResponse';
+import {UserChannel} from '../../model/UserChannel';
 
 @Injectable({
   providedIn: 'root'
@@ -77,6 +78,10 @@ export class ChannelService {
     params = params.append('userId', String(userId));
     return this.httpClient.get<Channel[]>(
       environment.resourceServerUrl + '/channel/find-all-by-channel-and-user', {params});
+  }
+
+  saveUserChannel(userChannel: UserChannel): Observable<UserChannel> {
+    return this.httpClient.post<UserChannel>(environment.resourceServerUrl + '/channel/save-user-channel', userChannel);
   }
 
 }
