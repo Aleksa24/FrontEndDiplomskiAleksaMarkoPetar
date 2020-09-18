@@ -37,10 +37,9 @@ export class AddUserComponent implements OnInit, OnDestroy {
     user.role = role;
     this.subs.push(this.userService.addUser(user).subscribe(
       (response: User) => {
-        console.log(response);
+        this.emailTakenError = '';
       },
       (errorResponse: HttpErrorResponse) => {
-        console.dir(errorResponse); // TODO error handle
         this.emailTakenError = AddUserComponent.findByName(errorResponse.error.error, 'email');
       }
     ));
