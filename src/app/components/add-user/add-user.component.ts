@@ -5,6 +5,7 @@ import {User} from '../../model/User';
 import {Role} from '../../model/Role';
 import {HttpErrorResponse} from '@angular/common/http';
 import {UserService} from '../../service/user/user.service';
+import {Message} from '../../http/response/ValidationFailedResponse';
 
 @Component({
   selector: 'app-add-user',
@@ -13,8 +14,9 @@ import {UserService} from '../../service/user/user.service';
 })
 export class AddUserComponent implements OnInit, OnDestroy {
 
-  public form: FormGroup;
-  private subs: Subscription[] = [];
+  form: FormGroup;
+  subs: Subscription[] = [];
+  emailTakenError = '';
 
   constructor(private formBuilder: FormBuilder,
               private userService: UserService) {
@@ -30,20 +32,30 @@ export class AddUserComponent implements OnInit, OnDestroy {
   addUser() {
     let user: User = new User();
     let role: Role = new Role();
-    role.name = this.form.get('role').value
-    user.email = this.form.get('email').value
+    role.name = this.form.get('role').value;
+    user.email = this.form.get('email').value;
     user.role = role;
     this.subs.push(this.userService.addUser(user).subscribe(
       (response: User) => {
         console.log(response);
       },
-      (errorResponse:HttpErrorResponse) => {
+      (errorResponse: HttpErrorResponse) => {
         console.dir(errorResponse); // TODO error handle
+        this.emailTakenError = AddUserComponent.findByName(errorResponse.error.error, 'email');
       }
     ));
   }
 
   ngOnDestroy(): void {
     this.subs.forEach(value => value.unsubscribe());
+  }
+
+  private static findByName(error: Message[], name: string): string {
+    for (let item of error) {
+      if (item.type == name) {
+        return item.message;
+      }
+    }
+    return '';
   }
 }
