@@ -5,8 +5,8 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HomeComponent } from './components/home/home.component';
-import { BrowserAnimationsModule} from "@angular/platform-browser/animations";
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {MatGridListModule} from '@angular/material/grid-list';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -51,6 +51,8 @@ import { MakeAccountComponent } from './components/make-account/make-account.com
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import {PasswordStrengthMeterModule} from 'angular-password-strength-meter';
 import { ErrorPageComponent } from './components/error-page/error-page.component';
+import {MatPasswordStrengthModule} from '@angular-material-extensions/password-strength';
+import {MatSliderModule} from '@angular/material/slider';
 
 @NgModule({
   declarations: [
@@ -106,7 +108,9 @@ import { ErrorPageComponent } from './components/error-page/error-page.component
     MatProgressBarModule,
     MatAutocompleteModule,
     MatSlideToggleModule,
-    PasswordStrengthMeterModule
+    PasswordStrengthMeterModule,
+    MatPasswordStrengthModule,
+    MatSliderModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

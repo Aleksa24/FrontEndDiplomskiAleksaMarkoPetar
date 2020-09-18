@@ -31,21 +31,66 @@
             <input matInput formControlName="phone">
           </mat-form-field>
         </p>
-        <p>
-          <mat-form-field appearance="outline" color="primary">
+        <!--          <mat-form-field appearance="outline" color="primary">-->
+        <!--            <mat-label>Password</mat-label>-->
+        <!--            <input type="password" matInput formControlName="password" required>-->
+        <!--            <mat-error *ngIf="form.get('password').errors?.required">Password is required</mat-error>-->
+        <!--            <password-strength-meter [password]="this.form.get('password').value"></password-strength-meter>-->
+        <!--          </mat-form-field>-->
+
+        <!--password input filed-->
+        <div class="container-column">
+          <mat-slide-toggle color="primary" (toggleChange)="showDetails = !showDetails">Show details</mat-slide-toggle>
+          <mat-form-field appearance="outline" >
             <mat-label>Password</mat-label>
-            <input type="password" matInput formControlName="password" required>
+            <mat-pass-toggle-visibility #toggle matSuffix></mat-pass-toggle-visibility>
+            <input matInput #password
+                   [type]="toggle.type"
+                   formControlName="password"
+                   required
+                   placeholder="Password"
+                   (cut)="$event.preventDefault()"
+                   (copy)="$event.preventDefault()"
+                   (paste)="$event.preventDefault()">
             <mat-error *ngIf="form.get('password').errors?.required">Password is required</mat-error>
-            <password-strength-meter [password]="this.form.get('password').value"></password-strength-meter>
+            <mat-error *ngIf="form.get('password').errors?.weak">Password is too weak</mat-error>
           </mat-form-field>
-        </p>
+          <!--@angular-material-extensions/password-strength's main component-->
+          <mat-password-strength #passwordComponent
+                                 [password]="password.value"
+                                 (onStrengthChanged)="onStrengthChanged($event)"
+                                 style="margin: 10px"
+                                 >
+          </mat-password-strength>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Confirm password</mat-label>
+            <input matInput
+                   [type]="toggle.type"
+                   formControlName="confirm_password"
+                   required
+                   placeholder="Confirm password"
+                   (cut)="$event.preventDefault()"
+                   (copy)="$event.preventDefault()"
+                   (paste)="$event.preventDefault()">
+            <mat-error *ngIf="form.get('confirm_password').errors?.required">Password confirmation is required</mat-error>
+          </mat-form-field>
+
+
+          <!--Password's strength info-->
+          <mat-password-strength-info
+            *ngIf="showDetails"
+            [passwordComponent]="passwordComponent">
+          </mat-password-strength-info>
+        </div>
       </form>
     </mat-card-content>
     <mat-card-actions align="end">
       <button *ngIf="this.form" mat-raised-button
               color="primary"
               (click)="updateUser();"
-              [disabled]="form.invalid">
+              [disabled]="form.invalid || passwordMismatch()"
+              >
         Commit Profile
       </button>
     </mat-card-actions>

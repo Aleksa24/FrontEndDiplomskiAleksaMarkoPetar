@@ -19,3 +19,8 @@ img{
   margin-top: 30px;
   min-width: 1000px;
 }
+
+.container-column{
+  display: flex;
+  flex-direction: column;
+}

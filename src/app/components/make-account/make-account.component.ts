@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {Observable, Subscription} from 'rxjs';
 import {faPaperclip} from '@fortawesome/free-solid-svg-icons';
 import {UserService} from '../../service/user/user.service';
@@ -24,6 +24,8 @@ export class MakeAccountComponent implements OnInit, OnDestroy {
   private subs: Subscription[] = [];
   public user: User;
   public token: string;
+  public showDetails = false;
+  public passwordStrength = 0;
 
   constructor(private formBuilder: FormBuilder,
               private userService: UserService,
@@ -52,19 +54,34 @@ export class MakeAccountComponent implements OnInit, OnDestroy {
     ));
   }
   public initAccountActivation(): void{
+
+
     this.form = this.formBuilder.group({
       firstName: [this.user.firstName, [Validators.required]],
       lastName: [this.user.lastName, [Validators.required]],
       username: [this.user.username, [Validators.required]],
       phone: [this.user.phone],
-      password: [''],
+      password: ['', [Validators.required, this.strongPasswordValidator]],
+      confirm_password: ['', [Validators.required]]
     });
+
+  }
+
+  private strongPasswordValidator(control: AbstractControl): {[key: string]: boolean} | null{
+    const password = control.value;
+    if (password.match('[a-z]')?.length > 0
+      && password.match('[0-9]')?.length > 0
+      && password.match('[a-z]')?.length > 0
+      && password.match('[!@#$%^&*(),.?":{}|<>]')?.length > 0
+      && password.length >= 8){
+      return null;
+    }
+    return {weak: true};
   }
 
   updateUser(): void {
     const dialogRef = this.dialogService.open(ConfirmDialogComponent,
       {data: 'You are about to save your account. Proceed?'});
-
     dialogRef.afterClosed().subscribe(
       (result) => {
         if (result) {
@@ -97,4 +114,10 @@ export class MakeAccountComponent implements OnInit, OnDestroy {
   }
 
 
+  onStrengthChanged($event: number): void {
+  }
+
+  passwordMismatch(): boolean{
+    return this.form.get('password').value !== this.form.get('confirm_password').value;
+  }
 }
