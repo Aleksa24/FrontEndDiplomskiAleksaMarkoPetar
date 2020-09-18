@@ -46,7 +46,11 @@ import { EditChannelComponent } from './components/edit-channel/edit-channel.com
 import { AddUsersComponent } from './components/edit-channel/add-users/add-users.component';
 import { RemoveUsersComponent } from './components/edit-channel/remove-users/remove-users.component';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
-import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { MakeAccountComponent } from './components/make-account/make-account.component';
+import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
+import {PasswordStrengthMeterModule} from 'angular-password-strength-meter';
+import { ErrorPageComponent } from './components/error-page/error-page.component';
 
 @NgModule({
   declarations: [
@@ -67,6 +71,9 @@ import {MatSlideToggleModule} from "@angular/material/slide-toggle";
     EditChannelComponent,
     AddUsersComponent,
     RemoveUsersComponent,
+    MakeAccountComponent,
+    ConfirmDialogComponent,
+    ErrorPageComponent,
   ],
   imports: [
     BrowserModule,
@@ -98,8 +105,8 @@ import {MatSlideToggleModule} from "@angular/material/slide-toggle";
     MatTooltipModule,
     MatProgressBarModule,
     MatAutocompleteModule,
-    MatSlideToggleModule
-
+    MatSlideToggleModule,
+    PasswordStrengthMeterModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

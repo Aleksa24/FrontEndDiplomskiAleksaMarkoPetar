@@ -10,6 +10,7 @@ import {Attachment} from '../../model/Attachment';
 import {HttpResponse} from '../../model/HttpResponse';
 import {Category} from '../../model/Category';
 import {UsersPaginationResponse} from '../../http/response/UsersPaginationResponse';
+import {MakeAccountRequest} from '../../model/MakeAccountRequest';
 
 @Injectable({
   providedIn: 'root'
@@ -31,6 +32,10 @@ export class UserService {
     params = params.append('size', String(size));
     return this.http.get<UsersPaginationResponse>(
       environment.resourceServerUrl + '/user/all-pagination', {params});
+  }
+
+  findById(id: number): Observable<User>{
+    return this.http.get<User>(`${environment.resourceServerUrl}/user/${id}`);
   }
 
   findAllUsersNotInChannel(channelId: number, loggedUserId: number, page: number, size: number): Observable<UsersPaginationResponse> {
@@ -86,5 +91,12 @@ export class UserService {
 
   uploadProfileImage(formData: FormData): Observable<HttpResponse> {
     return this.http.post<HttpResponse>(`${environment.resourceServerUrl}/user/upload-profile-image`, formData);
+  }
+
+  makeAccount(user: User, token: string): Observable<User> {
+      const makeAccountRequest: MakeAccountRequest = new MakeAccountRequest();
+      makeAccountRequest.token = token;
+      makeAccountRequest.user = user;
+      return this.http.post<User>(`${environment.resourceServerUrl}/user/make-account`, makeAccountRequest);
   }
 }

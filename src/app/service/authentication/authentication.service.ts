@@ -4,6 +4,9 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {User} from '../../model/User';
 import {JwtHelperService} from '@auth0/angular-jwt';
 import {AuthenticationRequest} from '../../model/AuthenticationRequest';
+import {Observable} from 'rxjs';
+import {AccountVerificationRequest} from '../../model/AccountVerificationRequest';
+import has = Reflect.has;
 
 @Injectable({
   providedIn: 'root'
@@ -75,4 +78,10 @@ export class AuthenticationService {
     }
   }
 
+  verifyActivationToken(hash: string, id: number): Observable<User> {
+    const accountVerificationRequest: AccountVerificationRequest = new AccountVerificationRequest();
+    accountVerificationRequest.userId = id;
+    accountVerificationRequest.token = hash;
+    return this.httpClient.post<User>(`${environment.resourceServerUrl}/user/verify-activation-token`, accountVerificationRequest);
+  }
 }

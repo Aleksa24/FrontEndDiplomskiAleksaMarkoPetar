@@ -22,6 +22,14 @@ export class AuthInterceptor implements HttpInterceptor {
       return handler.handle(request);
     }
 
+    if (request.url.includes(`${environment.resourceServerUrl}/user/verify-activation-token`)) {
+      return handler.handle(request);
+    }
+
+    if (request.url.includes(`${environment.resourceServerUrl}/user/make-account`)) {
+      return handler.handle(request);
+    }
+
     if (!this.authenticationService.isLogged()) {
       this.router.navigate(['/login']).then();
     }
