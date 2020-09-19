@@ -8,10 +8,10 @@
         <button mat-raised-button color="primary" [hidden]="!isPostingAllowed()" (click)="openNewPostDialog()"
                 class="flex-item side-button">New post
         </button>
-        <button mat-raised-button color="primary" [routerLink]="['/make-channel', channel.id]"
+        <button mat-raised-button color="primary" [hidden]="!isHisChannel()" [routerLink]="['/make-channel', channel.id]"
                 class="flex-item side-button">Add Subchannel
         </button>
-        <button mat-raised-button color="primary" [routerLink]="['/edit-channel', channel.id]"
+        <button mat-raised-button color="primary" [hidden]="!isHisChannel()" [routerLink]="['/edit-channel', channel.id]"
                 class="flex-item side-button">Edit Channel
         </button>
         <button mat-raised-button color="primary" [hidden]="subChannels.length === 0" [matMenuTriggerFor]="menu"

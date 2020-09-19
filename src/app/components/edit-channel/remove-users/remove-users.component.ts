@@ -6,6 +6,10 @@ import {Channel} from '../../../model/Channel';
 import {Subscription} from 'rxjs';
 import {AuthenticationService} from '../../../service/authentication/authentication.service';
 import {MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {UserChannel} from '../../../model/UserChannel';
+import {ChannelRole} from '../../../model/ChannelRole';
+import {User} from '../../../model/User';
+import {ChannelService} from '../../../service/channel/channel.service';
 
 @Component({
   selector: 'app-remove-users',
@@ -25,6 +29,7 @@ export class RemoveUsersComponent implements OnInit {
 
   constructor(private userService: UserService,
               private authenticationService: AuthenticationService,
+              private channelService: ChannelService,
               @Inject(MAT_DIALOG_DATA) private  channelId) {
   }
 
@@ -70,6 +75,11 @@ export class RemoveUsersComponent implements OnInit {
   }
 
   removeUsersFromChannel() {
-    // TODO
+    for (let id of this.usersId) {
+      this.channelService.deleteUserChannel(id, this.channelId).subscribe(
+        value => console.log(value),
+        error => console.log(error)
+      );
+    }
   }
 }

@@ -11,6 +11,7 @@
             <mat-error *ngIf="form.get('email').errors?.email">Please enter a valid email address</mat-error>
             <mat-error *ngIf="form.get('email').errors?.required">Email address is required</mat-error>
           </mat-form-field>
+          <p [innerText]="emailTakenError" class="mat-error"></p>
           <div>
             <label>Role:</label>
             <mat-radio-group formControlName="role">

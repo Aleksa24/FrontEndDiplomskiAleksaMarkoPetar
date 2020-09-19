@@ -95,4 +95,11 @@ export class ChannelComponent implements OnInit, OnDestroy, AfterViewChecked {
       .find(value => value.user.id == user.id && value.channelRole.name == this.channelService.OWNER);
     return userChannelOwner != undefined;
   }
+
+  isHisChannel(): boolean {
+    let user = this.authService.getUserFromLocalCache();
+    let userChannelOwner = this.channel.userChannels
+      .find(value => value.user.id == user.id && value.channelRole.name == this.channelService.OWNER);
+    return userChannelOwner != undefined;
+  }
 }
